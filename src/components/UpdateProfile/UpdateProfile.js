@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateProfile = ({ setIsUpdated }) => {
     const [userToken, setUserToken] = useState(() => {
@@ -8,10 +9,29 @@ const UpdateProfile = ({ setIsUpdated }) => {
     })
     const [name, setName] = useState('')
     const [photoUrl, setPhotoUrl] = useState('')
+    const navigate = useNavigate()
 
-    useEffect(() => {
-    }, [])
-    const handleUpdate = async (e) => {
+    const getUserProfileData = async () => {
+        try {
+            if (userToken) {
+                let data = {
+                    idToken: userToken
+                }
+                const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    }
+                })
+                setName(response.data.users[0].displayName)
+                setPhotoUrl(response.data.users[0].photoUrl)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleUpdateProfile = async (e) => {
         e.preventDefault()
         try {
             if (userToken) {
@@ -34,6 +54,7 @@ const UpdateProfile = ({ setIsUpdated }) => {
                     setPhotoUrl('')
                     alert('Profile updated!')
                     setIsUpdated(false)
+                    getUserProfileData()
                 })
 
 
@@ -43,11 +64,15 @@ const UpdateProfile = ({ setIsUpdated }) => {
             console.log(err)
         }
     }
+
+    useEffect(() => {
+        getUserProfileData()
+    }, [])
     return (
         <div>
             <h2>Update Profile</h2>
             <div>
-                <form onSubmit={handleUpdate}>
+                <form onSubmit={handleUpdateProfile}>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Full name" type='text' variant="outlined" value={name} onChange={(e) => setName(e.target.value)} required />
 
