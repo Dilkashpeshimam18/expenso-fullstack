@@ -39,6 +39,32 @@ const Login = () => {
             alert(err.message)
         }
     }
+
+    const handleForgetPassword = async () => {
+        try {
+            if (email != '') {
+                const data = {
+                    requestType: 'PASSWORD_RESET',
+                    email: email
+                }
+                const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    }
+                })
+                if (res.status == 200) {
+                    alert('Reset password link sent check your email.')
+                }
+                console.log(res)
+
+            }
+
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <div>
             <div className='signUp__container'>
@@ -59,6 +85,7 @@ const Login = () => {
                         </div>
 
                     </form>
+                    <p onClick={handleForgetPassword} style={{ cursor: 'pointer' }}>Forgot password?</p>
                 </div>
             </div>
         </div>

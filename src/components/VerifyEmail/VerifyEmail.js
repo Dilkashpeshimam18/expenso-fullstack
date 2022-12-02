@@ -20,7 +20,7 @@ const VerifyEmail = () => {
                 }
             })
             if (response.status == 200) {
-                alert('Email Verify')
+                alert('Check your email for verification link')
             }
 
 
