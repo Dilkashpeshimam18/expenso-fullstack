@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom'
 import SignUp from './components/SignUp/SignUp';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
+import UpdateProfile from './components/UpdateProfile/UpdateProfile';
 
 function App() {
+  const [open, setOpen] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false)
+
   return (
     <div className="app">
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home open={open} setOpen={setOpen} isUpdated={isUpdated} />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/update-profile' element={<UpdateProfile isUpdated={isUpdated} setIsUpdated={setIsUpdated} />} />
       </Routes>
     </div>
   );
