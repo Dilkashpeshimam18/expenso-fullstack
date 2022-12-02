@@ -23,7 +23,6 @@ const UpdateProfile = ({ setIsUpdated }) => {
 
                     }
                 })
-                console.log(response)
                 setName(response.data.users[0].displayName)
                 setPhotoUrl(response.data.users[0].photoUrl)
             }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Logout from '../Logout/Logout'
 import ProfileModal from '../ProfileModal/ProfileModal'
 import VerifyEmail from '../VerifyEmail/VerifyEmail'
 const Home = ({ open, setOpen, isUpdated }) => {
@@ -12,6 +13,7 @@ const Home = ({ open, setOpen, isUpdated }) => {
         <div><h1>Welcome to Expense Tracker</h1>
             {open == true && <ProfileModal open={open} setOpen={setOpen} />}
             <VerifyEmail />
+            <Logout />
 
         </div>
     )
