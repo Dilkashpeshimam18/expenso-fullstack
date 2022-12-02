@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import './SignUp.css'
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-
+    const navigate = useNavigate()
     const isPasswordConfirmed = (password, confimPassword) => {
         if (password && confimPassword && password === confimPassword) return true;
         return false;
@@ -26,7 +27,7 @@ const SignUp = () => {
                     returnSecureToken: true
 
                 }
-                const response = axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
+                const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
                     headers: {
                         'Content-Type': 'application/json',
 
@@ -37,6 +38,7 @@ const SignUp = () => {
                     setEmail('')
                     setPassword('')
                     setConfirmPassword('')
+                    navigate('/login')
                 })
                 console.log(response)
             }
