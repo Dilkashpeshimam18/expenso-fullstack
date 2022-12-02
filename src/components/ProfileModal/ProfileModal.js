@@ -16,10 +16,13 @@ export default function AlertDialogSlide({ open, setOpen }) {
     const navigate = useNavigate()
 
     const handleClose = () => {
-        navigate('/update-profile')
         setOpen(false);
     };
 
+    const handleComplete = () => {
+        navigate('/update-profile')
+        setOpen(false)
+    }
     return (
         <div>
             <Dialog
@@ -36,7 +39,7 @@ export default function AlertDialogSlide({ open, setOpen }) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>CANCEL</Button>
-                    <Button onClick={handleClose}>COMPLETE NOW</Button>
+                    <Button onClick={handleComplete}>COMPLETE NOW</Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -20,27 +20,29 @@ const SignUp = () => {
             if (!isPasswordConfirmed(password, confirmPassword)) {
                 alert('Password & confirm password should be same!')
             } else {
-
-                const data = {
-                    email: email,
-                    password: password,
-                    returnSecureToken: true
-
-                }
-                const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
+                if (email != '' && password != '' && confirmPassword != '') {
+                    const data = {
+                        email: email,
+                        password: password,
+                        returnSecureToken: true
 
                     }
-                }).then(() => {
-                    console.log(' User has successfully signed up')
-                    alert('Sign up successful!')
-                    setEmail('')
-                    setPassword('')
-                    setConfirmPassword('')
-                    navigate('/login')
-                })
-                console.log(response)
+                    const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
+                        headers: {
+                            'Content-Type': 'application/json',
+
+                        }
+                    }).then(() => {
+                        console.log(' User has successfully signed up')
+                        alert('Sign up successful!')
+                        setEmail('')
+                        setPassword('')
+                        setConfirmPassword('')
+                        navigate('/login')
+                    })
+                    console.log(response)
+                }
+
             }
 
 
