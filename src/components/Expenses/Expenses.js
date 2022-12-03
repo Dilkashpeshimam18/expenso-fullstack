@@ -7,6 +7,8 @@ const Expenses = () => {
     const [expenses, setExpenses] = useState([])
     const [amount, setAmount] = useState(0)
     const [desc, setDesc] = useState('')
+    const [isEdit, setIsEdit] = useState(false)
+    const [expId, setExpId] = useState(null)
     const getInitialState = () => {
         const value = "Food";
         return value;
@@ -41,26 +43,59 @@ const Expenses = () => {
     const handleExpenseForm = async (e) => {
         e.preventDefault()
         try {
-            const data = {
-                amount: amount,
-                description: desc,
-                category: category
+            if (isEdit == true) {
+                const data = {
+                    amount: amount,
+                    description: desc,
+                    category: category
+                }
+                const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${expId}.json`, data)
+                setAmount(0)
+                setDesc('')
+                setCategory(getInitialState)
+                getAllExpenses()
+            } else {
+                const data = {
+                    amount: amount,
+                    description: desc,
+                    category: category
+                }
+
+                const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', data)
+                setAmount(0)
+                setDesc('')
+                setCategory(getInitialState)
+                getAllExpenses()
             }
 
-            const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', data)
-            setAmount(0)
-            setDesc('')
-            setCategory(getInitialState)
-            getAllExpenses()
         } catch (err) {
             console.log(err)
             alert(err)
         }
     }
 
+    const handleEdit = (id) => {
+        let editExp = expenses.filter((expense) => {
+            return expense.id == id
+        })
+        let ID = id
+        setExpId(ID)
+        setIsEdit(true)
+        setAmount(editExp[0].amount)
+        setCategory(editExp[0].category)
+        setDesc(editExp[0].description)
+    }
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${id}.json`)
+            getAllExpenses()
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
     useEffect(() => {
         getAllExpenses()
-        console.log(expenses)
     }, [])
     return (
         <div className='expenses'>
@@ -97,7 +132,7 @@ const Expenses = () => {
             </form>
 
             <div>
-                <AllExpense expenses={expenses} />
+                <AllExpense expenses={expenses} getAllExpenses={getAllExpenses} handleEdit={handleEdit} handleDelete={handleDelete} />
             </div>
         </div>
     )
