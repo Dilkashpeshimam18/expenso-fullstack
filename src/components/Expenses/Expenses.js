@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AllExpense from './AllExpense/AllExpense'
-
+import axios from 'axios'
 
 
 const Expenses = () => {
@@ -16,23 +16,52 @@ const Expenses = () => {
         setCategory(e.target.value);
     };
 
-    const handleExpenseForm = (e) => {
-        e.preventDefault()
-        const data = {
-            amount: amount,
-            desc: desc,
-            category: category
+    const getAllExpenses = async () => {
+        try {
+            const response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
+            if (response.status == 200) {
+                let data = []
+                let res = response.data
+                for (let key in res) {
+                    data.push({
+                        id: key,
+                        description: res[key].description,
+                        amount: res[key].amount,
+                        category: res[key].category
+                    })
+                }
+                setExpenses(data)
+            }
+
+        } catch (err) {
+            console.log(err)
+            alert(err)
         }
-        setExpenses((prevExp) => {
-            let allExpense = [...prevExp]
-            allExpense.push(data)
-            return allExpense
-        })
-        setAmount(0)
-        setDesc('')
-        setCategory(getInitialState)
-        console.log(expenses)
     }
+    const handleExpenseForm = async (e) => {
+        e.preventDefault()
+        try {
+            const data = {
+                amount: amount,
+                description: desc,
+                category: category
+            }
+
+            const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', data)
+            setAmount(0)
+            setDesc('')
+            setCategory(getInitialState)
+            getAllExpenses()
+        } catch (err) {
+            console.log(err)
+            alert(err)
+        }
+    }
+
+    useEffect(() => {
+        getAllExpenses()
+        console.log(expenses)
+    }, [])
     return (
         <div className='expenses'>
             <form onSubmit={handleExpenseForm} className="form-container">
