@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-
+import { useSelector } from 'react-redux'
 const VerifyEmail = () => {
-    const [userToken, setUserToken] = useState(() => {
-        return localStorage.getItem('token') || null
-    })
+    const userToken = useSelector(state => state.auth.userToken)
+
+    // const [userToken, setUserToken] = useState(() => {
+    //     return localStorage.getItem('token') || tokenId
+    // })
     const handleEmailVerify = async (e) => {
         e.preventDefault()
         try {

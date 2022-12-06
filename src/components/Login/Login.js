@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-
+import { authActions } from '../../store/slice/auth-slice';
+import { useDispatch } from 'react-redux';
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -25,6 +27,7 @@ const Login = () => {
             if (response.data.idToken) {
                 let token = response.data.idToken
                 let email = response.data.email
+                dispatch(authActions.login(token))
                 localStorage.setItem('token', token)
                 localStorage.setItem('email', email)
                 alert('Login Successful!')

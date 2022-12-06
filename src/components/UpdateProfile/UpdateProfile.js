@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 const UpdateProfile = ({ setIsUpdated }) => {
-    const [userToken, setUserToken] = useState(() => {
-        return localStorage.getItem('token') || null
-    })
+    const userToken = useSelector(state => state.auth.userToken)
+
+    // const [userToken, setUserToken] = useState(() => {
+    //     return localStorage.getItem('token') || tokenId
+    // })
     const [name, setName] = useState('')
     const [photoUrl, setPhotoUrl] = useState('')
     const navigate = useNavigate()

@@ -3,10 +3,15 @@ import Expenses from '../Expenses/Expenses'
 import Logout from '../Logout/Logout'
 import ProfileModal from '../ProfileModal/ProfileModal'
 import VerifyEmail from '../VerifyEmail/VerifyEmail'
+import { useSelector } from 'react-redux'
 const Home = ({ open, setOpen, isUpdated }) => {
-    const [userToken, setUserToken] = useState(() => {
-        return localStorage.getItem('token') || null
-    })
+    const userToken = useSelector(state => state.auth.userToken)
+
+    // const [userToken, setUserToken] = useState(() => {
+    //     return localStorage.getItem('token') || tokenId
+    // })
+
+
     useEffect(() => {
         if (isUpdated == false) {
             setOpen(true)
