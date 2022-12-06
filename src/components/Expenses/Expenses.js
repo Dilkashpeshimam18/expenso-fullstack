@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import AllExpense from './AllExpense/AllExpense'
 import axios from 'axios'
-
+import { expenseActions } from '../../store/slice/expense-slice'
+import { useDispatch } from 'react-redux'
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([])
@@ -9,6 +10,7 @@ const Expenses = () => {
     const [desc, setDesc] = useState('')
     const [isEdit, setIsEdit] = useState(false)
     const [expId, setExpId] = useState(null)
+    const dispatch = useDispatch()
     const getInitialState = () => {
         const value = "Food";
         return value;
@@ -32,6 +34,7 @@ const Expenses = () => {
                         category: res[key].category
                     })
                 }
+                dispatch(expenseActions.addExpense(data))
                 setExpenses(data)
             }
 
@@ -49,6 +52,8 @@ const Expenses = () => {
                     description: desc,
                     category: category
                 }
+                dispatch(expenseActions.addAmount(amount))
+                dispatch(expenseActions.addDesc(desc))
                 const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${expId}.json`, data)
                 setAmount(0)
                 setDesc('')
@@ -60,7 +65,8 @@ const Expenses = () => {
                     description: desc,
                     category: category
                 }
-
+                dispatch(expenseActions.addAmount(amount))
+                dispatch(expenseActions.addDesc(desc))
                 const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', data)
                 setAmount(0)
                 setDesc('')

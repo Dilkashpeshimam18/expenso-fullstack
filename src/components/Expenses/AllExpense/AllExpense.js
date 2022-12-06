@@ -1,7 +1,10 @@
 import React from 'react'
 import SingleExpense from '../SingleExpense/SingleExpense'
+import { useSelector } from 'react-redux'
 
 const AllExpense = ({ expenses, getAllExpenses, handleEdit, handleDelete }) => {
+    // const expenses = useSelector(state => state.expenses.expenses[0])
+    console.log(expenses)
     return (
         <div>
             {expenses.map((expense, index) => {
