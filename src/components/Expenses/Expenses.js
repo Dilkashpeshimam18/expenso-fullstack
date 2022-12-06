@@ -3,6 +3,8 @@ import AllExpense from './AllExpense/AllExpense'
 import axios from 'axios'
 import { expenseActions } from '../../store/slice/expense-slice'
 import { useDispatch } from 'react-redux'
+import './Expense.css'
+import { CSVLink } from "react-csv";
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([])
@@ -23,7 +25,6 @@ const Expenses = () => {
     const getAllExpenses = async () => {
         try {
             const response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
-            console.log(response)
             if (response.status == 200) {
                 let data = []
                 let res = response.data
@@ -35,7 +36,6 @@ const Expenses = () => {
                         category: res[key].category
                     })
                 }
-                console.log(data)
 
 
                 setExpenses(data)
@@ -114,6 +114,28 @@ const Expenses = () => {
     useEffect(() => {
         getAllExpenses()
     }, [])
+    let headers = [
+        {
+            label: 'Id', key: 'id'
+        },
+        {
+            label: 'Amount', key: 'amount'
+        },
+        {
+            label: 'Description', key: 'description'
+
+        },
+        {
+            label: 'Category', key: 'category'
+
+        },
+
+    ]
+    const csvLink = {
+        filename: 'expenses.csv',
+        headers: headers,
+        data: expenses
+    }
     return (
         <div className='expenses'>
             <form onSubmit={handleExpenseForm} className="form-container">
@@ -150,6 +172,8 @@ const Expenses = () => {
 
             <div>
                 <AllExpense expenses={expenses} getAllExpenses={getAllExpenses} handleEdit={handleEdit} handleDelete={handleDelete} />
+                <CSVLink {...csvLink}>Download Expense Csv</CSVLink>;
+
             </div>
         </div>
     )
