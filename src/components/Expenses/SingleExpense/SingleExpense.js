@@ -7,6 +7,7 @@ const SingleExpense = ({ id, amount, desc, category, getAllExpenses, handleEdit,
             <div>
                 <p>{desc}-{amount}-{category}</p>
                 <button onClick={() => handleEdit(id)}>Edit</button><button onClick={() => handleDelete(id)}>Delete</button>
+                {amount > 1000 && <button>Premium</button>}
             </div>
         </div>
     )

@@ -23,6 +23,7 @@ const Expenses = () => {
     const getAllExpenses = async () => {
         try {
             const response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
+            console.log(response)
             if (response.status == 200) {
                 let data = []
                 let res = response.data
@@ -34,8 +35,15 @@ const Expenses = () => {
                         category: res[key].category
                     })
                 }
-                dispatch(expenseActions.addExpense(data))
+                console.log(data)
+
+
                 setExpenses(data)
+                localStorage.setItem('allExpense', JSON.stringify(data))
+                dispatch(expenseActions.addExpense(expenses))
+
+
+
             }
 
         } catch (err) {
@@ -54,6 +62,8 @@ const Expenses = () => {
                 }
                 dispatch(expenseActions.addAmount(amount))
                 dispatch(expenseActions.addDesc(desc))
+                dispatch(expenseActions.addCategory(category))
+
                 const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${expId}.json`, data)
                 setAmount(0)
                 setDesc('')
@@ -67,6 +77,7 @@ const Expenses = () => {
                 }
                 dispatch(expenseActions.addAmount(amount))
                 dispatch(expenseActions.addDesc(desc))
+                dispatch(expenseActions.addCategory(category))
                 const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', data)
                 setAmount(0)
                 setDesc('')

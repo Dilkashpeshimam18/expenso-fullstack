@@ -1,15 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-const getInitialCategory = () => {
-    const value = "Food";
-    return value;
-};
+
 const initialExpenseState = {
     expenses: [],
     amount: 0,
     description: '',
-    category: getInitialCategory
+    category: 'Food'
 
 }
 
@@ -20,12 +17,15 @@ const ExpenseSlice = createSlice({
         addExpense(state, action) {
             state.expenses.push(action.payload)
         },
-        // addAmount(state, action) {
-        //     state.amount = action.payload
-        // },
-        // addDesc(state, action) {
-        //     state.description = action.payload
-        // }
+        addAmount(state, action) {
+            state.amount = action.payload
+        },
+        addDesc(state, action) {
+            state.description = action.payload
+        },
+        addCategory(state, action) {
+            state.category = action.payload
+        }
     }
 })
 
