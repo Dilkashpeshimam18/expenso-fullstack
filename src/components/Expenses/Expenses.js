@@ -7,14 +7,15 @@ import './Expense.css'
 import { CSVLink } from "react-csv";
 import { postExpenseData } from '../../store/slice/expense-slice'
 import { getExpenseData } from '../../store/slice/expense-slice'
+import { updateExpenseData } from '../../store/slice/expense-slice'
 let isInitial = true
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([])
     const [amount, setAmount] = useState(0)
     const [desc, setDesc] = useState('')
-    const [isEdit, setIsEdit] = useState(false)
-    const [expId, setExpId] = useState(null)
+    const isEdit = useSelector(state => state.expenses.isEdit)
+    const expId = useSelector(state => state.expenses.expenseId)
     const dispatch = useDispatch()
     const getInitialState = () => {
         const value = "Food";
@@ -26,105 +27,59 @@ const Expenses = () => {
         setCategory(e.target.value);
     };
 
-    // const getAllExpenses = async () => {
-    //     try {
-    //         const response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
-    //         if (response.status == 200) {
-    //             let data = []
-    //             let res = response.data
-    //             for (let key in res) {
-    //                 data.push({
-    //                     id: key,
-    //                     description: res[key].description,
-    //                     amount: res[key].amount,
-    //                     category: res[key].category
-    //                 })
-    //             }
 
 
-    //             setExpenses(data)
-    //             localStorage.setItem('allExpense', JSON.stringify(data))
-    //             dispatch(expenseActions.addExpense(data))
+    const handleEdit = (id) => {
+        let editExp = expense.filter((expense) => {
+            return expense.id == id
+        })
+        let ID = id
+        dispatch(expenseActions.editExpense(ID))
+        setAmount(editExp[0].amount)
+        setCategory(editExp[0].category)
+        setDesc(editExp[0].description)
 
+    }
 
-
-    //         }
-
-    //     } catch (err) {
-    //         console.log(err)
-    //         alert(err)
-    //     }
-    // }
-    // const handleAddExpenseForm = async (e) => {
-    //     e.preventDefault()
-    //     try {
-    //         if (isEdit == true) {
-    //             const data = {
-    //                 amount: amount,
-    //                 description: desc,
-    //                 category: category
-    //             }
-
-    //             const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${expId}.json`, data)
-    //             setAmount(0)
-    //             setDesc('')
-    //             setCategory(getInitialState)
-    //             getAllExpenses()
-    //         } else {
-    //             const data = {
-    //                 amount: amount,
-    //                 description: desc,
-    //                 category: category
-    //             }
-
-    //             const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', data)
-    //             setAmount(0)
-    //             setDesc('')
-    //             setCategory(getInitialState)
-    //             getAllExpenses()
-
-    //         }
-
-    //     } catch (err) {
-    //         console.log(err)
-    //         alert(err)
-    //     }
-    // }
-
-    // const handleEdit = (id) => {
-    //     let editExp = expenses.filter((expense) => {
-    //         return expense.id == id
-    //     })
-    //     let ID = id
-    //     setExpId(ID)
-    //     setIsEdit(true)
-    //     setAmount(editExp[0].amount)
-    //     setCategory(editExp[0].category)
-    //     setDesc(editExp[0].description)
-    // }
-    // const handleDelete = async (id) => {
-    //     try {
-    //         const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${id}.json`)
-    //         getAllExpenses()
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-
-    // }
 
     const handleAddExpenseForm = (e) => {
         e.preventDefault();
-        const data = {
-            amount: amount,
-            description: desc,
-            category: category
-        }
-        dispatch(expenseActions.addExpense(data))
-        dispatch(postExpenseData(data))
 
-        setAmount(0)
-        setDesc('')
-        setCategory(getInitialState)
+        if (isEdit == true) {
+            const data = {
+                amount: amount,
+                description: desc,
+                category: category
+            }
+            let editexp = {
+                id: expId,
+                expense: data
+            }
+            dispatch(updateExpenseData(editexp))
+
+
+            setAmount(0)
+            setDesc('')
+            setCategory(getInitialState)
+
+            dispatch(expenseActions.isNotEditExpense())
+
+
+        } else {
+            const data = {
+                amount: amount,
+                description: desc,
+                category: category
+            }
+            dispatch(postExpenseData(data))
+
+            setAmount(0)
+            setDesc('')
+            setCategory(getInitialState)
+
+        }
+
+
     }
     let headers = [
         {
@@ -190,7 +145,7 @@ const Expenses = () => {
             </form>
 
             <div>
-                <AllExpense expenses={expenses} />
+                <AllExpense handleEdit={handleEdit} />
                 <CSVLink {...csvLink}>Download Expense Csv</CSVLink>;
 
             </div>

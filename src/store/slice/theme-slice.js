@@ -10,7 +10,6 @@ const ThemeSlice = createSlice({
     initialState: initialThemeState,
     reducers: {
         activatePremium(state) {
-            console.log(state.isActivated)
             state.theme = 'dark'
             state.isActivated = true
         },

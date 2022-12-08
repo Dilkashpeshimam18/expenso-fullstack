@@ -5,6 +5,7 @@ import axios from "axios";
 const initialExpenseState = {
     expenses: [],
     isEdit: false,
+    expenseId: null
 
 
 }
@@ -27,24 +28,54 @@ const ExpenseSlice = createSlice({
                 return exp.id != action.payload
             })
             state.expenses = filterExp
+        },
+        editExpense(state, action) {
+            state.isEdit = true
+            state.expenseId = action.payload
+        },
+        isNotEditExpense(state) {
+            state.isEdit = false
+            state.expenseId = null
         }
 
     }
 })
-
-export const postExpenseData = (expense) => {
+export const updateExpenseData = (data) => {
     return async () => {
+
+        const putRequest = async () => {
+            const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${data.id}.json`, data.expense)
+        }
+
+        try {
+            await putRequest().then(() => {
+                getExpenseData()
+                alert('Updated Successfully')
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+export const postExpenseData = (expense) => {
+    return async (state) => {
+
         const postRequest = async () => {
             const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', expense)
 
         }
 
         try {
-            await postRequest()
+            await postRequest().then(() => {
+                getExpenseData()
+            })
 
         } catch (err) {
             console.log(err)
         }
+
+
 
     }
 
@@ -80,14 +111,14 @@ export const getExpenseData = () => {
 }
 
 export const deleteExpenseData = (id) => {
-    return async (dispatch) => {
+    return async () => {
         const deleteRequest = async () => {
             const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${id}.json`)
         }
         try {
             await deleteRequest().then(() => {
                 getExpenseData()
-                console.log('Deleted successfully')
+                alert('Deleted successfully')
 
             })
         } catch (err) {
