@@ -22,6 +22,12 @@ const ExpenseSlice = createSlice({
             }
 
         },
+        deleteExpense(state, action) {
+            let filterExp = state.expenses.filter((exp) => {
+                return exp.id != action.payload
+            })
+            state.expenses = filterExp
+        }
 
     }
 })
@@ -70,6 +76,23 @@ export const getExpenseData = () => {
             console.log(err)
         }
 
+    }
+}
+
+export const deleteExpenseData = (id) => {
+    return async (dispatch) => {
+        const deleteRequest = async () => {
+            const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${id}.json`)
+        }
+        try {
+            await deleteRequest().then(() => {
+                getExpenseData()
+                console.log('Deleted successfully')
+
+            })
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 export const expenseActions = ExpenseSlice.actions
