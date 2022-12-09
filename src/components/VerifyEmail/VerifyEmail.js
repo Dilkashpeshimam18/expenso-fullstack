@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import './VerifyEmail.css'
 const VerifyEmail = () => {
     const userToken = useSelector(state => state.auth.userToken)
 
@@ -32,9 +33,9 @@ const VerifyEmail = () => {
         }
     }
     return (
-        <div>
+        <div className='verifyEmail'>
 
-            <button onClick={handleEmailVerify}>Verify Email</button>
+            <p onClick={handleEmailVerify}>Verify Email</p>
         </div>
     )
 }
