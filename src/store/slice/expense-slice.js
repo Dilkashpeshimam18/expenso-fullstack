@@ -5,7 +5,7 @@ import axios from "axios";
 const initialExpenseState = {
     expenses: [],
     isEdit: false,
-    expenseId: null
+
 
 
 }
@@ -126,5 +126,6 @@ export const deleteExpenseData = (id) => {
         }
     }
 }
+
 export const expenseActions = ExpenseSlice.actions
 export default ExpenseSlice.reducer
