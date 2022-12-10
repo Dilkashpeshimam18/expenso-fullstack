@@ -1,9 +1,10 @@
 import React from 'react'
 import './HomeLeft.css'
+import HomeOption from './HomeOption/HomeOption'
 const HomeLeft = () => {
     return (
         <div className='homeLeft'>
-            HomeLeft</div>
+            <HomeOption /></div>
     )
 }
 
