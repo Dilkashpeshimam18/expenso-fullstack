@@ -1,0 +1,19 @@
+.homeMain {
+  flex: 0.5;
+}
+.home__subContainer {
+  display: flex;
+  margin-top: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.home__graphContainer {
+  margin-left: 28px;
+  margin-top: 10px;
+}
+.home__catContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  text-align: center;
+}
