@@ -5,3 +5,12 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+.allExpenses::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.allExpenses {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
