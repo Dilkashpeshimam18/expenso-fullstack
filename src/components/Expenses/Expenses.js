@@ -74,12 +74,7 @@ const Expenses = () => {
         <div className='expenses'>
             <div>
                 <AllExpense handleEdit={handleEdit} />
-
                 <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>;
-
-
-
-
             </div>
         </div>
     )

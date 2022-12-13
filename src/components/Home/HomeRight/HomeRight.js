@@ -5,8 +5,17 @@ import Expenses from '../../Expenses/Expenses';
 import Divider from '@mui/material/Divider';
 import WalletIcon from '../../assets/wallet.png'
 import HomeRightBottom from './HomeRightBottom/HomeRightBottom';
+import ExpenseModal from '../../Expenses/ExpenseModal/ExpenseModal';
 
 const HomeRight = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
         <div className='homeRight'>
             <div className='homeRight__container'>
@@ -20,7 +29,8 @@ const HomeRight = () => {
                 </div>
                 <Divider />
                 <div className='homeRight__container3'>
-                    <HomeRightBottom />
+                    <HomeRightBottom handleClickOpen={handleClickOpen} />
+                    <ExpenseModal open={open} handleClose={handleClose} />
                 </div>
             </div>
         </div>

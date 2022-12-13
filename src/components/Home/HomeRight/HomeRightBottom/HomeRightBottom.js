@@ -1,7 +1,7 @@
 import React from 'react'
 import './HomeRightBottom.css'
 import WalletIcon from '../../../assets/wallet.png'
-const HomeRightBottom = () => {
+const HomeRightBottom = ({ handleClickOpen }) => {
     return (
         <div className='homeRightBottom'>
             <div className='homeRightBottom__container1' >
@@ -10,7 +10,7 @@ const HomeRightBottom = () => {
 
             </div>
             <div className='homeRightBottom__container2'>
-                <button className='homeRightBottom__button'>ADD NEW</button>
+                <button onClick={handleClickOpen} className='homeRightBottom__button'>ADD NEW</button>
 
             </div>
 

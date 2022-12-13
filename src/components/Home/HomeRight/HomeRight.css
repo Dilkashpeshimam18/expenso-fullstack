@@ -1,5 +1,6 @@
 .homeRight {
   flex: 0.3;
+  justify-content: space-between;
   background-color: white;
   margin-right: 30px;
   height: 85vh;
@@ -15,5 +16,8 @@
   color: rgb(127, 127, 127);
 }
 .homeRight__container2 {
-  margin-bottom: 160px;
+  margin-bottom: 110px;
+}
+.homeRight__container3 {
+  height: 200px;
 }

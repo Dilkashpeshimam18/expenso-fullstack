@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ExpenseModal.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../../../store/slice/expense-slice'
 import { updateExpenseData, postExpenseData } from '../../../store/slice/expense-slice'
-const ExpenseModal = () => {
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+const ExpenseModal = ({ open, handleClose }) => {
     const [amount, setAmount] = useState(0)
     const [desc, setDesc] = useState('')
     const isEdit = useSelector(state => state.expenses.isEdit)
@@ -14,6 +25,7 @@ const ExpenseModal = () => {
         return value;
     };
     const [category, setCategory] = useState(getInitialState)
+
     const expense = useSelector(state => state.expenses.expenses)
     const handleCategory = (e) => {
         setCategory(e.target.value);
@@ -62,7 +74,56 @@ const ExpenseModal = () => {
     }
     return (
         <div>
-            <form onSubmit={handleAddExpenseForm} className="form-container">
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Add Expense</DialogTitle>
+                <DialogContent>
+
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Name"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        value={desc}
+                        onChange={(e) => setDesc(e.target.value)}
+                    />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="amount"
+                        label="Amount"
+                        type="number"
+                        fullWidth
+                        variant="standard"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
+                    <FormControl style={{ marginTop: '22px' }} fullWidth>
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={category}
+                            label="Category"
+                            onChange={handleCategory}
+                        >
+                            <MenuItem value="Food">Food</MenuItem>
+                            <MenuItem value="Entertainment">Entertainment</MenuItem>
+                            <MenuItem value="Daily Need">Daily Need</MenuItem>
+                            <MenuItem value="Clothing">Clothing</MenuItem>
+                            <MenuItem value="Accessories">Accessories</MenuItem>
+
+                        </Select>
+                    </FormControl>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>CANCEL</Button>
+                    <Button onClick={handleAddExpenseForm}>ADD</Button>
+                </DialogActions>
+            </Dialog>
+            {/* <form onSubmit={handleAddExpenseForm} className="form-container">
                 <div className="allInput">
                     <div className="form-input">
                         <h5>ADD EXPENSE</h5>
@@ -92,7 +153,7 @@ const ExpenseModal = () => {
 
                 </div>
 
-            </form>
+            </form> */}
         </div>
     )
 }
