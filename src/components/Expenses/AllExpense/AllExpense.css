@@ -1,0 +1,7 @@
+.allExpenses {
+  max-height: 450px;
+  height: max-content;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
