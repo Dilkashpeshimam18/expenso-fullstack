@@ -1,9 +1,9 @@
 import React from 'react'
-import './HomeChart.css'
-const HomeChart = () => {
+import './HomePieChart.css'
+const HomePieChart = () => {
     return (
         <div className='homeChart'>HomeChart</div>
     )
 }
 
-export default HomeChart
+export default HomePieChart
