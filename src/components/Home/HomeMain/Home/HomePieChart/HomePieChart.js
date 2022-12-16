@@ -1,8 +1,10 @@
 import React from 'react'
 import './HomePieChart.css'
-const HomePieChart = () => {
+import { Doughnut, Pie } from 'react-chartjs-2'
+import { Chart as ChartJS } from 'chart.js/auto'
+const HomePieChart = ({ chartData }) => {
     return (
-        <div className='homeChart'>HomeChart</div>
+        <div className='homeChart'><Doughnut data={chartData} /></div>
     )
 }
 

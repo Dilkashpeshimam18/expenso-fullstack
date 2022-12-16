@@ -1,5 +1,10 @@
 .homeChart {
-  height: 290px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
   width: 370px;
   background-color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

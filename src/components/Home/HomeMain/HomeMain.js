@@ -33,7 +33,12 @@ const HomeMain = () => {
             barThickness: 45,
             label: 'Total Expense By Category',
             data: allValues,
-            backgroundColor: ['rgb(1, 140, 140)', '#3bc4d4',]
+            // backgroundColor: ['rgb(1, 140, 140)', '#3bc4d4',]
+            backgroundColor: [
+                // 'rgb(255, 99, 132)',
+                'rgb(255, 205, 86)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 99, 132)'],
         }]
     }
     for (let exp of allExpenses) {
@@ -55,7 +60,27 @@ const HomeMain = () => {
             barThickness: 40,
             label: 'All Expense',
             data: allDescValue,
-            backgroundColor: ['rgb(1, 140, 140)', '#3bc4d4',]
+            backgroundColor: ['rgb(1, 140, 140)', '#3bc4d4',],
+            animations: {
+                y: {
+                    duration: 2000,
+                    delay: 500
+                }
+            },
+            tension: 0.5
+        }]
+    }
+    let pieData = {
+        labels: ['Income', 'Expense', 'Balance'],
+        datasets: [{
+            barThickness: 40,
+            label: 'Income vs Expense vs Balance',
+            data: [userIncome, totalExpense, remainingAmount],
+            backgroundColor: [
+                'rgb(1, 140, 140)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+            ],
         }]
     }
 
@@ -87,7 +112,7 @@ const HomeMain = () => {
                 <HomeLineGraph chartData={lineData} />
             </div>
             <div className='home__chartContainer'>
-                <HomePieChart />
+                <HomePieChart chartData={pieData} />
                 <HomeBar chartData={barData} />
             </div>
             <IncomeModal handleClose={handleClose} open={open} handleIncome={handleIncome} handleChange={handleChange} />
