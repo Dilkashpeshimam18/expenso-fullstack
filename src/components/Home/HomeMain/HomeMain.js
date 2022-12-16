@@ -18,6 +18,23 @@ const HomeMain = () => {
         return localStorage.getItem('userIncome')
     })
     const allExpenses = useSelector(state => state.expenses.expenses)
+    let map = new Map()
+    for (let exp of allExpenses) {
+        let category = exp.category
+        let amount = Number(exp.amount)
+        map.set(category, map.get(category) + amount || amount)
+    }
+    let allKeys = [...map.keys()]
+    let allValues = [...map.values()]
+    let data = {
+        labels: allKeys,
+        datasets: [{
+            barThickness: 40,
+            label: 'Total Expense By Category',
+            data: allValues
+        }]
+    }
+
     let totalExpense = allExpenses.reduce((curr, expense) => {
         return curr + Number(expense.amount)
     }, 0)
@@ -52,7 +69,7 @@ const HomeMain = () => {
             </div>
             <div className='home__chartContainer'>
                 <HomeChart />
-                <HomeBar />
+                <HomeBar chartData={data} />
             </div>
             <IncomeModal handleClose={handleClose} open={open} handleIncome={handleIncome} handleChange={handleChange} />
         </div>

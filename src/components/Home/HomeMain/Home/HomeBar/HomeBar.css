@@ -1,5 +1,8 @@
 .homeBar {
+  display: flex;
   height: 290px;
   width: 370px;
   background-color: white;
+  align-items: center;
+  padding-left: 5px;
 }
