@@ -5,6 +5,8 @@ import HomeSub from './Home/HomeSub/HomeSub'
 import IncomeModal from './Home/IncomeModal/IncomeModal'
 import { useSelector } from 'react-redux'
 import './HomeMain.css'
+import HomeChart from './Home/HomeChart/HomeChart'
+import HomeBar from './Home/HomeBar/HomeBar'
 
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
@@ -48,14 +50,9 @@ const HomeMain = () => {
             <div className='home__graphContainer'>
                 <HomeGraph />
             </div>
-            <div className='home__catContainer'>
-                <HomeCategory />
-                <HomeCategory />
-                <HomeCategory />
-                <HomeCategory />
-                <HomeCategory />
-
-
+            <div className='home__chartContainer'>
+                <HomeChart />
+                <HomeBar />
             </div>
             <IncomeModal handleClose={handleClose} open={open} handleIncome={handleIncome} handleChange={handleChange} />
         </div>
