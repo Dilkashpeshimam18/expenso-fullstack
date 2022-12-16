@@ -31,7 +31,8 @@ const HomeMain = () => {
         datasets: [{
             barThickness: 40,
             label: 'Total Expense By Category',
-            data: allValues
+            data: allValues,
+            backgroundColor: ['rgb(1, 140, 140)', '#3bc4d4']
         }]
     }
 
