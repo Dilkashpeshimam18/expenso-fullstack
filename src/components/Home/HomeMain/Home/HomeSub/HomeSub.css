@@ -7,3 +7,10 @@
   border: 1px solid lightgray;
   border-radius: 3px;
 }
+.homeSub__container1 {
+  display: flex;
+  justify-content: space-between;
+}
+.homeSub__container2 {
+  padding-left: 15px;
+}
