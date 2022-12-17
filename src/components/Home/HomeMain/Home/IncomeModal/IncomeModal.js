@@ -26,6 +26,9 @@ const IncomeModal = ({ handleClose, open, income, setIncome, handleIncome, handl
                         fullWidth
                         variant="standard"
                         onChange={handleChange}
+                        InputProps={{
+                            inputProps: { min: 0 }
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>

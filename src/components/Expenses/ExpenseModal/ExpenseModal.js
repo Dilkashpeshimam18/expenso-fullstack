@@ -96,6 +96,9 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
                         fullWidth
                         variant="standard"
                         value={amount}
+                        InputProps={{
+                            inputProps: { min: 0 }
+                        }}
                         onChange={(e) => setAmount(e.target.value)}
                     />
                     <FormControl style={{ marginTop: '22px' }} fullWidth>

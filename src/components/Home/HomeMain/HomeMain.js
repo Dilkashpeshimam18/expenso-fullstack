@@ -49,11 +49,10 @@ const HomeMain = () => {
     }
     let allDescKey = [...map2.keys()]
     let allDescValue = [...map2.values()]
-
-    let totalExpense = allExpenses.reduce((curr, expense) => {
-        return curr + Number(expense.amount)
-    }, 0)
-    let remainingAmount = income - totalExpense
+    let totalexp = localStorage.getItem('totalExpense')
+    let totalExpense = totalexp
+    let balance = localStorage.getItem('remainingBalance')
+    let remainingAmount = balance;
 
     let lineData = {
         labels: allDescKey,
@@ -87,16 +86,25 @@ const HomeMain = () => {
 
     const handleClickOpen = () => {
         setOpen(true);
+
     };
 
     const handleClose = () => {
         setOpen(false);
+        let Income = localStorage.getItem('userIncome')
+
+        setUserIncome(Income)
     };
     const handleIncome = () => {
-
+        totalExpense = allExpenses.reduce((curr, expense) => {
+            return curr + Number(expense.amount)
+        }, 0)
+        localStorage.setItem('totalExpense', totalExpense)
         localStorage.setItem('userIncome', income)
         let Income = localStorage.getItem('userIncome')
         setUserIncome(Income)
+        remainingAmount = income - totalExpense;
+        localStorage.setItem('remainingBalance', remainingAmount)
         handleClose()
     }
     const handleChange = (e) => {
