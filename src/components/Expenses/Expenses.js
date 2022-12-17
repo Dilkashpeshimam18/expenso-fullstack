@@ -6,39 +6,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import './Expense.css'
 import { CSVLink } from "react-csv";
 import { getExpenseData } from '../../store/slice/expense-slice'
+import { modalActions } from '../../store/slice/modal-slice'
 let isInitial = true
 
-const Expenses = () => {
+const Expenses = ({ handleEdit }) => {
     const [expenses, setExpenses] = useState([])
-    const [amount, setAmount] = useState(0)
-    const [desc, setDesc] = useState('')
     const isEdit = useSelector(state => state.expenses.isEdit)
     const expId = useSelector(state => state.expenses.expenseId)
     const dispatch = useDispatch()
-    const getInitialState = () => {
-        const value = "Food";
-        return value;
-    };
-    const [category, setCategory] = useState(getInitialState)
     const expense = useSelector(state => state.expenses.expenses)
-    const handleCategory = (e) => {
-        setCategory(e.target.value);
-    };
-
-
-
-    const handleEdit = (id) => {
-        let editExp = expense.filter((expense) => {
-            return expense.id == id
-        })
-        let ID = id
-        dispatch(expenseActions.editExpense(ID))
-        setAmount(editExp[0].amount)
-        setCategory(editExp[0].category)
-        setDesc(editExp[0].description)
-
-    }
-
 
 
     let headers = [

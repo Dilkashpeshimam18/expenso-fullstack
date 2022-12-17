@@ -69,6 +69,7 @@ export const postExpenseData = (expense) => {
         try {
             await postRequest().then(() => {
                 getExpenseData()
+                alert('Added Successfully')
             })
 
         } catch (err) {

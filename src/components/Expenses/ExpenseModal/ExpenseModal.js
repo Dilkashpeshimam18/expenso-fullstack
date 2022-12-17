@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import './ExpenseModal.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../../../store/slice/expense-slice'
@@ -15,26 +15,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const ExpenseModal = () => {
-    const [amount, setAmount] = useState(0)
-    const [desc, setDesc] = useState('')
+const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory, handleCategory, getInitialState }) => {
+
     const isEdit = useSelector(state => state.expenses.isEdit)
     const expId = useSelector(state => state.expenses.expenseId)
     const open = useSelector(state => state.modal.open)
     const dispatch = useDispatch()
-    const getInitialState = () => {
-        const value = "Food";
-        return value;
-    };
-    const [category, setCategory] = useState(getInitialState)
-
     const expense = useSelector(state => state.expenses.expenses)
-    const handleCategory = (e) => {
-        setCategory(e.target.value);
-    };
-
-
-
+    const isNew = useSelector(state => state.modal.addNew)
     const handleAddExpenseForm = (e) => {
         e.preventDefault();
 
@@ -74,6 +62,14 @@ const ExpenseModal = () => {
 
 
     }
+    useEffect(() => {
+        if (isNew == true) {
+            setAmount(0)
+            setDesc('')
+            setCategory(getInitialState)
+        }
+
+    }, [isNew])
     return (
         <div>
             <Dialog open={open} onClose={() => dispatch(modalActions.handleClose())}>

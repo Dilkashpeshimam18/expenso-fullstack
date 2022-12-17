@@ -1,21 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './HomeRight.css'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Expenses from '../../Expenses/Expenses';
 import Divider from '@mui/material/Divider';
-import WalletIcon from '../../assets/wallet.png'
 import HomeRightBottom from './HomeRightBottom/HomeRightBottom';
 import ExpenseModal from '../../Expenses/ExpenseModal/ExpenseModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { modalActions } from '../../../store/slice/modal-slice';
+import { expenseActions } from '../../../store/slice/expense-slice';
 
 const HomeRight = () => {
-    // const [open, setOpen] = React.useState(false);
-    // const handleClickOpen = () => {
-    //     setOpen(true);
-    // };
+    const [amount, setAmount] = useState(0)
+    const [desc, setDesc] = useState('')
+    const getInitialState = () => {
+        const value = "Food";
+        return value;
+    };
+    const [category, setCategory] = useState(getInitialState)
+    const dispatch = useDispatch()
+    const expense = useSelector(state => state.expenses.expenses)
 
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
+    const handleCategory = (e) => {
+        setCategory(e.target.value);
+    };
+
+    const handleEdit = (id) => {
+        dispatch(modalActions.handleisNotNew())
+        dispatch(modalActions.handleClickOpen())
+        let editExp = expense.filter((expense) => {
+            return expense.id == id
+        })
+        let ID = id
+        dispatch(expenseActions.editExpense(ID))
+        setAmount(editExp[0].amount)
+        setCategory(editExp[0].category)
+        setDesc(editExp[0].description)
+
+    }
     return (
         <div className='homeRight'>
             <div className='homeRight__container'>
@@ -24,13 +45,13 @@ const HomeRight = () => {
                 </div>
                 <Divider />
                 <div className='homeRight__container2'>
-                    <Expenses />
+                    <Expenses handleEdit={handleEdit} />
 
                 </div>
                 <Divider />
                 <div className='homeRight__container3'>
                     <HomeRightBottom />
-                    <ExpenseModal />
+                    <ExpenseModal amount={amount} desc={desc} category={category} setAmount={setAmount} setCategory={setCategory} setDesc={setDesc} handleCategory={handleCategory} getInitialState={getInitialState} />
                 </div>
             </div>
         </div>
