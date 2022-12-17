@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './ExpenseModal.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../../../store/slice/expense-slice'
+import { modalActions } from '../../../store/slice/modal-slice'
 import { updateExpenseData, postExpenseData } from '../../../store/slice/expense-slice'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -14,11 +15,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const ExpenseModal = ({ open, handleClose }) => {
+const ExpenseModal = () => {
     const [amount, setAmount] = useState(0)
     const [desc, setDesc] = useState('')
     const isEdit = useSelector(state => state.expenses.isEdit)
     const expId = useSelector(state => state.expenses.expenseId)
+    const open = useSelector(state => state.modal.open)
     const dispatch = useDispatch()
     const getInitialState = () => {
         const value = "Food";
@@ -74,7 +76,7 @@ const ExpenseModal = ({ open, handleClose }) => {
     }
     return (
         <div>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={() => dispatch(modalActions.handleClose())}>
                 <DialogTitle>Add Expense</DialogTitle>
                 <DialogContent>
 
@@ -119,7 +121,7 @@ const ExpenseModal = ({ open, handleClose }) => {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>CANCEL</Button>
+                    <Button onClick={() => dispatch(modalActions.handleClose())}>CANCEL</Button>
                     <Button onClick={handleAddExpenseForm}>ADD</Button>
                 </DialogActions>
             </Dialog>

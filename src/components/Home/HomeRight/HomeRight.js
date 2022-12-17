@@ -8,14 +8,14 @@ import HomeRightBottom from './HomeRightBottom/HomeRightBottom';
 import ExpenseModal from '../../Expenses/ExpenseModal/ExpenseModal';
 
 const HomeRight = () => {
-    const [open, setOpen] = React.useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    // const [open, setOpen] = React.useState(false);
+    // const handleClickOpen = () => {
+    //     setOpen(true);
+    // };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    // const handleClose = () => {
+    //     setOpen(false);
+    // };
     return (
         <div className='homeRight'>
             <div className='homeRight__container'>
@@ -29,8 +29,8 @@ const HomeRight = () => {
                 </div>
                 <Divider />
                 <div className='homeRight__container3'>
-                    <HomeRightBottom handleClickOpen={handleClickOpen} />
-                    <ExpenseModal open={open} handleClose={handleClose} />
+                    <HomeRightBottom />
+                    <ExpenseModal />
                 </div>
             </div>
         </div>

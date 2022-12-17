@@ -1,7 +1,10 @@
 import React from 'react'
 import './HomeRightBottom.css'
 import WalletIcon from '../../../assets/wallet.png'
+import { modalActions } from '../../../../store/slice/modal-slice'
+import { useDispatch } from 'react-redux'
 const HomeRightBottom = ({ handleClickOpen }) => {
+    const dispatch = useDispatch()
     return (
         <div className='homeRightBottom'>
             <div className='homeRightBottom__container1' >
@@ -10,7 +13,7 @@ const HomeRightBottom = ({ handleClickOpen }) => {
 
             </div>
             <div className='homeRightBottom__container2'>
-                <button onClick={handleClickOpen} className='homeRightBottom__button'>ADD NEW</button>
+                <button onClick={() => dispatch(modalActions.handleClickOpen())} className='homeRightBottom__button'>ADD NEW</button>
 
             </div>
 
