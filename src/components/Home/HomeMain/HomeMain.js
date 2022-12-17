@@ -14,6 +14,7 @@ const HomeMain = () => {
     const [income, setIncome] = useState(() => {
         return localStorage.getItem('userIncome') || 0
     })
+    const [inputIncome, setInputIncome] = useState(0)
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome')
     })
@@ -96,6 +97,7 @@ const HomeMain = () => {
         localStorage.setItem('userIncome', income)
         let Income = localStorage.getItem('userIncome')
         setUserIncome(Income)
+        handleClose()
     }
     const handleChange = (e) => {
         setIncome(e.target.value)
