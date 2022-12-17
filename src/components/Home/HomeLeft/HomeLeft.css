@@ -7,3 +7,14 @@
   border: 1px solid lightgray;
   border-radius: 3px;
 }
+.homeLeft__userProfile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 35px;
+}
+.userProfile__name {
+  display: flex;
+  text-align: left;
+  width: 170px;
+}
