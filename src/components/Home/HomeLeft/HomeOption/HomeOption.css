@@ -1,6 +1,6 @@
 .homeOption__list {
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   padding-bottom: 10px;
   display: flex;
   color: rgb(144, 144, 144);
@@ -15,4 +15,12 @@
 .homeOption__icon {
   padding-top: 15px;
   margin-right: 10px;
+}
+.homeOption__listSelected {
+  cursor: pointer;
+  font-size: 16px;
+  padding-bottom: 10px;
+  display: flex;
+  color: rgb(19, 19, 19);
+  font-weight: bold;
 }
