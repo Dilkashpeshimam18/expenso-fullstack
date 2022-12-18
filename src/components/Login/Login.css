@@ -22,12 +22,12 @@
 .form__container {
   padding-top: 10px;
 }
-.login__subLink {
+.subLink {
   font-size: 11px;
   text-decoration: 1px solid black;
   padding-left: 10px;
 }
-.login__subLinkContainer {
+.subLinkContainer {
   display: flex;
   justify-content: center;
   margin-top: 10px;

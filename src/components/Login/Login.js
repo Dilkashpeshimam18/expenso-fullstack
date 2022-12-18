@@ -72,7 +72,7 @@ const Login = () => {
     return (
         <div className='login'>
 
-            <h3>Login to your  account</h3>
+            <h3>Login</h3>
             <div className='form__container'>
                 <form onSubmit={handleLogin} className='signUp__form'>
                     <div className='formInput__container'>
@@ -81,7 +81,7 @@ const Login = () => {
                     </div>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Password" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <p className='login__subLink' onClick={handleForgetPassword} style={{ cursor: 'pointer' }}>Forgot password?</p>
+                        <p className='subLink' onClick={handleForgetPassword} style={{ cursor: 'pointer' }}>Forgot password?</p>
 
                     </div>
 
@@ -90,9 +90,9 @@ const Login = () => {
                     </div>
 
                 </form>
-                <div className='login__subLinkContainer'>
+                <div className='subLinkContainer'>
 
-                    <p className='login__subLink'>Don't have an account? <Link to='/sign-up'>Signup</Link></p>
+                    <p className='subLink'>Don't have an account? <Link to='/sign-up'>Signup</Link></p>
                 </div>
 
             </div>
