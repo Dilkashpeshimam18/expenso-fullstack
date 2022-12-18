@@ -8,12 +8,12 @@ const HomeSub = ({ title, remaining, amount, handleClickOpen }) => {
     return (
         <div className='homeSub'>
             <div className='homeSub__container1'>
-                <p style={{ marginLeft: '5px' }}>{title}</p>
+                <p className='homeSub__title' >{title}</p>
                 {!remaining && userToken && <img style={{ height: '20px', width: '20px', cursor: 'pointer', marginRight: '5px', marginTop: '12px' }} onClick={handleClickOpen} src={AddIcon} />}
 
             </div>
             <div className='homeSub__container2'>
-                <p style={{ fontWeight: 'bold', margin: '0', paddingTop: '5px', color: 'rgb(1, 140, 140)' }}>Rs {amount}</p>
+                <p className='homeSub__amount' >Rs {amount}</p>
             </div>
         </div>
     )

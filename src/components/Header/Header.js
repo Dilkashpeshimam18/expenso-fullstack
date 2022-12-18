@@ -20,7 +20,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
         <div className='header'>
             <div className='header__container'>
                 <div className='header__left'>
-                    <Link style={{ textDecoration: 'none', color: 'black' }} to='/'><h2>Expenso</h2></Link>
+                    <Link style={{ textDecoration: 'none', color: 'black' }} to='/'><h2 className='header__title'>Expenso</h2></Link>
                 </div>
                 <div className='header__right'>
                     <div className='header__rightSub'>

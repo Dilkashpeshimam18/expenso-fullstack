@@ -5,6 +5,13 @@
   display: flex;
   color: rgb(144, 144, 144);
 }
+#dark .homeOption__list {
+  color: white;
+}
+#dark .homeOption__listSelected {
+  color: #3bc4d4;
+  /* color: #0784b5; */
+}
 
 .homeOption {
   margin-top: 5px;

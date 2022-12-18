@@ -20,6 +20,7 @@ const HomeRight = () => {
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
 
+
     const handleCategory = (e) => {
         setCategory(e.target.value);
     };

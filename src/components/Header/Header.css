@@ -5,6 +5,13 @@
   justify-content: center;
   border-bottom: 1px solid lightgray;
 }
+#dark .header {
+  background-color: #2d383c;
+  border: none;
+}
+#dark .header__title {
+  color: white;
+}
 .header__container {
   display: flex;
   justify-content: space-between;

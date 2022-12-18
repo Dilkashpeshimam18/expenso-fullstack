@@ -14,7 +14,7 @@ const HomeRightBottom = () => {
     return (
         <div className='homeRightBottom'>
             <div className='homeRightBottom__container1' >
-                <img style={{ height: '30px', width: '30px', marginRight: '20px', paddingTop: '5px' }} src={WalletIcon} />
+                <img className='homeBottom__icon' src={WalletIcon} />
                 <p className='homeRightBottom__text'>Missing Transaction?</p>
 
             </div>

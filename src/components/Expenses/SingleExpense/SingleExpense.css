@@ -37,3 +37,16 @@
 .singleExpense__subCatContainer {
   padding-left: 20px;
 }
+#dark .singleExpense__subTitle {
+  color: white;
+}
+#dark .singleExpense__subCategory {
+  color: #3bc4d4;
+}
+
+/* #dark .singleExpense__subTitle {
+  color: #3bc4d4;
+}
+#dark .singleExpense__subCategory {
+  color: white;
+} */

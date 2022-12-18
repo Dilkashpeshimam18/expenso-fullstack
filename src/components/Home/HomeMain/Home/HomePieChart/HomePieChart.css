@@ -6,7 +6,7 @@
   width: 370px;
   background-color: white;
   padding-top: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 }
 .homeChartFull {
   display: flex;
@@ -17,4 +17,12 @@
   background-color: white;
   padding-top: 5px;
   padding-bottom: 10px;
+}
+#dark .homeChart {
+  background-color: #2d383c;
+  border: none;
+}
+#dark .homeChartFull {
+  background-color: #2d383c;
+  border: none;
 }
