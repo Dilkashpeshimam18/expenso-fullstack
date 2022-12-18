@@ -1,0 +1,34 @@
+.login {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+}
+.signUpButton__container {
+  padding-left: 10px;
+}
+.signUp-button {
+  background-color: #3bc4d4;
+  color: white;
+  border: none;
+  height: 30px;
+  width: 400px;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 0;
+}
+.form__container {
+  padding-top: 10px;
+}
+.login__subLink {
+  font-size: 11px;
+  text-decoration: 1px solid black;
+  padding-left: 10px;
+}
+.login__subLinkContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}

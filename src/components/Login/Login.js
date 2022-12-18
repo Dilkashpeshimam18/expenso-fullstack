@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import TextField from '@mui/material/TextField';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { authActions } from '../../store/slice/auth-slice';
 import { useDispatch } from 'react-redux';
+import './Login.css'
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -69,28 +70,33 @@ const Login = () => {
         }
     }
     return (
-        <div>
-            <div className='signUp__container'>
-                <h3>Login</h3>
-                <div className='form__container'>
-                    <form onSubmit={handleLogin} className='signUp__form'>
-                        <div className='formInput__container'>
-                            <TextField className='form-input' id="outlined-basic" label="Email" type='email' variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <div className='login'>
 
-                        </div>
-                        <div className='formInput__container'>
-                            <TextField className='form-input' id="outlined-basic" label="Password" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <h3>Login to your  account</h3>
+            <div className='form__container'>
+                <form onSubmit={handleLogin} className='signUp__form'>
+                    <div className='formInput__container'>
+                        <TextField className='form-input' id="outlined-basic" label="Email" type='email' variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-                        </div>
+                    </div>
+                    <div className='formInput__container'>
+                        <TextField className='form-input' id="outlined-basic" label="Password" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <p className='login__subLink' onClick={handleForgetPassword} style={{ cursor: 'pointer' }}>Forgot password?</p>
 
-                        <div className='signUpButton__container'>
-                            <button type='submit' className='signUp-button'>Login</button>
-                        </div>
+                    </div>
 
-                    </form>
-                    <p onClick={handleForgetPassword} style={{ cursor: 'pointer' }}>Forgot password?</p>
+                    <div className='signUpButton__container'>
+                        <button type='submit' className='signUp-button'>Login</button>
+                    </div>
+
+                </form>
+                <div className='login__subLinkContainer'>
+
+                    <p className='login__subLink'>Don't have an account? <Link to='/sign-up'>Signup</Link></p>
                 </div>
+
             </div>
+
         </div>
     )
 }
