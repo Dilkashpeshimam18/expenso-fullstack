@@ -17,6 +17,7 @@ const Expenses = ({ handleEdit }) => {
     const expense = useSelector(state => state.expenses.expenses)
 
 
+
     let headers = [
         {
             label: 'Id', key: 'id'

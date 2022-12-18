@@ -50,7 +50,7 @@ export const updateExpenseData = (data) => {
         try {
             await putRequest().then(() => {
                 getExpenseData()
-                alert('Updated Successfully')
+                alert('Updated Successfully!')
             })
 
         } catch (err) {
@@ -69,7 +69,7 @@ export const postExpenseData = (expense) => {
         try {
             await postRequest().then(() => {
                 getExpenseData()
-                alert('Added Successfully')
+                alert('Added Successfully!')
             })
 
         } catch (err) {
@@ -119,7 +119,7 @@ export const deleteExpenseData = (id) => {
         try {
             await deleteRequest().then(() => {
                 getExpenseData()
-                alert('Deleted successfully')
+                alert('Deleted successfully!')
 
             })
         } catch (err) {
