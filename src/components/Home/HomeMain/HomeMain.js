@@ -18,6 +18,7 @@ const HomeMain = () => {
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome')
     })
+    const isSelected = useSelector(state => state.dashboard.isSelected)
     const allExpenses = useSelector(state => state.expenses.expenses)
     let map = new Map()
     let map2 = new Map()
@@ -118,13 +119,36 @@ const HomeMain = () => {
                 <HomeSub title='Expense' remaining={remaining} amount={totalExpense} />
                 <HomeSub title='Remaining' remaining={remaining} amount={remainingAmount} />
             </div>
-            <div className='home__graphContainer'>
-                <HomeLineGraph chartData={lineData} />
-            </div>
-            <div className='home__chartContainer'>
-                <HomePieChart chartData={pieData} />
-                <HomeBar chartData={barData} />
-            </div>
+            {isSelected == 'Dashboard' &&
+                <>
+                    <div className='home__graphContainer'>
+                        <HomeLineGraph chartData={lineData} />
+                    </div>
+                    <div className='home__chartContainer'>
+                        <HomePieChart chartData={pieData} />
+                        <HomeBar chartData={barData} />
+                    </div>
+                </>
+            }
+            {
+                isSelected == 'Bar' &&
+                <div className='home__graphContainer'>
+                    <HomeBar chartData={barData} />
+                </div>
+            }
+            {
+                isSelected == 'Line' &&
+                <div className='home__graphContainer'>
+                    <HomeLineGraph chartData={lineData} />
+                </div>
+            }
+            {
+                isSelected == 'Pie' &&
+                <div className='home__graphContainer'>
+                    <HomePieChart chartData={pieData} />
+                </div>
+            }
+
             <IncomeModal handleClose={handleClose} open={open} handleIncome={handleIncome} handleChange={handleChange} />
         </div>
     )
