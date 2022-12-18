@@ -54,7 +54,7 @@ const SignUp = () => {
     }
     return (
         <div className='signUp'>
-            <h3>SignUp</h3>
+            <h3 className='auth__title'>SignUp</h3>
             <div className='form__container'>
                 <form onSubmit={handleSignUp} className='signUp__form'>
                     <div className='formInput__container'>
@@ -76,7 +76,7 @@ const SignUp = () => {
                 </form>
                 <div className='subLinkContainer'>
 
-                    <p className='subLink'>Already have an account? <Link to='/login'>Login</Link></p>
+                    <p className='subLink'>Already have an account? <Link className='subLink__title' to='/login'>Login</Link></p>
                 </div>
             </div>
         </div>

@@ -71,7 +71,7 @@ const UpdateProfile = ({ setIsUpdated }) => {
     }, [])
     return (
         <div className='updateProfile'>
-            <h2>Update Profile</h2>
+            <h2 className='auth__title'>Update Profile</h2>
             <div className='updateProfile__container'>
                 <form onSubmit={handleUpdateProfile}>
                     <div className='formInput__container'>

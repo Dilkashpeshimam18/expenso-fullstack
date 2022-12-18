@@ -32,3 +32,15 @@
   justify-content: center;
   margin-top: 10px;
 }
+#dark .auth__title {
+  color: white;
+}
+#dark .subLink {
+  color: white;
+}
+#dark .subLink__title {
+  color: #39ace7;
+}
+#dark .form-input label {
+  color: #0784b5;
+}

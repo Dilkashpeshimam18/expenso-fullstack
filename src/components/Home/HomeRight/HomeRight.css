@@ -12,6 +12,9 @@
   background-color: #2d383c;
   border: none;
 }
+#dark .homeRight__container1 {
+  color: white;
+}
 
 .homeRight__container1 {
   display: flex;

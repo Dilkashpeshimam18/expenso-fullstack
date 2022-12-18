@@ -2,7 +2,8 @@
   background-color: white;
 }
 #dark {
-  background-color: lightblue;
+  background-color: #192428;
+  height: 100vh;
 }
 .app {
   font-family: sans-serif;
