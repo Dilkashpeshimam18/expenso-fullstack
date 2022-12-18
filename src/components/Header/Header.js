@@ -28,17 +28,17 @@ const Header = ({ open, setOpen, isUpdated }) => {
 
                     </div>
                     {!userToken && <div className='header__rightSubLink'>
-                        <Link to='/login'><h3>Login</h3></Link>
+                        <Link to='/login'><button className='header__authBtn'>Login</button></Link>
 
                     </div>}
 
                     {userToken && <>
                         {open == true && <ProfileModal open={open} setOpen={setOpen} />}
-                        <div className='header__rightSubLink'>
+                        {/* <div className='header__rightSubLink'>
                             <VerifyEmail />
 
 
-                        </div>
+                        </div> */}
                         <div className='header__rightSubLink'>
                             <Logout />
 
