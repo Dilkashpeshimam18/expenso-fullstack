@@ -132,7 +132,7 @@ const HomeMain = () => {
             }
             {
                 isSelected == 'Bar' &&
-                <div className='home__graphContainer'>
+                <div className='home__barContainer'>
                     <HomeBar chartData={barData} />
                 </div>
             }

@@ -8,3 +8,13 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
+.homeChartFull {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 410px;
+  width: 97%;
+  background-color: white;
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
