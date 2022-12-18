@@ -1,0 +1,32 @@
+.updateProfile {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+}
+.updateProfile__container {
+  padding-top: 10px;
+}
+.formInput__container {
+  margin: 10px;
+  margin-bottom: 30px;
+}
+.form-input {
+  width: 400px;
+  padding: 10px;
+}
+.update-button {
+  background-color: #3bc4d4;
+  color: white;
+  border: none;
+  height: 30px;
+  width: 400px;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 0;
+}
+.updateButton__container {
+  padding-left: 10px;
+}

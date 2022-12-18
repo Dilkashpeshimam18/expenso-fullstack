@@ -3,12 +3,11 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import './UpdateProfile.css'
 const UpdateProfile = ({ setIsUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
 
-    // const [userToken, setUserToken] = useState(() => {
-    //     return localStorage.getItem('token') || tokenId
-    // })
+
     const [name, setName] = useState('')
     const [photoUrl, setPhotoUrl] = useState('')
     const navigate = useNavigate()
@@ -71,9 +70,9 @@ const UpdateProfile = ({ setIsUpdated }) => {
         getUserProfileData()
     }, [])
     return (
-        <div>
+        <div className='updateProfile'>
             <h2>Update Profile</h2>
-            <div>
+            <div className='updateProfile__container'>
                 <form onSubmit={handleUpdateProfile}>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Full name" type='text' variant="outlined" value={name} onChange={(e) => setName(e.target.value)} required />
