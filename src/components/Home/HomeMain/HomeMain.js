@@ -52,8 +52,14 @@ const HomeMain = () => {
     let allDescValue = [...map2.values()]
     let totalexp = localStorage.getItem('totalExpense') || 0
     let totalExpense = totalexp
+    totalExpense = allExpenses.reduce((curr, expense) => {
+        return curr + Number(expense.amount)
+    }, 0)
+
     let balance = localStorage.getItem('remainingBalance') || 0
     let remainingAmount = balance;
+    remainingAmount = income - totalExpense;
+
 
     let lineData = {
         labels: allDescKey,
