@@ -16,7 +16,7 @@ const HomeMain = () => {
     })
     const [inputIncome, setInputIncome] = useState(0)
     const [userIncome, setUserIncome] = useState(() => {
-        return localStorage.getItem('userIncome')
+        return localStorage.getItem('userIncome') || 0
     })
     const isSelected = useSelector(state => state.dashboard.isSelected)
     const allExpenses = useSelector(state => state.expenses.expenses)
@@ -50,9 +50,9 @@ const HomeMain = () => {
     }
     let allDescKey = [...map2.keys()]
     let allDescValue = [...map2.values()]
-    let totalexp = localStorage.getItem('totalExpense')
+    let totalexp = localStorage.getItem('totalExpense') || 0
     let totalExpense = totalexp
-    let balance = localStorage.getItem('remainingBalance')
+    let balance = localStorage.getItem('remainingBalance') || 0
     let remainingAmount = balance;
 
     let lineData = {
