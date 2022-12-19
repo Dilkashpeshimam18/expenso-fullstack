@@ -35,7 +35,7 @@ const VerifyEmail = () => {
     return (
         <div className='verifyEmail'>
 
-            <p onClick={handleEmailVerify}>Verify Email</p>
+            <p className='verify__Link' onClick={handleEmailVerify}>Verify Email</p>
         </div>
     )
 }

@@ -5,7 +5,6 @@ import ProfileModal from '../ProfileModal/ProfileModal'
 import VerifyEmail from '../VerifyEmail/VerifyEmail'
 import { useSelector, useDispatch } from 'react-redux'
 import { themeActions } from '../../store/slice/theme-slice'
-// import ReactSwitch from 'react-switch'
 import DarkModeToggle from "react-dark-mode-toggle";
 
 
@@ -13,15 +12,14 @@ import DarkModeToggle from "react-dark-mode-toggle";
 import { Link } from 'react-router-dom'
 const Header = ({ open, setOpen, isUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
+    const isVerify = useSelector(state => state.auth.emailVerified)
     const dispatch = useDispatch()
     const handleToggle = () => {
         dispatch(themeActions.toggleTheme())
         console.log(theme)
     }
     const theme = useSelector(state => state.theme.theme)
-    useEffect(() => {
-        console.log(theme)
-    }, [theme])
+
 
     return (
         <div className='header'>
@@ -39,7 +37,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
 
                             size={60}
                         />
-                        {/* <ReactSwitch onChange={handleToggle} checked={theme == 'dark'} /> */}
+
 
                     </div>
                     {!userToken && <div className='header__rightSubLink'>
@@ -49,11 +47,12 @@ const Header = ({ open, setOpen, isUpdated }) => {
 
                     {userToken && <>
                         {open == true && <ProfileModal open={open} setOpen={setOpen} />}
-                        {/* <div className='header__rightSubLink'>
+                        {isVerify == false && <div className='header__rightSubLink'>
                             <VerifyEmail />
 
 
-                        </div> */}
+                        </div>}
+
                         <div className='header__rightSubLink'>
                             <Logout />
 

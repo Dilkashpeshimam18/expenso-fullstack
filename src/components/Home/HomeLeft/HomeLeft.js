@@ -4,6 +4,7 @@ import HomeOption from './HomeOption/HomeOption'
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '../../../store/slice/auth-slice';
 import axios from 'axios';
 const HomeLeft = () => {
     const [name, setName] = useState('')
@@ -25,6 +26,7 @@ const HomeLeft = () => {
                 console.log(response)
                 setName(response.data.users[0].displayName)
                 setPhotoUrl(response.data.users[0].photoUrl)
+                dispatch(authActions.isEmailVerify(response.data.users[0].emailVerified))
             }
         } catch (err) {
             console.log(err)

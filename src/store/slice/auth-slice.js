@@ -6,6 +6,7 @@ const initialAuthState = {
     userToken: localStorage.getItem('token') || null,
     name: '',
     photoUrl: '',
+    emailVerified: null
 }
 
 
@@ -21,7 +22,9 @@ const AuthSlice = createSlice({
             state.userToken = null
             state.isAuthenticated = false
         },
-
+        isEmailVerify(state, action) {
+            state.emailVerified = action.payload
+        }
 
     }
 })
