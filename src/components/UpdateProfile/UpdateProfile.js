@@ -69,6 +69,7 @@ const UpdateProfile = ({ setIsUpdated }) => {
 
     useEffect(() => {
         getUserProfileData()
+
     }, [])
     return (
         <div className='updateProfile'>

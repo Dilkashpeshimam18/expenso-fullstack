@@ -28,7 +28,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
                     <Link style={{ textDecoration: 'none', color: 'black' }} to='/'><h2 className='header__title'>Expenso</h2></Link>
                 </div>
                 <div className='header__right'>
-                    <div className='header__rightSub'>
+                    {userToken && <div className='header__rightSub'>
 
 
                         <DarkModeToggle
@@ -39,7 +39,8 @@ const Header = ({ open, setOpen, isUpdated }) => {
                         />
 
 
-                    </div>
+                    </div>}
+
                     {!userToken && <div className='header__rightSubLink'>
                         <Link to='/login'><button className='header__authBtn'>Login</button></Link>
 
