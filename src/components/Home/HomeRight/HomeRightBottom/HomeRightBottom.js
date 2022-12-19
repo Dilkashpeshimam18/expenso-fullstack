@@ -5,6 +5,7 @@ import { modalActions } from '../../../../store/slice/modal-slice'
 import { useDispatch, useSelector } from 'react-redux'
 const HomeRightBottom = () => {
     const userToken = useSelector(state => state.auth.userToken)
+    const theme = useSelector(state => state.theme.theme)
 
     const dispatch = useDispatch()
     const handleOpen = () => {
@@ -14,8 +15,8 @@ const HomeRightBottom = () => {
     return (
         <div className='homeRightBottom'>
             <div className='homeRightBottom__container1' >
+                {theme != 'dark' && <img className='homeBottom__icon' src={WalletIcon} />}
 
-                <img className='homeBottom__icon' src={WalletIcon} />
                 <p className='homeRightBottom__text'>Missing Transaction?</p>
 
             </div>

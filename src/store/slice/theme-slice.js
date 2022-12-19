@@ -14,15 +14,16 @@ const ThemeSlice = createSlice({
             state.isActivated = true
         },
         toggleTheme(state) {
-            if (state.theme = 'light') {
+            if (state.theme == 'light') {
                 state.theme = 'dark'
                 state.isActivated = true
 
-            } else if (state.theme = 'dark') {
+            } else {
                 state.theme = 'light'
                 state.isActivated = false
-
             }
+
+
         }
     }
 })

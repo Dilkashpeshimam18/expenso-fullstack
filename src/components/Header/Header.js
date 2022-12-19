@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, } from 'react'
 import './Header.css'
 import Logout from '../Logout/Logout'
 import ProfileModal from '../ProfileModal/ProfileModal'
 import VerifyEmail from '../VerifyEmail/VerifyEmail'
 import { useSelector, useDispatch } from 'react-redux'
 import { themeActions } from '../../store/slice/theme-slice'
-import ReactSwitch from 'react-switch'
+// import ReactSwitch from 'react-switch'
+import DarkModeToggle from "react-dark-mode-toggle";
+
+
+
 import { Link } from 'react-router-dom'
 const Header = ({ open, setOpen, isUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
@@ -15,6 +19,9 @@ const Header = ({ open, setOpen, isUpdated }) => {
         console.log(theme)
     }
     const theme = useSelector(state => state.theme.theme)
+    useEffect(() => {
+        console.log(theme)
+    }, [theme])
 
     return (
         <div className='header'>
@@ -24,7 +31,15 @@ const Header = ({ open, setOpen, isUpdated }) => {
                 </div>
                 <div className='header__right'>
                     <div className='header__rightSub'>
-                        <ReactSwitch onChange={handleToggle} checked={theme == 'dark'} />
+
+
+                        <DarkModeToggle
+                            onChange={handleToggle}
+                            checked={theme == 'dark'}
+
+                            size={60}
+                        />
+                        {/* <ReactSwitch onChange={handleToggle} checked={theme == 'dark'} /> */}
 
                     </div>
                     {!userToken && <div className='header__rightSubLink'>
