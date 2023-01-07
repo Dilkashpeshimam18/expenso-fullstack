@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const initialAuthState = {
+export const initialAuthState = {
     isAuthenticated: localStorage.getItem('token') != null ? true : false,
     userToken: localStorage.getItem('token') || null,
     userEmail: localStorage.getItem('email') || null,

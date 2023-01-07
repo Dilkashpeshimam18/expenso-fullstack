@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { initialAuthState } from "./auth-slice";
 
 const initialExpenseState = {
     expenses: [],
@@ -9,16 +10,6 @@ const initialExpenseState = {
 
 
 }
-var email = localStorage.getItem('email')
-let usermail;
-if (email != null) {
-    var splitted = email?.split("@");
-    usermail = splitted[0]?.replace(/\./g, "");
-}
-
-
-
-
 
 
 const ExpenseSlice = createSlice({
@@ -59,6 +50,12 @@ export const updateExpenseData = (data) => {
     return async () => {
 
         const putRequest = async () => {
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
             if (email != null) {
                 const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}/${data.id}.json`, data.expense)
 
@@ -86,6 +83,12 @@ export const postExpenseData = (expense) => {
     return async (state) => {
 
         const postRequest = async () => {
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
             if (email != null) {
                 const response = await axios.post(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`, expense)
 
@@ -117,14 +120,17 @@ export const getExpenseData = () => {
     return async (dispatch, state) => {
         const getRequest = async () => {
             let response;
-            // dispatch(expenseActions.setIsFetching(true))
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
             if (email != null) {
                 response = await axios.get(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`)
-                // dispatch(expenseActions.setIsFetching(false))
 
             } else {
                 response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
-                // dispatch(expenseActions.setIsFetching(false))
 
             }
 
@@ -143,7 +149,6 @@ export const getExpenseData = () => {
                 }
 
                 dispatch(expenseActions.addExpense(data))
-                // dispatch(expenseActions.setIsFetching(false))
 
             }
         }
@@ -162,6 +167,12 @@ export const getExpenseData = () => {
 export const deleteExpenseData = (id) => {
     return async () => {
         const deleteRequest = async () => {
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
             if (email != null) {
                 const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}/${id}.json`)
 

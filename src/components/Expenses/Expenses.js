@@ -16,7 +16,7 @@ const Expenses = ({ handleEdit }) => {
     const expId = useSelector(state => state.expenses.expenseId)
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
-    const isFetching = useSelector(state => state.expenses.isfetching)
+    const userEmail = useSelector(state => state.auth.userEmail)
 
 
     let headers = [
@@ -42,12 +42,9 @@ const Expenses = ({ handleEdit }) => {
         data: expenses
     }
     useEffect(() => {
-        if (isInitial) {
-            isInitial = false;
-            return;
-        }
+
         dispatch(getExpenseData())
-    }, [dispatch, expense])
+    }, [dispatch, expense, userEmail])
     return (
         <div className='expenses'>
             {
