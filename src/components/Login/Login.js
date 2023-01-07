@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { authActions } from '../../store/slice/auth-slice';
 import { useDispatch } from 'react-redux';
+import { getExpenseData } from '../../store/slice/expense-slice';
+
 import './Login.css'
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -28,7 +30,11 @@ const Login = () => {
             if (response.data.idToken) {
                 let token = response.data.idToken
                 let email = response.data.email
-                dispatch(authActions.login(token))
+                let data = {
+                    token: token,
+                    email: email
+                }
+                dispatch(authActions.login(data))
                 localStorage.setItem('token', token)
                 localStorage.setItem('email', email)
                 alert('Login Successful!')
@@ -36,7 +42,7 @@ const Login = () => {
 
             }
 
-
+            dispatch(getExpenseData())
 
         } catch (err) {
             console.log(err.message)

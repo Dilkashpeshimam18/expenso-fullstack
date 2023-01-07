@@ -12,13 +12,14 @@ const HomeOption = () => {
     const dispatch = useDispatch()
     const isSelected = useSelector(state => state.dashboard.isSelected)
     const userToken = useSelector(state => state.auth.userToken)
+    const userEmail = useSelector(state => state.auth.userEmail)
 
 
     return (
         <div className='homeOption'>
             <ul className='homeOption__container' style={{ listStyle: 'none' }}>
                 <li onClick={() => dispatch(dashboardActions.handleIsSelected('Dashboard'))} className={isSelected != 'Dashboard' ? 'homeOption__list' : 'homeOption__listSelected'}><DashboardIcon className='homeOption__icon' /><p>Dashboard</p> </li>
-                {userToken && <Link style={{ textDecoration: 'none' }} to='update-profile'><li className='homeOption__list'><EditIcon className='homeOption__icon' /><p>Edit Profile</p></li></Link>
+                {userToken && userEmail && <Link style={{ textDecoration: 'none' }} to='update-profile'><li className='homeOption__list'><EditIcon className='homeOption__icon' /><p>Edit Profile</p></li></Link>
                 }
                 <li onClick={() => dispatch(dashboardActions.handleIsSelected('Bar'))} className={isSelected != 'Bar' ? 'homeOption__list' : 'homeOption__listSelected'}><BarChartIcon className='homeOption__icon' /><p>Bar Chart</p></li>
                 <li onClick={() => dispatch(dashboardActions.handleIsSelected('Line'))} className={isSelected != 'Line' ? 'homeOption__list' : 'homeOption__listSelected'}><ShowChartIcon className='homeOption__icon' /><p>Line Chart</p></li>

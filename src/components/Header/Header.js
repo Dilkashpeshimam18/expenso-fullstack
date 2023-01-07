@@ -1,4 +1,4 @@
-import React, { useEffect, } from 'react'
+import React, { useEffect } from 'react'
 import './Header.css'
 import Logout from '../Logout/Logout'
 import ProfileModal from '../ProfileModal/ProfileModal'
@@ -12,6 +12,7 @@ import DarkModeToggle from "react-dark-mode-toggle";
 import { Link } from 'react-router-dom'
 const Header = ({ open, setOpen, isUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
+    const userEmail = useSelector(state => state.auth.userEmail)
     const isVerify = useSelector(state => state.auth.emailVerified)
     const dispatch = useDispatch()
     const handleToggle = () => {
@@ -20,7 +21,6 @@ const Header = ({ open, setOpen, isUpdated }) => {
     }
     const theme = useSelector(state => state.theme.theme)
 
-
     return (
         <div className='header'>
             <div className='header__container'>
@@ -28,7 +28,43 @@ const Header = ({ open, setOpen, isUpdated }) => {
                     <Link style={{ textDecoration: 'none', color: 'black' }} to='/'><h2 className='header__title'>Expenso</h2></Link>
                 </div>
                 <div className='header__right'>
-                    {userToken && <div className='header__rightSub'>
+                    {
+                        userEmail && userToken ? (
+                            <>
+                                <div className='header__rightSub'>
+
+
+                                    <DarkModeToggle
+                                        onChange={handleToggle}
+                                        checked={theme == 'dark'}
+
+                                        size={60}
+                                    />
+                                </div>
+                                {open == true && <ProfileModal open={open} setOpen={setOpen} />}
+                                {isVerify == false && <div className='header__rightSubLink'>
+                                    <VerifyEmail />
+
+
+                                </div>}
+
+                                <div className='header__rightSubLink'>
+                                    <Logout />
+
+                                </div>
+
+
+
+                            </>
+
+                        ) : (
+                            <div className='header__rightSubLink'>
+                                <Link to='/login'><button className='header__authBtn'>Login</button></Link>
+
+                            </div>
+                        )
+                    }
+                    {/* {userToken != null && <div className='header__rightSub'>
 
 
                         <DarkModeToggle
@@ -39,14 +75,14 @@ const Header = ({ open, setOpen, isUpdated }) => {
                         />
 
 
-                    </div>}
-
-                    {!userToken && <div className='header__rightSubLink'>
+                    </div>} */}
+                    {/* 
+                    {userToken == null && <div className='header__rightSubLink'>
                         <Link to='/login'><button className='header__authBtn'>Login</button></Link>
 
-                    </div>}
+                    </div>} */}
 
-                    {userToken && <>
+                    {/* {userToken && <>
                         {open == true && <ProfileModal open={open} setOpen={setOpen} />}
                         {isVerify == false && <div className='header__rightSubLink'>
                             <VerifyEmail />
@@ -62,7 +98,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
                     </>
 
 
-                    }
+                    } */}
                 </div>
             </div>
 

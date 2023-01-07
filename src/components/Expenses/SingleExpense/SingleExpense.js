@@ -32,12 +32,12 @@ const SingleExpense = ({ id, amount, desc, category, handleEdit }) => {
                     {!userToken && <div className='singleExpense__buttonContainer'>
                         <img src={EditIcon} style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} onClick={() => alert('You need to login first!')}></img>
                         <img src={DeleteIcon} style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} onClick={() => alert('You need to login first!')}></img>
-                        {amount > 1000 && <img style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} src={PremiumIcon} onClick={() => alert('You need to login first!')}></img>}
+                        {amount > 10000 && <img style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} src={PremiumIcon} onClick={() => alert('You need to login first!')}></img>}
                     </div>}
                     {userToken && <div className='singleExpense__buttonContainer'>
                         <img src={EditIcon} style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} onClick={() => handleEdit(id)}></img>
                         <img src={DeleteIcon} style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} onClick={() => dispatch(deleteExpenseData(id))}></img>
-                        {amount > 1000 && <img style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} src={PremiumIcon} onClick={handlePremium}></img>}
+                        {amount > 10000 && <img style={{ height: '25px', width: '25px', cursor: 'pointer', margin: '3px' }} src={PremiumIcon} onClick={handlePremium}></img>}
                     </div>}
 
                 </div>

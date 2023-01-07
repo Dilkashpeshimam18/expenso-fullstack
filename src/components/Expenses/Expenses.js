@@ -7,6 +7,7 @@ import './Expense.css'
 import { CSVLink } from "react-csv";
 import { getExpenseData } from '../../store/slice/expense-slice'
 import { modalActions } from '../../store/slice/modal-slice'
+
 let isInitial = true
 
 const Expenses = ({ handleEdit }) => {
@@ -15,7 +16,7 @@ const Expenses = ({ handleEdit }) => {
     const expId = useSelector(state => state.expenses.expenseId)
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
-
+    const isFetching = useSelector(state => state.expenses.isfetching)
 
 
     let headers = [
@@ -49,10 +50,22 @@ const Expenses = ({ handleEdit }) => {
     }, [dispatch, expense])
     return (
         <div className='expenses'>
-            <div>
-                <AllExpense handleEdit={handleEdit} />
-                <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>;
-            </div>
+            {
+                localStorage.getItem('email') != null && localStorage.getItem('token') != null ? (
+                    expense.length != 0 ? <div>
+                        <AllExpense handleEdit={handleEdit} />
+                        <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>;
+                    </div> : <h5 style={{ paddingLeft: '10px' }}>There is no expense yet!</h5>
+                ) : (
+                    <div>
+                        <h5 style={{ marginLeft: '10px' }}>To use this application you need to login first!</h5>
+                    </div>
+                )
+            }
+
+
+
+
         </div>
     )
 }

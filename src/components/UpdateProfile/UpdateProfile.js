@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import './UpdateProfile.css'
 const UpdateProfile = ({ setIsUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
-
-
     const [name, setName] = useState('')
     const [photoUrl, setPhotoUrl] = useState('')
     const navigate = useNavigate()
@@ -24,7 +22,6 @@ const UpdateProfile = ({ setIsUpdated }) => {
 
                     }
                 })
-                console.log(response)
                 setName(response.data.users[0].displayName)
                 setPhotoUrl(response.data.users[0].photoUrl)
             }

@@ -19,7 +19,7 @@ function App() {
     if (isInitial) {
       isInitial = false
     }
-    if (localStorage.getItem('token') != null) {
+    if (localStorage.getItem('token') != null && localStorage.getItem('email') != null) {
       localStorage.removeItem('token');
 
     }

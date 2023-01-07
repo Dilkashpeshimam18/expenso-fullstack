@@ -44,7 +44,7 @@ const HomeMain = () => {
         }]
     }
     for (let exp of allExpenses) {
-        let desc = exp.description.toLowerCase()
+        let desc = exp.description?.toLowerCase()
         let amount = Number(exp.amount)
         map2.set(desc, map2.get(desc) + amount || amount)
     }
