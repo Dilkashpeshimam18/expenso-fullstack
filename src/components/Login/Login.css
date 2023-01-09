@@ -44,3 +44,8 @@
 #dark .form-input label {
   color: #0784b5;
 }
+@media only screen and (max-width: 600px) {
+  .signUp-button {
+    width: 300px;
+  }
+}
