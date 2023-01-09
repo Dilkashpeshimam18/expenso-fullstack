@@ -26,3 +26,9 @@
   background-color: #2d383c;
   border: none;
 }
+
+@media only screen and (max-width: 600px) {
+  .homeChart {
+    width: 360px;
+  }
+}

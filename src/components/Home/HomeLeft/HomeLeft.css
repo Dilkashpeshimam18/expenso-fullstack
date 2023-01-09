@@ -30,3 +30,10 @@
   text-align: left;
   width: 170px;
 }
+
+@media only screen and (max-width: 600px) {
+  .homeLeft {
+    width: 320px;
+    margin-left: 20px;
+  }
+}

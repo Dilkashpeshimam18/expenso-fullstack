@@ -7,3 +7,9 @@
   background-color: #192428;
 }
 /* //rgb(0, 0, 29) */
+@media only screen and (max-width: 600px) {
+  .home {
+    flex-direction: column;
+    background-color: white;
+  }
+}

@@ -3,10 +3,11 @@ import HomeCategory from './Home/HomeCategory/HomeCategory'
 import HomeLineGraph from './Home/HomeLineGraph/HomeLineGraph'
 import HomeSub from './Home/HomeSub/HomeSub'
 import IncomeModal from './Home/IncomeModal/IncomeModal'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import './HomeMain.css'
 import HomePieChart from './Home/HomePieChart/HomePieChart'
 import HomeBar from './Home/HomeBar/HomeBar'
+import { addIncome, getUserIncome, updateUserIncome } from '../../../store/slice/expense-slice'
 
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
@@ -15,18 +16,23 @@ const HomeMain = () => {
         return localStorage.getItem('userIncome') || 0
     })
     const [inputIncome, setInputIncome] = useState(0)
+    const Income = useSelector(state => state.expenses.userIncome)
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome') || 0
     })
     const isSelected = useSelector(state => state.dashboard.isSelected)
     const allExpenses = useSelector(state => state.expenses.expenses)
+    const dispatch = useDispatch()
+    const userEmail = useSelector(state => state.auth.userEmail)
     let map = new Map()
     let map2 = new Map()
+
     for (let exp of allExpenses) {
         let category = exp.category
         let amount = Number(exp.amount)
         map.set(category, map.get(category) + amount || amount)
     }
+
     let allKeys = [...map.keys()]
     let allValues = [...map.values()]
     let barData = {
@@ -43,15 +49,18 @@ const HomeMain = () => {
                 'rgb(255, 99, 132)'],
         }]
     }
+
     for (let exp of allExpenses) {
         let desc = exp.description?.toLowerCase()
         let amount = Number(exp.amount)
         map2.set(desc, map2.get(desc) + amount || amount)
     }
+
     let allDescKey = [...map2.keys()]
     let allDescValue = [...map2.values()]
     let totalexp = localStorage.getItem('totalExpense') || 0
     let totalExpense = totalexp
+
     totalExpense = allExpenses.reduce((curr, expense) => {
         return curr + Number(expense.amount)
     }, 0)
@@ -77,6 +86,7 @@ const HomeMain = () => {
             tension: 0.5
         }]
     }
+
     let pieData = {
         labels: ['Income', 'Expense', 'Balance'],
         datasets: [{
@@ -102,26 +112,39 @@ const HomeMain = () => {
 
         setUserIncome(Income)
     };
-    const handleIncome = () => {
-        totalExpense = allExpenses.reduce((curr, expense) => {
-            return curr + Number(expense.amount)
-        }, 0)
-        localStorage.setItem('totalExpense', totalExpense)
-        localStorage.setItem('userIncome', income)
-        let Income = localStorage.getItem('userIncome')
-        setUserIncome(Income)
-        remainingAmount = income - totalExpense;
-        localStorage.setItem('remainingBalance', remainingAmount)
-        handleClose()
-    }
+
     const handleChange = (e) => {
         setIncome(e.target.value)
     }
 
+    const handleIncome = () => {
+        totalExpense = allExpenses.reduce((curr, expense) => {
+            return curr + Number(expense.amount)
+        }, 0)
+
+        if (Income != 0 && Income != undefined && Income != null) {
+            dispatch(updateUserIncome(income))
+        } else {
+            dispatch(addIncome(income))
+
+        }
+        localStorage.setItem('totalExpense', totalExpense)
+
+        remainingAmount = income - totalExpense;
+        localStorage.setItem('remainingBalance', remainingAmount)
+        handleClose()
+    }
+
+
+    useEffect(() => {
+        dispatch(getUserIncome())
+
+    }, [])
     return (
         <div className='homeMain'>
             <div className='home__subContainer'>
-                <HomeSub title='Income' amount={userIncome} handleClickOpen={handleClickOpen} />
+
+                <HomeSub title='Income' amount={Income} handleClickOpen={handleClickOpen} />
                 <HomeSub title='Expense' remaining={remaining} amount={totalExpense} />
                 <HomeSub title='Remaining' remaining={remaining} amount={remainingAmount} />
             </div>

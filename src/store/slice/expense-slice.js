@@ -5,8 +5,8 @@ import { initialAuthState } from "./auth-slice";
 const initialExpenseState = {
     expenses: [],
     isEdit: false,
-    isfetching: false
-
+    isfetching: false,
+    userIncome: localStorage.getItem('userIncome') || 0
 
 
 }
@@ -41,6 +41,9 @@ const ExpenseSlice = createSlice({
         },
         setIsFetching(state, action) {
             state.isfetching = action.payload
+        },
+        handleAddIncome(state, action) {
+            state.userIncome = action.payload
         }
 
     }
@@ -116,6 +119,108 @@ export const postExpenseData = (expense) => {
 
 }
 
+export const addIncome = (income) => {
+    return async (state) => {
+        const addInc = async () => {
+            let response;
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
+            if (email != null) {
+                response = await axios.post(`https://clone-e78d9-default-rtdb.firebaseio.com/income/${usermail}.json`, income)
+
+            } else {
+                response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/income.json', income)
+
+            }
+            console.log(response)
+        }
+        try {
+            await addInc()
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+}
+
+export const getUserIncome = () => {
+    return async (state, dispatch) => {
+        const getIncome = async () => {
+            let response;
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
+            if (email != null) {
+                response = await axios.get(`https://clone-e78d9-default-rtdb.firebaseio.com/income/${usermail}.json`)
+            } else {
+                response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/income.json')
+
+            }
+            let res = response.data
+            console.log(res)
+            if (res == null) {
+                localStorage.setItem('userIncome', 0)
+                dispatch(addIncome(0))
+            } else {
+                for (let key in res) {
+                    res = res[key]
+                }
+                localStorage.setItem('userIncome', res)
+                dispatch(addIncome(res))
+            }
+
+
+
+
+        }
+
+        try {
+            await getIncome()
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+
+export const updateUserIncome = (income) => {
+    return async (dispatch) => {
+        const updateIncome = async () => {
+            let response;
+            var email = localStorage.getItem('email')
+            let usermail;
+            if (email != null) {
+                var splitted = email?.split("@");
+                usermail = splitted[0]?.replace(/\./g, "");
+            }
+            if (email != null) {
+                response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/income/${usermail}.json`, income)
+                dispatch(expenseActions.handleAddIncome(response.data))
+                localStorage.setItem('userIncome', response.data)
+
+            } else {
+                response = await axios.put('https://clone-e78d9-default-rtdb.firebaseio.com/income.json', income)
+
+            }
+        }
+
+        try {
+            await updateIncome().then(() => {
+                getUserIncome()
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
 export const getExpenseData = () => {
     return async (dispatch, state) => {
         const getRequest = async () => {
