@@ -37,8 +37,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
                                     <DarkModeToggle
                                         onChange={handleToggle}
                                         checked={theme == 'dark'}
-
-                                        size={60}
+                                        size={50}
                                     />
                                 </div>
                                 {open == true && <ProfileModal open={open} setOpen={setOpen} />}

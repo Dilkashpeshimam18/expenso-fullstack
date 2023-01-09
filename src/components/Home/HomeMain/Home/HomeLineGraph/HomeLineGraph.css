@@ -36,6 +36,9 @@
     width: 340px;
     margin-left: 5px;
   }
+  .homeGraphFull {
+    width: 340px;
+  }
 }
 @media only screen and (max-width: 1000px) and (min-width: 600px) {
   .homeGraph {

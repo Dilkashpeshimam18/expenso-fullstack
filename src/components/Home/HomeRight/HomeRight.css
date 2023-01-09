@@ -30,7 +30,8 @@
 @media only screen and (max-width: 600px) {
   .homeRight {
     width: 340px;
-    margin-left: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
   }
 }
 @media only screen and (max-width: 1000px) and (min-width: 600px) {

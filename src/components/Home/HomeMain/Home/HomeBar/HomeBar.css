@@ -37,7 +37,11 @@
   #dark .homeBar {
     width: 340px;
     margin-left: 15px;
-    margin-top: 50px;
+    margin-top: 20px;
+  }
+  .homeBarFull {
+    width: 345px;
+    margin-left: 15px;
   }
 }
 @media only screen and (max-width: 1000px) and (min-width: 600px) {

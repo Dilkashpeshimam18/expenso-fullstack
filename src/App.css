@@ -3,7 +3,7 @@
 }
 #dark {
   background-color: #192428;
-  height: 100vh;
+  height: fit-content;
 }
 .app {
   font-family: sans-serif;

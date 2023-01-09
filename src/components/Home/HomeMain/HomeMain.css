@@ -26,6 +26,8 @@
   }
   .home__subContainer {
     padding-left: 5px;
+    width: 340px;
+    margin-left: 10px;
   }
   .home__graphContainer {
     margin-left: 10px;
