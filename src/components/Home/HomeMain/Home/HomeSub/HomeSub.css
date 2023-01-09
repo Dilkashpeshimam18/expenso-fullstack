@@ -1,9 +1,9 @@
 .homeSub {
   height: 100px;
-  width: 240px;
+  width: 255px;
   background-color: white;
   padding: 5px;
-  margin: 10px;
+  margin: 5px;
   border: 1px solid lightgray;
   border-radius: 3px;
 }
@@ -50,5 +50,25 @@
   }
   .homeSub__amount {
     font-size: 13px;
+  }
+  #dark .homeSub {
+    width: 260px;
+    height: 80px;
+    margin-left: 10px;
+    padding: 5px;
+  }
+}
+@media only screen and (max-width: 1000px) and (min-width: 600px) {
+  .homeSub {
+    width: 100px;
+    height: 60px;
+    margin-left: 10px;
+    padding: 5px;
+  }
+  .homeSub__title {
+    font-size: 10px;
+  }
+  .homeSub__amount {
+    font-size: 10px;
   }
 }

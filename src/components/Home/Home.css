@@ -5,11 +5,17 @@
 }
 #dark .home {
   background-color: #192428;
+  width: fit-content;
 }
 /* //rgb(0, 0, 29) */
 @media only screen and (max-width: 600px) {
   .home {
     flex-direction: column;
     background-color: white;
+  }
+  #dark .home {
+    background-color: #192428;
+    width: fit-content;
+    height: fit-content;
   }
 }

@@ -10,6 +10,8 @@
 #dark .homeLeft {
   background-color: #2d383c;
   border: none;
+  flex: 0.2;
+  width: 500px;
 }
 #dark .homeLeft__userProfile {
   color: white;
@@ -35,5 +37,24 @@
   .homeLeft {
     width: 320px;
     margin-left: 20px;
+  }
+  #dark .homeLeft {
+    background-color: #2d383c;
+    border: none;
+    width: 350px;
+    margin-left: 20px;
+  }
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 600px) {
+  .homeLeft {
+    width: 320px;
+    margin-left: 20px;
+    height: 600px;
+  }
+}
+@media only screen and (max-width: 2000px) and (min-width: 1000px) {
+  .homeLeft {
+    height: 800px;
   }
 }

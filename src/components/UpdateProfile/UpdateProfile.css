@@ -31,3 +31,12 @@
 .updateButton__container {
   padding-left: 10px;
 }
+
+@media only screen and (max-width: 600px) {
+  .form-input {
+    width: 300px;
+  }
+  .update-button {
+    width: 300px;
+  }
+}

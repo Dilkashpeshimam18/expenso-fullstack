@@ -31,3 +31,15 @@
   color: rgb(19, 19, 19);
   font-weight: bold;
 }
+
+@media only screen and (max-width: 1000px) and (min-width: 600px) {
+  .homeOption {
+    width: 180px;
+  }
+  .homeOption__list {
+    font-size: 12px;
+  }
+  .homeOption__listSelected {
+    font-size: 12px;
+  }
+}
