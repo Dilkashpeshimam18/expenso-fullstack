@@ -1,20 +1,15 @@
 import React, { useEffect } from 'react'
 import './HomeSub.css'
 import AddIcon from '../../../../assets/plus.png'
-import { useSelector, useDispatch } from 'react-redux'
-import { expenseActions } from '../../../../../store/slice/expense-slice'
+import { useSelector } from 'react-redux'
 
 const HomeSub = ({ title, remaining, amount, handleClickOpen }) => {
     const userToken = useSelector(state => state.auth.userToken)
     const userEmail = useSelector(state => state.auth.userEmail)
-    const dispatch = useDispatch()
-    let income;
-    let user;
-    useEffect(() => {
-        income = localStorage.getItem('userIncome')
-        user = localStorage.getItem('userEmail')
-        dispatch(expenseActions.handleAddIncome(income))
-    }, [income, user])
+
+
+
+
     return (
         <div className='homeSub'>
             <div className='homeSub__container1'>
@@ -24,7 +19,9 @@ const HomeSub = ({ title, remaining, amount, handleClickOpen }) => {
             </div>
             <div className='homeSub__container2'>
                 {userToken && userEmail ? (
-                    <p className='homeSub__amount' >Rs {amount} </p>) : <p className='homeSub__amount' >Rs 0</p>}
+                    <p className='homeSub__amount' >Rs {amount == NaN || amount == undefined ? 0 : (
+                        amount
+                    )} </p>) : <p className='homeSub__amount' >Rs 0</p>}
 
             </div>
         </div>

@@ -16,7 +16,7 @@ const HomeMain = () => {
         return localStorage.getItem('userIncome') || 0
     })
     const [inputIncome, setInputIncome] = useState(0)
-    const Income = useSelector(state => state.expenses.userIncome)
+    const Income = JSON.parse(localStorage.getItem('userIncome'))
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome') || 0
     })
@@ -67,7 +67,7 @@ const HomeMain = () => {
 
     let balance = localStorage.getItem('remainingBalance') || 0
     let remainingAmount = balance;
-    remainingAmount = income - totalExpense;
+    remainingAmount = Income.income - totalExpense;
 
 
     let lineData = {
@@ -121,9 +121,14 @@ const HomeMain = () => {
         totalExpense = allExpenses.reduce((curr, expense) => {
             return curr + Number(expense.amount)
         }, 0)
+        let userIncome = localStorage.getItem('userIncome')
 
-        if (Income != 0 && Income != undefined && Income != null) {
-            dispatch(updateUserIncome(income))
+        if (userIncome && userIncome != undefined && userIncome != null) {
+            let data = {
+                id: Income.id,
+                income: income
+            }
+            dispatch(updateUserIncome(data))
         } else {
             dispatch(addIncome(income))
 
@@ -144,7 +149,7 @@ const HomeMain = () => {
         <div className='homeMain'>
             <div className='home__subContainer'>
 
-                <HomeSub title='Income' amount={Income} handleClickOpen={handleClickOpen} />
+                <HomeSub title='Income' amount={Income.income} handleClickOpen={handleClickOpen} />
                 <HomeSub title='Expense' remaining={remaining} amount={totalExpense} />
                 <HomeSub title='Remaining' remaining={remaining} amount={remainingAmount} />
             </div>

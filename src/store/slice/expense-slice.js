@@ -164,16 +164,20 @@ export const getUserIncome = () => {
 
             }
             let res = response.data
-            console.log(res)
             if (res == null) {
                 localStorage.setItem('userIncome', 0)
                 dispatch(addIncome(0))
             } else {
+                let data = {}
                 for (let key in res) {
-                    res = res[key]
+                    res = {
+                        id: key,
+                        income: res[key]
+                    }
                 }
-                localStorage.setItem('userIncome', res)
-                dispatch(addIncome(res))
+
+                localStorage.setItem('userIncome', JSON.stringify(res))
+                dispatch(addIncome(res.income))
             }
 
 
@@ -190,7 +194,7 @@ export const getUserIncome = () => {
     }
 }
 
-export const updateUserIncome = (income) => {
+export const updateUserIncome = (data) => {
     return async (dispatch) => {
         const updateIncome = async () => {
             let response;
@@ -201,12 +205,13 @@ export const updateUserIncome = (income) => {
                 usermail = splitted[0]?.replace(/\./g, "");
             }
             if (email != null) {
-                response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/income/${usermail}.json`, income)
-                dispatch(expenseActions.handleAddIncome(response.data))
-                localStorage.setItem('userIncome', response.data)
+                response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/income/${usermail}/${data.id}.json`, data.income)
+                localStorage.setItem('userIncome', JSON.stringify(data))
+
+                dispatch(expenseActions.handleAddIncome(data))
 
             } else {
-                response = await axios.put('https://clone-e78d9-default-rtdb.firebaseio.com/income.json', income)
+                response = await axios.put('https://clone-e78d9-default-rtdb.firebaseio.com/income.json', data.income)
 
             }
         }
