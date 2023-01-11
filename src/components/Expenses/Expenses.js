@@ -11,13 +11,12 @@ import { modalActions } from '../../store/slice/modal-slice'
 let isInitial = true
 
 const Expenses = ({ handleEdit }) => {
-    const [expenses, setExpenses] = useState([])
-    const isEdit = useSelector(state => state.expenses.isEdit)
-    const expId = useSelector(state => state.expenses.expenseId)
+
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
     const userEmail = useSelector(state => state.auth.userEmail)
 
+    const allExpenses = useSelector(state => state.expenses.expenses)
 
     let headers = [
         {
@@ -39,8 +38,9 @@ const Expenses = ({ handleEdit }) => {
     const csvLink = {
         filename: 'expenses.csv',
         headers: headers,
-        data: expenses
+        data: allExpenses
     }
+
     useEffect(() => {
 
         dispatch(getExpenseData())
