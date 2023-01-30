@@ -19,7 +19,7 @@ const HomeSub = ({ title, remaining, amount, handleClickOpen }) => {
             </div>
             <div className='homeSub__container2'>
                 {userToken && userEmail ? (
-                    <p className='homeSub__amount' >Rs {amount == NaN || amount == undefined ? 0 : (
+                    <p className='homeSub__amount' >Rs {amount == NaN || amount == undefined || amount == null ? 0 : (
                         amount
                     )} </p>) : <p className='homeSub__amount' >Rs 0</p>}
 
