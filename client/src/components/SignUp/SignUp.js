@@ -4,7 +4,9 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+
 const SignUp = () => {
+    const [name,setName]=useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -59,6 +61,10 @@ const SignUp = () => {
             <h3 className='auth__title'>SignUp</h3>
             <div className='form__container'>
                 <form onSubmit={handleSignUp} className='signUp__form'>
+                <div className='formInput__container'>
+                        <TextField className='form-input' id="outlined-basic" label="Name" type='text' variant="outlined" value={name} onChange={(e) => setName(e.target.value)} required />
+
+                    </div>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Email" type='email' variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
