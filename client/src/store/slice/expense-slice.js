@@ -268,7 +268,6 @@ export const getExpenseData = () => {
             const response=await axios.get(`http://localhost:4000/expense/get-expense/${token}`)
             console.log(response)
             const data=response.data.expenses
-            console.log(data)
             dispatch(expenseActions.addExpense(data))
 
         }
@@ -288,18 +287,22 @@ export const deleteExpenseData = (id) => {
     return async () => {
         const deleteRequest = async () => {
             var email = localStorage.getItem('email')
-            let usermail;
-            if (email != null) {
-                var splitted = email?.split("@");
-                usermail = splitted[0]?.replace(/\./g, "");
-            }
-            if (email != null) {
-                const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}/${id}.json`)
+            const token=localStorage.getItem('token')
 
-            } else {
-                const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses${id}.json`)
+            // let usermail;
+            // if (email != null) {
+            //     var splitted = email?.split("@");
+            //     usermail = splitted[0]?.replace(/\./g, "");
+            // }
+            // if (email != null) {
+            //     const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}/${id}.json`)
 
-            }
+            // } else {
+            //     const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses${id}.json`)
+
+            // }
+            const response=await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`)
+            console.log(response)
 
         }
         try {
@@ -310,6 +313,7 @@ export const deleteExpenseData = (id) => {
             })
         } catch (err) {
             console.log(err)
+            alert(err)
         }
     }
 }
