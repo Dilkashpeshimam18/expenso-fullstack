@@ -48,7 +48,7 @@ const Expenses = ({ handleEdit }) => {
     return (
         <div className='expenses'>
             {
-                localStorage.getItem('email') != null && localStorage.getItem('token') != null ? (
+                localStorage.getItem('email') != null  ? (
                     expense.length != 0 ? <div>
                         <AllExpense handleEdit={handleEdit} />
                         <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>;

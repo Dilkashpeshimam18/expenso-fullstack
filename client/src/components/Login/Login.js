@@ -34,19 +34,28 @@ const Login = () => {
             //         token: token,
             //         email: email
             //     }
-            //     dispatch(authActions.login(data))
             //     localStorage.setItem('token', token)
-            //     localStorage.setItem('email', email)
             //     alert('Login Successful!')
-            //     navigate('/')
 
             // }
 
             // dispatch(getExpenseData())
 
-            const response=await axios.post('http://localhost:4000/users/login', data) 
+            const response = await axios.post('http://localhost:4000/users/login', data)
             console.log(response)
+            console.log(response.data.data)
             alert('Login successful!')
+            let userEmail = response.data.data
+            const userData = {
+                email: userEmail
+            }
+            dispatch(authActions.login(userData))
+
+            localStorage.setItem('email', userEmail)
+            navigate('/')
+
+
+
 
         } catch (err) {
             console.log(err)

@@ -29,7 +29,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
                 </div>
                 <div className='header__right'>
                     {
-                        userEmail && userToken ? (
+                        userEmail  ? (
                             <>
                                 <div className='header__rightSub'>
 
