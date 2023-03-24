@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const SignUp = () => {
-    const [name,setName]=useState('')
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -24,6 +24,7 @@ const SignUp = () => {
             } else {
                 if (email != '' && password != '' && confirmPassword != '') {
                     const data = {
+                        name: name,
                         email: email,
                         password: password,
                         returnSecureToken: true
@@ -43,8 +44,12 @@ const SignUp = () => {
                     //     navigate('/login')
                     // })
 
-                    const response=await axios.post('http://localhost:4000/users/signup',data)
-                    console.log(response)
+                    const response = await axios.post('http://localhost:4000/users/signup', data)
+                    alert('Sign up successful!')
+                    setName('')
+                    setEmail('')
+                    setPassword('')
+                    setConfirmPassword('')
                 }
 
             }
@@ -53,7 +58,7 @@ const SignUp = () => {
 
         } catch (err) {
             console.log(err)
-            alert(err.response.data.error.message)
+            alert(err)
         }
     }
     return (
@@ -61,7 +66,7 @@ const SignUp = () => {
             <h3 className='auth__title'>SignUp</h3>
             <div className='form__container'>
                 <form onSubmit={handleSignUp} className='signUp__form'>
-                <div className='formInput__container'>
+                    <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Name" type='text' variant="outlined" value={name} onChange={(e) => setName(e.target.value)} required />
 
                     </div>

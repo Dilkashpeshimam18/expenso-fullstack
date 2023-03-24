@@ -21,28 +21,30 @@ const Login = () => {
                 password: password,
                 returnSecureToken: true
             }
-            const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                headers: {
-                    'Content-Type': 'application/json',
+            // const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
+            //     headers: {
+            //         'Content-Type': 'application/json',
 
-                }
-            })
-            if (response.data.idToken) {
-                let token = response.data.idToken
-                let email = response.data.email
-                let data = {
-                    token: token,
-                    email: email
-                }
-                dispatch(authActions.login(data))
-                localStorage.setItem('token', token)
-                localStorage.setItem('email', email)
-                alert('Login Successful!')
-                navigate('/')
+            //     }
+            // })
+            // if (response.data.idToken) {
+            //     let token = response.data.idToken
+            //     let email = response.data.email
+            //     let data = {
+            //         token: token,
+            //         email: email
+            //     }
+            //     dispatch(authActions.login(data))
+            //     localStorage.setItem('token', token)
+            //     localStorage.setItem('email', email)
+            //     alert('Login Successful!')
+            //     navigate('/')
 
-            }
+            // }
 
-            dispatch(getExpenseData())
+            // dispatch(getExpenseData())
+
+            const response=await axios.post('http://localhost:4000/users/login', data) 
 
         } catch (err) {
             console.log(err.message)
