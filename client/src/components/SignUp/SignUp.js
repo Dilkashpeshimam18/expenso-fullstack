@@ -41,15 +41,16 @@ const SignUp = () => {
                     //     setEmail('')
                     //     setPassword('')
                     //     setConfirmPassword('')
-                    //     navigate('/login')
                     // })
 
-                    const response = await axios.post('http://localhost:4000/users/signup', data)
+                    await axios.post('http://localhost:4000/users/signup', data)
                     alert('Sign up successful!')
                     setName('')
                     setEmail('')
                     setPassword('')
                     setConfirmPassword('')
+                    navigate('/login')
+
                 }
 
             }

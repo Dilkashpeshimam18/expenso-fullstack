@@ -1,5 +1,6 @@
 const Users = require('../models/users')
 const { randomUUID } = require('crypto')
+const bcrypt = require('bcrypt');
 
 
 function isValidString(string) {
@@ -18,43 +19,54 @@ exports.postSignup = async (req, res) => {
       return res.status(500).json({ err: 'Something is missing!' })
     }
 
-    const data = await Users.create({
-      id: randomUUID(),
-      name: name,
-      email: email,
-      password: password
-    })
+    const saltRounds = 10;
+    await bcrypt.hash(password, saltRounds, async (err, hash) => {
+      console.log(hash)
+      const data = await Users.create({
+        id: randomUUID(),
+        name: name,
+        email: email,
+        password: hash
+      })
+
+      res.status(200).json({ success: true, user: 'Successfully created user!' })
 
 
+    });
 
-    res.status(200).json({ user: 'Successfully created user!' })
 
   } catch (err) {
     console.log(err)
-    res.status(500).json(err)
+    res.status(500).json({ success: false, message: err })
+
   }
 }
 
 exports.postLogin = async (req, res) => {
   try {
     const { email, password } = req.body
-
     const user = await Users.findOne({ where: { email: email } })
 
-    if (user && user.password == password) {
-      res.status(200).json({ data: 'User logged in successfully!' })
-    } else if (user && user.password != password) {
-      res.status(401).json('Password donot match!')
+    if (user && password != null) {
+      const userPassword = user.password
 
+      bcrypt.compare(password, userPassword, (err, result) => {
+        if (user && result == true) {
+          return res.status(200).json({ data: 'User logged in successfully!' })
+
+        } else {
+          return res.status(401).json('Password donot match!')
+
+        }
+      })
     } else {
-      res.status(404).json('User not found!')
+      return res.status(404).json('User not found!')
 
     }
 
 
-
   } catch (err) {
     console.log(err)
-
+    res.status(500).json({ success: false, message: err })
   }
 }
