@@ -49,10 +49,14 @@ exports.postLogin = async (req, res) => {
 
     if (user && password != null) {
       const userPassword = user.password
+      const userEmail=user.email
 
       bcrypt.compare(password, userPassword, (err, result) => {
+        if (err) {
+          throw new Error('Something went wrong.')
+        }
         if (user && result == true) {
-          return res.status(200).json({ data: 'User logged in successfully!' })
+          return res.status(200).json({ data: userEmail})
 
         } else {
           return res.status(401).json('Password donot match!')
