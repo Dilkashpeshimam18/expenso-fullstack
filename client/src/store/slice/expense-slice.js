@@ -87,18 +87,21 @@ export const postExpenseData = (expense) => {
 
         const postRequest = async () => {
             var email = localStorage.getItem('email')
-            let usermail;
-            if (email != null) {
-                var splitted = email?.split("@");
-                usermail = splitted[0]?.replace(/\./g, "");
-            }
-            if (email != null) {
-                const response = await axios.post(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`, expense)
+            // let usermail;
+            // if (email != null) {
+            //     var splitted = email?.split("@");
+            //     usermail = splitted[0]?.replace(/\./g, "");
+            // }
+            // if (email != null) {
+            //     const response = await axios.post(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`, expense)
 
-            } else {
-                const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', expense)
+            // } else {
+            //     const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', expense)
 
-            }
+            // }
+
+            const response=await axios.post('http://localhost:4000/expense/add-expense',expense)
+            console.log(response)
 
 
         }
@@ -229,38 +232,45 @@ export const updateUserIncome = (data) => {
 export const getExpenseData = () => {
     return async (dispatch, state) => {
         const getRequest = async () => {
-            let response;
+            // let response;
             var email = localStorage.getItem('email')
-            let usermail;
-            if (email != null) {
-                var splitted = email?.split("@");
-                usermail = splitted[0]?.replace(/\./g, "");
-            }
-            if (email != null) {
-                response = await axios.get(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`)
+           const token=localStorage.getItem('token')
+            // let usermail;
+            // if (email != null) {
+            //     var splitted = email?.split("@");
+            //     usermail = splitted[0]?.replace(/\./g, "");
+            // }
+            // if (email != null) {
+            //     response = await axios.get(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`)
 
-            } else {
-                response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
+            // } else {
+            //     response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
 
-            }
+            // }
 
 
 
-            if (response.status == 200) {
-                let res = response.data
-                let data = []
-                for (let key in res) {
-                    data.push({
-                        id: key,
-                        description: res[key].description,
-                        amount: res[key].amount,
-                        category: res[key].category
-                    })
-                }
+            // if (response.status == 200) {
+            //     let res = response.data
+            //     let data = []
+            //     for (let key in res) {
+            //         data.push({
+            //             id: key,
+            //             description: res[key].description,
+            //             amount: res[key].amount,
+            //             category: res[key].category
+            //         })
+            //     }
 
-                dispatch(expenseActions.addExpense(data))
 
-            }
+            // }
+
+            const response=await axios.get(`http://localhost:4000/expense/get-expense/${token}`)
+            console.log(response)
+            const data=response.data.expenses
+            console.log(data)
+            dispatch(expenseActions.addExpense(data))
+
         }
         try {
             if (localStorage.getItem('email') && localStorage.getItem('token')) {

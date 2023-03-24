@@ -45,11 +45,14 @@ const Login = () => {
             console.log(response)
             console.log(response.data.data)
             alert('Login successful!')
-            let userEmail = response.data.data
+            let userEmail = response.data.data.userEmail
+            const userId=response.data.data.userId
             const userData = {
-                email: userEmail
+                email: userEmail,
+                id:userId
             }
             dispatch(authActions.login(userData))
+            localStorage.setItem('token', userId)
 
             localStorage.setItem('email', userEmail)
             navigate('/')

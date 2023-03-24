@@ -20,7 +20,7 @@ const AllExpense = ({ handleEdit }) => {
             ) : (
                 (allExpenses?.map((expense, index) => {
                     return <div key={index}>
-                        <SingleExpense key={index} id={expense.id} amount={expense.amount} desc={expense.description} category={expense.category} handleEdit={handleEdit} />
+                        <SingleExpense key={index} id={expense.id} amount={expense.amount} desc={expense.name} category={expense.category} handleEdit={handleEdit} />
                         <Divider />
                     </div>
                 }))

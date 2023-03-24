@@ -41,10 +41,14 @@ const Expenses = ({ handleEdit }) => {
         data: allExpenses
     }
 
-    useEffect(() => {
-
+    useEffect(()=>{
         dispatch(getExpenseData())
-    }, [dispatch, expense, userEmail])
+
+    },[dispatch])
+    // useEffect(() => {
+
+    //     dispatch(getExpenseData())
+    // }, [dispatch, expense, userEmail])
     return (
         <div className='expenses'>
             {
