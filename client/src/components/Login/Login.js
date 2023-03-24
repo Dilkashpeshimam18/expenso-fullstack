@@ -45,10 +45,12 @@ const Login = () => {
             // dispatch(getExpenseData())
 
             const response=await axios.post('http://localhost:4000/users/login', data) 
+            console.log(response)
+            alert('Login successful!')
 
         } catch (err) {
-            console.log(err.message)
-            alert(err.message)
+            console.log(err)
+            alert(err.response.data)
         }
     }
 
