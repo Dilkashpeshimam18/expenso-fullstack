@@ -4,10 +4,9 @@ const { randomUUID } = require('crypto')
 
 exports.addExpense = async (req, res) => {
     try {
-        const { amount, description, category, email } = req.body
+        const { amount, description, category, email,userId } = req.body
         console.log(req.body)
-        const user = await Users.findOne({ where: { email: email } })
-        const userId = user.id
+  
         const data = await Expense.create({
             id: randomUUID(),
             name: description,

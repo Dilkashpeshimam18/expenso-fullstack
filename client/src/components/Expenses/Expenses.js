@@ -14,7 +14,8 @@ const Expenses = ({ handleEdit }) => {
 
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
-    const userEmail = useSelector(state => state.auth.userEmail)
+    const userToken = useSelector(state => state.auth.userToken)
+
 
     const allExpenses = useSelector(state => state.expenses.expenses)
 
@@ -52,7 +53,7 @@ const Expenses = ({ handleEdit }) => {
     return (
         <div className='expenses'>
             {
-                localStorage.getItem('email') != null  ? (
+                userToken  ? (
                     expense.length != 0 ? <div>
                         <AllExpense handleEdit={handleEdit} />
                         <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>;

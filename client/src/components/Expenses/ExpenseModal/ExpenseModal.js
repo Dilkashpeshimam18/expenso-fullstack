@@ -24,6 +24,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
     const expense = useSelector(state => state.expenses.expenses)
     const isNew = useSelector(state => state.modal.addNew)
     const userEmail = useSelector(state => state.auth.userEmail)
+    const userId=useSelector(state=>state.auth.userToken)
 
     const handleAddExpenseForm = (e) => {
         e.preventDefault();
@@ -53,7 +54,8 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
                 amount: amount,
                 description: desc,
                 category: category,
-                email:userEmail
+                email:userEmail,
+                userId:userId
             }
             dispatch(postExpenseData(data))
 

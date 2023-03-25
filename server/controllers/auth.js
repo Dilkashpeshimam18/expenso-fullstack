@@ -1,6 +1,7 @@
 const Users = require('../models/users')
 const { randomUUID } = require('crypto')
 const bcrypt = require('bcrypt');
+const jwt=require('jsonwebtoken')
 
 
 function isValidString(string) {
@@ -42,6 +43,9 @@ exports.postSignup = async (req, res) => {
   }
 }
 
+const generateToken=(id,email)=>{
+  return jwt.sign({userId:id,userEmail:email},'shjakkajakhah')
+}
 exports.postLogin = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -62,7 +66,7 @@ exports.postLogin = async (req, res) => {
           throw new Error('Something went wrong.')
         }
         if (user && result == true) {
-          return res.status(200).json({ data: data})
+          return res.status(200).json({ data: generateToken(userId,userEmail)})
 
         } else {
           return res.status(401).json('Password donot match!')
