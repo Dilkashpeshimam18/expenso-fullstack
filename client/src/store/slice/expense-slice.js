@@ -240,7 +240,6 @@ export const getExpenseData = () => {
     return async (dispatch, state) => {
         const getRequest = async () => {
             // let response;
-            var email = localStorage.getItem('email')
             const token = localStorage.getItem('token')
             // let usermail;
             // if (email != null) {
@@ -297,9 +296,14 @@ export const getExpenseData = () => {
 export const deleteExpenseData = (id) => {
     return async () => {
         const deleteRequest = async () => {
-            var email = localStorage.getItem('email')
-            const token = localStorage.getItem('token')
+         console.log(id)
+         const token = localStorage.getItem('token')
 
+         let reqInstance = await axios.create({
+            headers: {
+                Authorization: token
+            }
+        })
             // let usermail;
             // if (email != null) {
             //     var splitted = email?.split("@");
@@ -312,7 +316,7 @@ export const deleteExpenseData = (id) => {
             //     const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses${id}.json`)
 
             // }
-            const response = await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`)
+            const response = await reqInstance.delete(`http://localhost:4000/expense/delete-expense/${id}`)
             console.log(response)
 
         }
