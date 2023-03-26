@@ -36,11 +36,11 @@ const Expenses = ({ handleEdit }) => {
         },
 
     ]
-    const csvLink = {
-        filename: 'expenses.csv',
-        headers: headers,
-        data: allExpenses
-    }
+    // const csvLink = {
+    //     filename: 'expenses.csv',
+    //     headers: headers,
+    //     data: allExpenses
+    // }
 
     useEffect(()=>{
         dispatch(getExpenseData())
@@ -56,7 +56,7 @@ const Expenses = ({ handleEdit }) => {
                 userToken  ? (
                     expense.length != 0 ? <div>
                         <AllExpense handleEdit={handleEdit} />
-                        <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>;
+                        {/* <CSVLink className='expensesDownload__link' {...csvLink}>Download expense csv</CSVLink>; */}
                     </div> : <h5 style={{ paddingLeft: '10px' }}>There is no expense yet!</h5>
                 ) : (
                     <div>

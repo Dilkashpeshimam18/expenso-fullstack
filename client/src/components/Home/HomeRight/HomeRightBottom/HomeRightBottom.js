@@ -22,7 +22,7 @@ const HomeRightBottom = () => {
 
             </div>
             {
-                userEmail ? (
+                userToken ? (
                     <div className='homeRightBottom__container2'>
                         <button onClick={handleOpen} className='homeRightBottom__button'>ADD NEW</button>
 

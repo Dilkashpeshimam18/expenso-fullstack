@@ -54,8 +54,6 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
                 amount: amount,
                 description: desc,
                 category: category,
-                email:userEmail,
-                userId:userId
             }
             dispatch(postExpenseData(data))
 

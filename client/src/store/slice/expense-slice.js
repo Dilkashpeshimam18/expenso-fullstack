@@ -87,6 +87,13 @@ export const postExpenseData = (expense) => {
 
         const postRequest = async () => {
             var email = localStorage.getItem('email')
+            const token = localStorage.getItem('token')
+
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
             // let usermail;
             // if (email != null) {
             //     var splitted = email?.split("@");
@@ -100,7 +107,7 @@ export const postExpenseData = (expense) => {
 
             // }
 
-            const response=await axios.post('http://localhost:4000/expense/add-expense',expense)
+            const response = await reqInstance.post('http://localhost:4000/expense/add-expense', expense)
             console.log(response)
 
 
@@ -234,7 +241,7 @@ export const getExpenseData = () => {
         const getRequest = async () => {
             // let response;
             var email = localStorage.getItem('email')
-           const token=localStorage.getItem('token')
+            const token = localStorage.getItem('token')
             // let usermail;
             // if (email != null) {
             //     var splitted = email?.split("@");
@@ -264,15 +271,19 @@ export const getExpenseData = () => {
 
 
             // }
-
-            const response=await axios.get(`http://localhost:4000/expense/get-expense/${token}`)
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+            const response = await reqInstance.get('http://localhost:4000/expense/get-expense')
             console.log(response)
-            const data=response.data.expenses
+            const data = response.data.expenses
             dispatch(expenseActions.addExpense(data))
 
         }
         try {
-            if (localStorage.getItem('email') && localStorage.getItem('token')) {
+            if (localStorage.getItem('token')) {
                 await getRequest()
 
             }
@@ -287,7 +298,7 @@ export const deleteExpenseData = (id) => {
     return async () => {
         const deleteRequest = async () => {
             var email = localStorage.getItem('email')
-            const token=localStorage.getItem('token')
+            const token = localStorage.getItem('token')
 
             // let usermail;
             // if (email != null) {
@@ -301,7 +312,7 @@ export const deleteExpenseData = (id) => {
             //     const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses${id}.json`)
 
             // }
-            const response=await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`)
+            const response = await axios.delete(`http://localhost:4000/expense/delete-expense/${id}`)
             console.log(response)
 
         }

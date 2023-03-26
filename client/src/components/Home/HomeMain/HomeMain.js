@@ -28,8 +28,8 @@ const HomeMain = () => {
     let map2 = new Map()
 
     for (let exp of allExpenses) {
-        let category = exp.category
-        let amount = Number(exp.amount)
+        let category = exp?.category
+        let amount = Number(exp?.amount)
         map.set(category, map.get(category) + amount || amount)
     }
 
@@ -51,8 +51,8 @@ const HomeMain = () => {
     }
 
     for (let exp of allExpenses) {
-        let desc = exp.description?.toLowerCase()
-        let amount = Number(exp.amount)
+        let desc = exp?.description?.toLowerCase()
+        let amount = Number(exp?.amount)
         map2.set(desc, map2.get(desc) + amount || amount)
     }
 
@@ -62,7 +62,7 @@ const HomeMain = () => {
     let totalExpense = totalexp
 
     totalExpense = allExpenses.reduce((curr, expense) => {
-        return curr + Number(expense.amount)
+        return curr + Number(expense?.amount)
     }, 0)
 
     let balance = localStorage.getItem('remainingBalance') || 0
