@@ -5,8 +5,7 @@ const { randomUUID } = require('crypto')
 exports.addExpense = async (req, res) => {
     try {
         const { amount, description, category} = req.body
-        console.log(req.body)
-        console.log('USER IS>>>>>',req.user)
+   
         const id=req.user.id
   
         const data = await Expense.create({
@@ -39,8 +38,8 @@ exports.getExpense = async (req, res) => {
 exports.deleteExpense = async (req, res) => {
     try {
         const id = req.params.id
-
-        await Expense.destroy({ where: { id: id } })
+        const userId=req.user.id
+        await Expense.destroy({ where: { id: id,usersdbId:userId } })
         res.status(200).json('Deleted Successfully!')
     } catch (err) {
         res.status(500).json({ success: false, message: err })
