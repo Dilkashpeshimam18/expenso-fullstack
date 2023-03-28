@@ -44,7 +44,7 @@ exports.postSignup = async (req, res) => {
 }
 
 const generateToken=(id,email)=>{
-  return jwt.sign({userId:id,userEmail:email},'shjakkajakhah')
+  return jwt.sign({userId:id,userEmail:email},process.env.TOKEN_SECRET)
 }
 exports.postLogin = async (req, res) => {
   try {
