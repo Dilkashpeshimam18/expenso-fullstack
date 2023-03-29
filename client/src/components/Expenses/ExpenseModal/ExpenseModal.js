@@ -3,7 +3,7 @@ import './ExpenseModal.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../../../store/slice/expense-slice'
 import { modalActions } from '../../../store/slice/modal-slice'
-import { updateExpenseData, postExpenseData } from '../../../store/slice/expense-slice'
+import { updateExpenseData, postExpenseData, getExpenseData } from '../../../store/slice/expense-slice'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -24,7 +24,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
     const expense = useSelector(state => state.expenses.expenses)
     const isNew = useSelector(state => state.modal.addNew)
     const userEmail = useSelector(state => state.auth.userEmail)
-    const userId=useSelector(state=>state.auth.userToken)
+    const userId = useSelector(state => state.auth.userToken)
 
     const handleAddExpenseForm = (e) => {
         e.preventDefault();
@@ -47,6 +47,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
             setCategory(getInitialState)
 
             dispatch(expenseActions.isNotEditExpense())
+            dispatch(getExpenseData())
 
 
         } else {
@@ -60,6 +61,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
             setAmount(0)
             setDesc('')
             setCategory(getInitialState)
+            dispatch(getExpenseData())
 
         }
 
@@ -118,6 +120,8 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
                             <MenuItem value="Daily Need">Daily Need</MenuItem>
                             <MenuItem value="Clothing">Clothing</MenuItem>
                             <MenuItem value="Accessories">Accessories</MenuItem>
+                            <MenuItem value="Other">Other</MenuItem>
+
 
                         </Select>
                     </FormControl>

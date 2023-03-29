@@ -5,8 +5,7 @@ import SignUp from './components/SignUp/SignUp';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 import UpdateProfile from './components/UpdateProfile/UpdateProfile';
-import { useSelector, useDispatch } from 'react-redux';
-import { postExpenseData } from './store/slice/expense-slice';
+import { useSelector } from 'react-redux';
 import Header from './components/Header/Header';
 let isInitial = true
 function App() {
