@@ -1,8 +1,13 @@
 import React from 'react'
 import './Premium.css'
 import axios from 'axios';
+import { authActions } from '../../store/slice/auth-slice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Premium = () => {
+    const dispatch = useDispatch()
+    const isPremiumUser = useSelector(state => state.auth.isPremiumUser)
+
     const loadScript = (src) => {
         return new Promise((resolve) => {
             const script = document.createElement("script");
@@ -48,8 +53,12 @@ const Premium = () => {
 
                     }
 
-                    await reqInstance.post('http://localhost:4000/purchase/updatetransactionstatus', data)
+                    const res = await reqInstance.post('http://localhost:4000/purchase/updatetransactionstatus', data)
                     alert('Congrats! You are premium user now.')
+                    console.log(res)
+                    localStorage.setItem('isPremiumUser', true)
+                    dispatch(authActions.isPremiumUser(true))
+
 
                 },
                 prefill: {
@@ -70,7 +79,11 @@ const Premium = () => {
     }
     return (
         <div className='premium'>
-            <button onClick={displayRazorpay} className='header__authBtn'>Buy Premium</button>
+
+            {isPremiumUser==true ? <button className='header__authBtn'>Premium </button> :
+                <button onClick={displayRazorpay} className='header__authBtn'>Buy Premium</button>
+
+            }
         </div>
     )
 }

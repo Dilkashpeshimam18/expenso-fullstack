@@ -7,7 +7,8 @@ export const initialAuthState = {
     userEmail: localStorage.getItem('email') || null,
     name: '',
     photoUrl: '',
-    emailVerified: null
+    emailVerified: null,
+    isPremiumUser:localStorage.getItem('isPremiumUser') || null
 }
 
 
@@ -27,12 +28,50 @@ const AuthSlice = createSlice({
         },
         isEmailVerify(state, action) {
             state.emailVerified = action.payload
+        },
+        isPremiumUser(state,action){
+            state.isPremiumUser=action.payload
         }
 
     }
 })
 
+export const checkPremiumUser=()=>{
+    return async(dispatch)=>{
+        const isPremium=async()=>{
+            const token = localStorage.getItem('token')
 
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            const premium=await reqInstance.get('http://localhost:4000/purchase/checkpremium')
+            console.log(premium)
+            const isPremium=premium.data.isPremium
+            if(isPremium==true){
+                localStorage.setItem('isPremiumUser', true)
+                dispatch(authActions.isPremiumUser(true))
+            }else{
+                localStorage.removeItem('isPremiumUser')
+                dispatch(authActions.isPremiumUser(false))
+
+            }
+
+        }
+
+
+        try{
+
+           await isPremium()
+
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+}
 
 export const authActions = AuthSlice.actions
 export default AuthSlice.reducer

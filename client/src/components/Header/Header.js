@@ -49,6 +49,8 @@ const Header = ({ open, setOpen, isUpdated }) => {
                                 </div>}
 
                                 <div className='header__rightSubLink'>
+
+                           
                                     <Premium />
                                     <Logout />
 

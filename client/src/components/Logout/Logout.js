@@ -10,6 +10,9 @@ const Logout = () => {
         dispatch(authActions.logout())
         localStorage.removeItem('token')
         localStorage.removeItem('email')
+        dispatch(authActions.isPremiumUser(false))
+        localStorage.removeItem('isPremiumUser')
+
         navigate('/login')
     }
     return (
