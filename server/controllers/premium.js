@@ -53,3 +53,22 @@ exports.updateTransaction = async (req, res) => {
   }
 
 }
+
+exports.checkPremium = (req, res) => {
+  try {
+    const user = req.user
+    if (user.isPremiumUser == '1') {
+      return res.status(200).json({ success: true, isPremium: true })
+
+    } else {
+      return res.status(200).json({ success: true, isPremium: false })
+
+    }
+
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ success: false, err })
+
+  }
+
+}
