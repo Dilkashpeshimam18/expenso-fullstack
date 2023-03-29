@@ -55,7 +55,6 @@ const Premium = () => {
 
                     const res = await reqInstance.post('http://localhost:4000/purchase/updatetransactionstatus', data)
                     alert('Congrats! You are premium user now.')
-                    console.log(res)
                     localStorage.setItem('isPremiumUser', true)
                     dispatch(authActions.isPremiumUser(true))
 
@@ -69,18 +68,25 @@ const Premium = () => {
 
             const payment = new window.Razorpay(options)
             payment.open()
-            payment.on('payment.failed', (res) => {
-                console.log(res)
+            payment.on('payment.failed', async (res) => {
+                const orderId = res.error.metadata.order_id
+                const data = {
+                    status: 'failed',
+                    orderId: orderId
+                }
+                const response = await reqInstance.post('http://localhost:4000/purchase/updatetransactionstatus', data)
+
                 alert('Something went wrong!')
             })
         } catch (err) {
             console.log(err)
+
         }
     }
     return (
         <div className='premium'>
 
-            {isPremiumUser==true ? <button className='header__authBtn'>Premium </button> :
+            {isPremiumUser == true ? <button className='header__authBtn'>Premium </button> :
                 <button onClick={displayRazorpay} className='header__authBtn'>Buy Premium</button>
 
             }

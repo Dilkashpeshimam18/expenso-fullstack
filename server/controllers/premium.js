@@ -16,9 +16,6 @@ exports.purchasePremium = async (req, res, next) => {
         console.log(err)
         throw new Error(JSON.stringify(err))
       }
-      console.log('ORDER IS>>>>', order)
-
-      console.log('ORDER ID IS>>>>>', order.id)
 
       req.user.createOrder({ id: randomUUID(), orderId: order.id, status: 'PENDING' }).then(() => {
         return res.status(200).json({ order, key_id: razorpay.key_id })
@@ -38,8 +35,13 @@ exports.purchasePremium = async (req, res, next) => {
 
 exports.updateTransaction = async (req, res) => {
   try {
-    const { orderId, paymentId } = req.body
+    const { orderId, paymentId, status } = req.body
 
+    if (orderId && status == 'failed') {
+      const paymentDetail = await Order.findOne({ where: { orderId: orderId } })
+      await paymentDetail.update({ status: 'FAILED' })
+      return res.status(500).json({ success: false, error: 'Transaction Fail' })
+    }
     const paymentDetail = await Order.findOne({ where: { orderId: orderId } })
 
     const promise1 = paymentDetail.update({ paymentId: paymentId, status: 'SUCCESSFUL' })
