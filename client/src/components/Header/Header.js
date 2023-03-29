@@ -10,6 +10,7 @@ import DarkModeToggle from "react-dark-mode-toggle";
 
 
 import { Link } from 'react-router-dom'
+import Premium from '../Premium/Premium'
 const Header = ({ open, setOpen, isUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
     const userEmail = useSelector(state => state.auth.userEmail)
@@ -48,6 +49,7 @@ const Header = ({ open, setOpen, isUpdated }) => {
                                 </div>}
 
                                 <div className='header__rightSubLink'>
+                                    <Premium />
                                     <Logout />
 
                                 </div>

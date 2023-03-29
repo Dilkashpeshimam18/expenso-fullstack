@@ -40,7 +40,7 @@ const Login = () => {
             // }
 
             // dispatch(getExpenseData())
-
+              console.log(data)
             const response = await axios.post('http://localhost:4000/users/login', data)
             console.log(response)
             console.log(response.data.data)
