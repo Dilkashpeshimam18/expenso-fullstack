@@ -29,7 +29,7 @@ const Leaderboard = () => {
             <ul>
                 {
                     leaderBoardData.map((data) => {
-                        return <li>Name: {data.name} - Total Expense: {data.total_expense}</li>
+                        return <li>Name: {data.name} - Total Expense: {data.total_expense == null ? 0 : data.total_expense}</li>
                     })
                 }
             </ul>
