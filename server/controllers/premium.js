@@ -1,76 +1,39 @@
-const Razorpay = require('razorpay')
-const { randomUUID } = require('crypto')
-const Order = require('../models/order')
+const Expense = require('../models/expense')
+const Users = require('../models/users')
 
-exports.purchasePremium = async (req, res, next) => {
-  try {
+exports.showLeaderboard = async (req, res) => {
+   try {
+      const allExpense = await Expense.findAll()
+      const allUser = await Users.findAll()
+      let map = new Map()
+      let totalExp = new Map()
+      for (let exp of allExpense) {
+         map.set(exp.usersdbId, map.get(exp.usersdbId) + exp.amount || exp.amount)
 
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET
-    })
-
-    const amount = 2500
-    razorpay.orders.create({ amount: amount, currency: 'INR' }, (err, order) => {
-      if (err) {
-        console.log(err)
-        throw new Error(JSON.stringify(err))
       }
+      for (let user of allUser) {
+         if (map.has(user.id)) {
+            totalExp.set(user.name, map.get(user.id))
 
-      req.user.createOrder({ id: randomUUID(), orderId: order.id, status: 'PENDING' }).then(() => {
-        return res.status(200).json({ order, key_id: razorpay.key_id })
+         } else {
+            totalExp.set(user.name, 0)
+         }
+
+      }
+      let leaderBoardData = Array.from(totalExp, ([key, value]) => {
+         return {
+            name: key,
+            total_expense: value
+         }
       })
-        .catch((err) => {
-          console.log(err)
-          throw new Error(err)
-        })
-    })
+      leaderBoardData.sort((a, b) => b.total_expense - a.total_expense)
 
-  } catch (err) {
-    console.log(err)
-    res.status(403).json({ success: false, error: err })
-  }
+      res.status(200).json({ succes: true, data: leaderBoardData })
+   } catch (err) {
+      console.log(err)
+      res.status(500).json({ success: false, err })
 
-}
+   }
 
-exports.updateTransaction = async (req, res) => {
-  try {
-    const { orderId, paymentId, status } = req.body
-
-    if (orderId && status == 'failed') {
-      const paymentDetail = await Order.findOne({ where: { orderId: orderId } })
-      await paymentDetail.update({ status: 'FAILED' })
-      return res.status(500).json({ success: false, error: 'Transaction Fail' })
-    }
-    const paymentDetail = await Order.findOne({ where: { orderId: orderId } })
-
-    const promise1 = paymentDetail.update({ paymentId: paymentId, status: 'SUCCESSFUL' })
-
-    const promise2 = req.user.update({ isPremiumUser: true })
-    await Promise.all([promise1, promise2])
-    return res.status(200).json({ success: true, message: 'Transcation Successful' })
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({ success: false, err })
-  }
-
-}
-
-exports.checkPremium = (req, res) => {
-  try {
-    const user = req.user
-    if (user.isPremiumUser == '1') {
-      return res.status(200).json({ success: true, isPremium: true })
-
-    } else {
-      return res.status(200).json({ success: true, isPremium: false })
-
-    }
-
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({ success: false, err })
-
-  }
 
 }
