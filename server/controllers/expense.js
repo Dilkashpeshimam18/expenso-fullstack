@@ -15,6 +15,9 @@ exports.addExpense = async (req, res) => {
             category: category,
             usersdbId: id
         })
+ 
+            await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount) })
+
         res.status(200).json('EXPENSE ADDED SUCCESSFULLY!')
     } catch (err) {
         console.log(err)
@@ -25,7 +28,6 @@ exports.addExpense = async (req, res) => {
 
 exports.getExpense = async (req, res) => {
     try {
-        console.log('REQUEST USER>>>>', req.user.id)
         const id = req.user.id
         const expenses = await Expense.findAll({ where: { usersdbId: id } })
         res.status(200).json({ expenses, success: true })

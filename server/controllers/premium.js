@@ -6,15 +6,7 @@ exports.showLeaderboard = async (req, res) => {
    try {
 
       const leaderBoardData = await Users.findAll({
-         attributes: ['id', 'name',
-            [sequelize.fn('sum', sequelize.col('amount')), 'total_expense']],
-         include: [
-            {
-               model: Expense,
-               attributes: []
-            }
-         ],
-         group: ['id'],
+         attributes: ['id', 'name','total_expense'],
          order: [['total_expense', 'DESC']]
 
       })

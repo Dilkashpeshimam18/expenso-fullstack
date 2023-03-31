@@ -23,7 +23,11 @@ const Users = sequelize.define('usersdb', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    isPremiumUser: Sequelize.STRING
+    isPremiumUser: Sequelize.STRING,
+    total_expense: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    }
 })
 
 module.exports = Users
