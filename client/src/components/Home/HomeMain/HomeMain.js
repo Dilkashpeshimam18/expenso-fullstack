@@ -8,6 +8,7 @@ import './HomeMain.css'
 import HomePieChart from './Home/HomePieChart/HomePieChart'
 import HomeBar from './Home/HomeBar/HomeBar'
 import { addIncome, getUserIncome, updateUserIncome } from '../../../store/slice/expense-slice'
+import Leaderboard from './Home/HomeLeaderboard/Leaderboard'
 
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
@@ -188,6 +189,12 @@ const HomeMain = () => {
                 isSelected == 'Pie' &&
                 <div className='home__graphContainer'>
                     <HomePieChart chartData={pieData} />
+                </div>
+            }
+            {
+                isSelected == 'Leaderboard' &&
+                <div className='home__graphContainer'>
+                    <Leaderboard />
                 </div>
             }
 
