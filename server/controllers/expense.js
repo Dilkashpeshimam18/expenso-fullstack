@@ -50,6 +50,7 @@ exports.deleteExpense = async (req, res) => {
 
         const exp = await Expense.findByPk(id)
         if (exp.usersdbId == userId) {
+            await req.user.update({total_expense: Number(req.user.total_expense) - Number(exp.amount) })
             await exp.destroy({ transaction: transaction })
             await transaction.commit()
             return res.status(200).json('Deleted Successfully!')
