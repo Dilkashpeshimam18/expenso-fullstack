@@ -18,8 +18,8 @@ app.use(bodyParser.json())
 app.use(cors())
 dotenv.config()
 
-app.use(authRoutes)
-app.use(expenseRoutes)
+app.use('/users',authRoutes)
+app.use('/expense',expenseRoutes)
 app.use('/purchase', purchasePremiumRoutes)
 app.use('/premium',premiumRoutes)
 
