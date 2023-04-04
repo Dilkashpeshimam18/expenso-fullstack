@@ -65,31 +65,32 @@ const Login = () => {
         }
     }
 
-    const handleForgetPassword = async () => {
-        try {
-            if (email != '') {
-                const data = {
-                    requestType: 'PASSWORD_RESET',
-                    email: email
-                }
-                const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
+    // const handleForgetPassword = async () => {
+    //     try {
+    //         // if (email != '') {
+    //         //     const data = {
+    //         //         requestType: 'PASSWORD_RESET',
+    //         //         email: email
+    //         //     }
+    //         //     const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
+    //         //         headers: {
+    //         //             'Content-Type': 'application/json',
 
-                    }
-                })
-                if (res.status == 200) {
-                    alert('Reset password link sent check your email.')
-                }
-                console.log(res)
+    //         //         }
+    //         //     })
+    //         //     if (res.status == 200) {
+    //         //         alert('Reset password link sent check your email.')
+    //         //     }
+    //         //     console.log(res)
 
-            }
+    //         // }
 
 
-        } catch (err) {
-            console.log(err)
-        }
-    }
+
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
     return (
         <div className='login'>
 
@@ -102,7 +103,7 @@ const Login = () => {
                     </div>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Password" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <p className='subLink' onClick={handleForgetPassword} style={{ cursor: 'pointer' }}>Forgot password?</p>
+                      <Link to='/forgot-password'><p className='subLink' style={{ cursor: 'pointer' }}>Forgot password?</p></Link>  
 
                     </div>
 

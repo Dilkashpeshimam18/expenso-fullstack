@@ -7,6 +7,7 @@ import Home from './components/Home/Home';
 import UpdateProfile from './components/UpdateProfile/UpdateProfile';
 import { useSelector } from 'react-redux';
 import Header from './components/Header/Header';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 let isInitial = true
 function App() {
   const [open, setOpen] = useState(false);
@@ -34,6 +35,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/update-profile' element={<UpdateProfile isUpdated={isUpdated} setIsUpdated={setIsUpdated} />} />
       </Routes>
     </div>
