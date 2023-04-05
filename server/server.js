@@ -11,6 +11,7 @@ const purchasePremiumRoutes = require('./routes/purchase')
 const premiumRoutes=require('./routes/premium')
 const passwordRoutes=require('./routes/password')
 const Order = require('./models/order')
+const ForgotPasswordRequests = require('./models/forgotpassword')
 
 const app = express()
 
@@ -31,8 +32,9 @@ Users.hasMany(Expense)
 
 Users.hasMany(Order)
 Order.belongsTo(Users)
+Users.hasMany(ForgotPasswordRequests)
 
-sequelize.sync().then(() => {
+sequelize.sync({force:true}).then(() => {
     app.listen(4000, () => {
         console.log('SERVER RUNNING!!')
     })
