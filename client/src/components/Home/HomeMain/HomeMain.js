@@ -9,6 +9,8 @@ import HomePieChart from './Home/HomePieChart/HomePieChart'
 import HomeBar from './Home/HomeBar/HomeBar'
 import { addIncome, getUserIncome, updateUserIncome } from '../../../store/slice/expense-slice'
 import Leaderboard from './Home/HomeLeaderboard/Leaderboard'
+import ExpenseYearlyGrid from '../../Expenses/ExpenseDataGrid/ExpenseYearlyGrid'
+import ExpenseMonthlyGrid from '../../Expenses/ExpenseDataGrid/ExpenseMonthlyGrid'
 
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
@@ -195,6 +197,14 @@ const HomeMain = () => {
                 isSelected == 'Leaderboard' &&
                 <div className='home__graphContainer'>
                     <Leaderboard />
+                </div>
+            }
+             {
+                isSelected == 'Expenses' &&
+                <div className='home__graphContainer'>
+                    <ExpenseMonthlyGrid />
+                    <ExpenseYearlyGrid/>
+                    
                 </div>
             }
 
