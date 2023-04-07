@@ -119,8 +119,8 @@ exports.updatepassword = async(req, res) => {
     try {
         const { newpassword } = req.query;
         const { resetpasswordid } = req.params;
-        const res=await ForgotPasswordRequests.findOne({ where : { id: resetpasswordid }})
-           const user=await Users.findOne({where: { id : res.userId}})
+        const response=await ForgotPasswordRequests.findOne({ where : { id: resetpasswordid }})
+           const user=await Users.findOne({where: { id : response.userId}})
                 if(user) {
                   console.log('USER IS>>>>>',user)
                     const saltRounds = 10;
