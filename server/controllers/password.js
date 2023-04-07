@@ -2,6 +2,7 @@ const sgMail = require('@sendgrid/mail');
 const uuid = require('uuid');
 const Users = require('../models/users');
 const ForgotPasswordRequests = require('../models/forgotpassword');
+const bcrypt = require('bcrypt');
 
 
 // var defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -83,6 +84,7 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try {
         const requestId = req.params.id
+        console.log('REQUEST IS>>>> ',requestId)
         const resetRequest = await ForgotPasswordRequests.findOne({ where: { id: requestId } })
         if (resetRequest) {
             if (resetRequest.isactive == 1) {
@@ -94,7 +96,7 @@ exports.resetPassword = async (req, res) => {
                     console.log('called')
                 }
             </script>
-            <form action="/password/updatepassword/${id}" method="get">
+            <form action="/password/updatepassword/${requestId}" method="get">
                 <label for="newpassword">Enter New password</label>
                 <input name="newpassword" type="password" required></input>
                 <button>reset password</button>
@@ -107,6 +109,42 @@ exports.resetPassword = async (req, res) => {
 
     } catch (err) {
         console.log(err)
+    }
+
+}
+
+
+exports.updatepassword = async(req, res) => {
+
+    try {
+        const { newpassword } = req.query;
+        const { resetpasswordid } = req.params;
+        const res=await ForgotPasswordRequests.findOne({ where : { id: resetpasswordid }})
+           const user=await Users.findOne({where: { id : res.userId}})
+                if(user) {
+                  console.log('USER IS>>>>>',user)
+                    const saltRounds = 10;
+                    bcrypt.genSalt(saltRounds, function(err, salt) {
+                        if(err){
+                            console.log(err);
+                            throw new Error(err);
+                        }
+                        bcrypt.hash(newpassword, salt, async function(err, hash) {
+                            if(err){
+                                console.log(err);
+                                throw new Error(err);
+                            }
+                           await user.update({ password: hash })
+                           res.status(200).json({ success: true, user: 'Successfully updated password!' })
+
+                        });
+                    });
+            } else{
+                return res.status(404).json({ error: 'No user Exists', success: false})
+            }
+         
+        }catch(error){
+        return res.status(403).json({ error, success: false } )
     }
 
 }
