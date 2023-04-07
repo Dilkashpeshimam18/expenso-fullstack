@@ -1,37 +1,112 @@
-var SibApiV3Sdk = require('sib-api-v3-sdk');
-var defaultClient = SibApiV3Sdk.ApiClient.instance;
+const sgMail = require('@sendgrid/mail');
+const uuid = require('uuid');
+const Users = require('../models/users');
+const ForgotPasswordRequests = require('../models/forgotpassword');
 
-var apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = process.env.SIBEMAIL_APIKEY;
 
-var apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+// var defaultClient = SibApiV3Sdk.ApiClient.instance;
 
-var smtpMailData = new SibApiV3Sdk.SendSmtpEmail();
+// var apiKey = defaultClient.authentications['api-key'];
+// apiKey.apiKey = process.env.SIBEMAIL_APIKEY;
+
+// var apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+// var smtpMailData = new SibApiV3Sdk.SendSmtpEmail();
 
 
 exports.forgotPassword = async (req, res) => {
-    apiKey.apiKey = process.env.SIBEMAIL_APIKEY;
+    // apiKey.apiKey = process.env.SIBEMAIL_APIKEY;
+    sgMail.setApiKey(process.env.SENDGRID_APIKEY);
 
     try {
-        console.log('API_KEY>>>>', apiKey)
-        const email = req.body.email
-        console.log(email)
 
-        const sender = {
-            email: 'dilkashpeshimam@gmail.com'
+        const { email } = req.body
+        const user = await Users.findOne({ where: { email: email } })
+
+
+        if (user) {
+            const id = uuid.v4()
+
+
+            await ForgotPasswordRequests.create({ id, userId: user.id, isactive: true }).catch((err) => {
+                throw new Error(err)
+            })
+            let link = `http://localhost:4000/password/resetpassword/${id}`
+            const msg = {
+                to: email,
+                from: 'dilkashpeshimam@gmail.com',
+                subject: 'Reset Password!',
+                text: `Hi, \n 
+                Please click on the following link ${link} to reset your password. \n\n 
+                If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+            };
+
+
+            sgMail
+                .send(msg)
+                .then((response) => {
+                    console.log('RESPONSE>>>>>', response)
+
+                    return res.status(response[0].statusCode).json({ message: 'Link to reset password sent to your email ', sucess: true })
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                    throw new Error(error);
+                })
+            //     const sender = {
+            //         email: 'dilkashpeshimam@gmail.com'
+            //     }
+            //     smtpMailData.sender = sender
+            //     smtpMailData.to = [{
+            //         email: email,
+            //     }];
+            //     smtpMailData.subject = 'Reset Password!';
+            //     smtpMailData.htmlContent = `<html><body><p>Open below link to Reset Passowrd</p>
+            // <a href="http://localhost:4000/password/resetpassword/${id}">Reset password</a>
+            // </body></html>`;
+            //     const res = await apiInstance.sendTransacEmail(smtpMailData)
+            //     console.log(res)
+
+        } else {
+            throw new Error('User doesnt exist!')
         }
-        smtpMailData.sender = sender
-        smtpMailData.to = [{
-            email: email,
-        }];
-        smtpMailData.subject = 'Reset Password!';
-        smtpMailData.htmlContent = `<html><body><p>Reset Passowrd</p></body></html>`;
-        const res = await apiInstance.sendTransacEmail(smtpMailData)
-        console.log(res)
 
 
     } catch (err) {
         console.log('ERROR IS>>>>>', err)
+        res.status(500).json({ err })
+    }
+
+}
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const requestId = req.params.id
+        const resetRequest = await ForgotPasswordRequests.findOne({ where: { id: requestId } })
+        if (resetRequest) {
+            if (resetRequest.isactive == 1) {
+                ForgotPasswordRequests.update({ isactive: false })
+                res.status(200).send(`<html>
+            <script>
+                function formsubmitted(e){
+                    e.preventDefault();
+                    console.log('called')
+                }
+            </script>
+            <form action="/password/updatepassword/${id}" method="get">
+                <label for="newpassword">Enter New password</label>
+                <input name="newpassword" type="password" required></input>
+                <button>reset password</button>
+            </form>
+        </html>`
+                )
+                res.end()
+            }
+        }
+
+    } catch (err) {
+        console.log(err)
     }
 
 }

@@ -29,12 +29,13 @@ app.use('/password',passwordRoutes)
 Expense.belongsTo(Users, { constraints: true, onDelete: 'CASCADE' })
 Users.hasMany(Expense)
 
-
 Users.hasMany(Order)
 Order.belongsTo(Users)
-Users.hasMany(ForgotPasswordRequests)
 
-sequelize.sync({force:true}).then(() => {
+Users.hasMany(ForgotPasswordRequests)
+ForgotPasswordRequests.belongsTo(Users)
+
+sequelize.sync().then(() => {
     app.listen(4000, () => {
         console.log('SERVER RUNNING!!')
     })

@@ -9,8 +9,8 @@ const ForgotPasswordRequests = sequelize.define('forgotpassword', {
         allowNull: false,
         primaryKey: true
     },
-    userId: Sequelize.STRING,
-    isactive: Sequelize.STRING
+    userId:Sequelize.STRING,
+    isactive: Sequelize.BOOLEAN
 })
 
 module.exports = ForgotPasswordRequests
