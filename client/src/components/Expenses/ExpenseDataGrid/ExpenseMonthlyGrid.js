@@ -51,11 +51,11 @@ export default function ExpenseMonthlyGrid() {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: 10,
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[10]}
         slots={{ toolbar: GridToolbar }}
         sx={{width:'800px',
         padding:'5px',
