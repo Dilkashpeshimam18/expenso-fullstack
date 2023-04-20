@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid,  GridToolbar, } from '@mui/x-data-grid';
-
+import {useSelector} from 'react-redux'
 const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
 
   {
-    field: 'description',
-    headerName: 'Description',
+    field: 'name',
+    headerName: 'Name',
     width: 150,
     editable: true,
   },
@@ -17,15 +17,15 @@ const columns = [
     width: 110,
     editable: true,
   },
-  {
-    field: 'income',
-    headerName: 'Income',
-    width: 160,
-    type:'number'
+  // {
+  //   field: 'income',
+  //   headerName: 'Income',
+  //   width: 160,
+  //   type:'number'
   
-  },
+  // },
   {
-    field: 'expense',
+    field: 'amount',
     headerName: 'Expense',
     width: 160,
     type:'number'
@@ -39,12 +39,14 @@ const rows = [
 ];
 
 export default function ExpenseMonthlyGrid() {
+  const allExpenses = useSelector(state => state.expenses.expenses)
+ console.log(allExpenses)
   return (
     <>
     <h5>Monthly</h5>
         <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={allExpenses}
         columns={columns}
         initialState={{
           pagination: {
@@ -54,9 +56,13 @@ export default function ExpenseMonthlyGrid() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
         slots={{ toolbar: GridToolbar }}
+        sx={{width:'800px',
+        padding:'5px',
+        boxShadow: 2,
+      
+        backgroundColor:'white'
+      }}
 
       />
     </Box>

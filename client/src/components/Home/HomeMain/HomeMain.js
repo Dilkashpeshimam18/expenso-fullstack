@@ -11,6 +11,10 @@ import { addIncome, getUserIncome, updateUserIncome } from '../../../store/slice
 import Leaderboard from './Home/HomeLeaderboard/Leaderboard'
 import ExpenseYearlyGrid from '../../Expenses/ExpenseDataGrid/ExpenseYearlyGrid'
 import ExpenseMonthlyGrid from '../../Expenses/ExpenseDataGrid/ExpenseMonthlyGrid'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
@@ -23,6 +27,11 @@ const HomeMain = () => {
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome') || 0
     })
+    const getInitialState = () => {
+        const value = "Monthly";
+        return value;
+    };
+    const [category, setCategory] = useState(getInitialState)
     const isSelected = useSelector(state => state.dashboard.isSelected)
     const allExpenses = useSelector(state => state.expenses.expenses)
     const dispatch = useDispatch()
@@ -122,6 +131,9 @@ const HomeMain = () => {
         setIncome(e.target.value)
     }
 
+    const handleCategory = (e) => {
+        setCategory(e.target.value);
+    };
     const handleIncome = () => {
         totalExpense = allExpenses.reduce((curr, expense) => {
             return curr + Number(expense.amount)
@@ -199,12 +211,30 @@ const HomeMain = () => {
                     <Leaderboard />
                 </div>
             }
-             {
+            {
                 isSelected == 'Expenses' &&
                 <div className='home__graphContainer'>
-                    <ExpenseMonthlyGrid />
-                    <ExpenseYearlyGrid/>
-                    
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-label"> Expenses</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={category}
+                            label="Category"
+                            onChange={handleCategory}
+                        >
+
+                            <MenuItem value="Monthly">Monthly</MenuItem>
+                            <MenuItem value="Yearly">Yearly</MenuItem>
+
+                        </Select>
+                    </FormControl>
+                    {
+                        category == 'Monthly' ?
+                            <ExpenseMonthlyGrid /> :
+                            <ExpenseYearlyGrid />
+                    }
+
                 </div>
             }
 

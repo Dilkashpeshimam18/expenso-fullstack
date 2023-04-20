@@ -53,9 +53,13 @@ export default function ExpenseYearlyGrid() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
         slots={{ toolbar: GridToolbar }}
+        sx={{width:'800px',
+        padding:'5px',
+        boxShadow: 2,
+      
+        backgroundColor:'white'
+      }}
 
       />
     </Box>
