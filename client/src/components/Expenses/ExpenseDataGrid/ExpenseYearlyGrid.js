@@ -52,7 +52,7 @@ export default function ExpenseYearlyGrid() {
             },
           },
         }}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10,25,50,100]}
         slots={{ toolbar: GridToolbar }}
         sx={{width:'800px',
         padding:'5px',

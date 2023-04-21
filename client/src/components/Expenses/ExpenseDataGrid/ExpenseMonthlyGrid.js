@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid,  GridToolbar, } from '@mui/x-data-grid';
 import {useSelector} from 'react-redux'
@@ -56,7 +56,7 @@ export default function ExpenseMonthlyGrid() {
             },
           },
         }}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10,25,50,100]}
         slots={{ toolbar: GridToolbar }}
         sx={{width:'800px',
         padding:'5px',
