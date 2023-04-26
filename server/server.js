@@ -12,12 +12,20 @@ const premiumRoutes=require('./routes/premium')
 const passwordRoutes=require('./routes/password')
 const Order = require('./models/order')
 const ForgotPasswordRequests = require('./models/forgotpassword')
+const helmet=require('helmet')
+const morgan=require('morgan')
+const fs=require('fs')
+const path = require('path')
 
 const app = express()
-
+const accessLogStream=fs.createWriteStream(path.join(__dirname,'access.log'),{
+    flags:'a'
+})
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
+app.use(helmet())
+app.use(morgan('combined',{stream:accessLogStream}))
 dotenv.config()
 
 app.use('/users',authRoutes)
