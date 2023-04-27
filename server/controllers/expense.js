@@ -18,7 +18,7 @@ exports.addExpense = async (req, res) => {
         }, { transaction: transaction })
 
         await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount) }, { transaction: transaction })
-
+        await req.user.update({remaining_balance:Number(req.user.total_income)-Number(req.user.total_expense)},{ transaction: transaction })
         await transaction.commit()
         res.status(200).json('EXPENSE ADDED SUCCESSFULLY!')
 
@@ -69,6 +69,7 @@ exports.deleteExpense = async (req, res) => {
         const exp = await Expense.findByPk(id)
         if (exp.usersdbId == userId) {
             await req.user.update({ total_expense: Number(req.user.total_expense) - Number(exp.amount) })
+            await req.user.update({remaining_balance:Number(req.user.remaining_balance)+Number(exp.amount)},{ transaction: transaction })
             await exp.destroy({ transaction: transaction })
             await transaction.commit()
             return res.status(200).json('Deleted Successfully!')

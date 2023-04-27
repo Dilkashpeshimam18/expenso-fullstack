@@ -27,6 +27,14 @@ const Users = sequelize.define('usersdb', {
     total_expense: {
         type: Sequelize.INTEGER,
         defaultValue: 0
+    },
+    total_income:{
+        type:Sequelize.INTEGER,
+        defaultValue:0
+    },
+    remaining_balance:{
+        type:Sequelize.INTEGER,
+        defaultValue:0
     }
 })
 
