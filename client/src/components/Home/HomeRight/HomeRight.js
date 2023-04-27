@@ -35,7 +35,7 @@ const HomeRight = () => {
         dispatch(expenseActions.editExpense(ID))
         setAmount(editExp[0].amount)
         setCategory(editExp[0].category)
-        setDesc(editExp[0].description)
+        setDesc(editExp[0].name)
 
     }
     return (

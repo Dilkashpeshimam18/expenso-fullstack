@@ -53,20 +53,14 @@ export const updateExpenseData = (data) => {
     return async () => {
 
         const putRequest = async () => {
-            var email = localStorage.getItem('email')
-            let usermail;
-            if (email != null) {
-                var splitted = email?.split("@");
-                usermail = splitted[0]?.replace(/\./g, "");
-            }
-            if (email != null) {
-                const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}/${data.id}.json`, data.expense)
+            const token = localStorage.getItem('token')
 
-            } else {
-                const response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${data.id}.json`, data.expense)
-
-            }
-
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+            const response = await reqInstance.put(`http://localhost:4000/expense/update-expense/${data.id}`, data.expense)
 
 
         }
@@ -276,7 +270,6 @@ export const getExpenseData = () => {
                 }
             })
             const response = await reqInstance.get('http://localhost:4000/expense/get-expense')
-            console.log(response)
             const data = response.data.expenses
             dispatch(expenseActions.addExpense(data))
 
@@ -296,14 +289,14 @@ export const getExpenseData = () => {
 export const deleteExpenseData = (id) => {
     return async () => {
         const deleteRequest = async () => {
-         console.log(id)
-         const token = localStorage.getItem('token')
+            console.log(id)
+            const token = localStorage.getItem('token')
 
-         let reqInstance = await axios.create({
-            headers: {
-                Authorization: token
-            }
-        })
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
             // let usermail;
             // if (email != null) {
             //     var splitted = email?.split("@");

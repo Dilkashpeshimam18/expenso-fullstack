@@ -7,7 +7,7 @@ import EditIcon from '../../assets/edit.png'
 import DeleteIcon from '../../assets/delete.png'
 import PremiumIcon from '../../assets/premium.png'
 
-const SingleExpense = ({ id, amount, desc, category, handleEdit }) => {
+const SingleExpense = ({ id, amount, name, category, handleEdit }) => {
     const dispatch = useDispatch()
     const theme = useSelector(state => state.theme.theme)
     const userToken = useSelector(state => state.auth.userToken)
@@ -25,7 +25,7 @@ const SingleExpense = ({ id, amount, desc, category, handleEdit }) => {
             <div className='singleExpense__container'>
                 <div className='singleExpense__container1'>
                     <div className='singleExpense__subContainer'>
-                        <p className='singleExpense__subTitle'>{desc}</p>
+                        <p className='singleExpense__subTitle'>{name}</p>
 
                     </div>
 

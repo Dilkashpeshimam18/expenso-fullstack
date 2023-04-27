@@ -131,37 +131,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
                     <Button onClick={handleAddExpenseForm}>ADD</Button>
                 </DialogActions>
             </Dialog>
-            {/* <form onSubmit={handleAddExpenseForm} className="form-container">
-                <div className="allInput">
-                    <div className="form-input">
-                        <h5>ADD EXPENSE</h5>
-                        <input placeholder="Enter expense value..." type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="expense-input" />
-                    </div>
-                    <div className="form-input">
-                        <h5>ADD DESCRIPTION</h5>
-                        <input placeholder="Enter description..." type="text" value={desc} onChange={(e) => setDesc(e.target.value)} className="expense-description" />
-                    </div>
-                    <div className="form-input">
-                        <h5>ADD CATEGORY</h5>
-                        <select className="select-category" id="category" onChange={handleCategory}>
-                            <option value="Food">Food</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Daily Need">Daily Need</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="Accessories">Accessories</option>
-
-
-                        </select>
-
-                    </div>
-                </div>
-
-                <div className="form-input">
-                    <input className="btn" type="submit" value="Add Expense" />
-
-                </div>
-
-            </form> */}
+           
         </div>
     )
 }
