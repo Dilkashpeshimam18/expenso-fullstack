@@ -42,6 +42,24 @@ exports.getExpense = async (req, res) => {
     }
 }
 
+exports.updateExpense = async (req, res) => {
+    try {
+        const { amount, description, category } = req.body
+        const data = req.body
+        const id = req.params.id
+
+        const exp=await Expense.findByPk(id)
+        await exp.update({amount,name:description,category})
+
+        res.status(200).json({ message: 'Update Successfull' })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ success: false, message: err })
+
+    }
+}
+
 exports.deleteExpense = async (req, res) => {
     const transaction = await sequelize.transaction()
     try {
@@ -50,7 +68,7 @@ exports.deleteExpense = async (req, res) => {
 
         const exp = await Expense.findByPk(id)
         if (exp.usersdbId == userId) {
-            await req.user.update({total_expense: Number(req.user.total_expense) - Number(exp.amount) })
+            await req.user.update({ total_expense: Number(req.user.total_expense) - Number(exp.amount) })
             await exp.destroy({ transaction: transaction })
             await transaction.commit()
             return res.status(200).json('Deleted Successfully!')

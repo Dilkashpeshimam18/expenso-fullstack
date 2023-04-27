@@ -84,7 +84,7 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try {
         const requestId = req.params.id
-        console.log('REQUEST IS>>>> ',requestId)
+        console.log('REQUEST IS>>>> ', requestId)
         const resetRequest = await ForgotPasswordRequests.findOne({ where: { id: requestId } })
         if (resetRequest) {
             if (resetRequest.isactive == 1) {
@@ -114,37 +114,37 @@ exports.resetPassword = async (req, res) => {
 }
 
 
-exports.updatepassword = async(req, res) => {
+exports.updatepassword = async (req, res) => {
 
     try {
         const { newpassword } = req.query;
         const { resetpasswordid } = req.params;
-        const response=await ForgotPasswordRequests.findOne({ where : { id: resetpasswordid }})
-           const user=await Users.findOne({where: { id : response.userId}})
-                if(user) {
-                  console.log('USER IS>>>>>',user)
-                    const saltRounds = 10;
-                    bcrypt.genSalt(saltRounds, function(err, salt) {
-                        if(err){
-                            console.log(err);
-                            throw new Error(err);
-                        }
-                        bcrypt.hash(newpassword, salt, async function(err, hash) {
-                            if(err){
-                                console.log(err);
-                                throw new Error(err);
-                            }
-                           await user.update({ password: hash })
-                           res.status(200).json({ success: true, user: 'Successfully updated password!' })
+        const response = await ForgotPasswordRequests.findOne({ where: { id: resetpasswordid } })
+        const user = await Users.findOne({ where: { id: response.userId } })
+        if (user) {
+            console.log('USER IS>>>>>', user)
+            const saltRounds = 10;
+            bcrypt.genSalt(saltRounds, function (err, salt) {
+                if (err) {
+                    console.log(err);
+                    throw new Error(err);
+                }
+                bcrypt.hash(newpassword, salt, async function (err, hash) {
+                    if (err) {
+                        console.log(err);
+                        throw new Error(err);
+                    }
+                    await user.update({ password: hash })
+                    res.status(200).json({ success: true, user: 'Successfully updated password!' })
 
-                        });
-                    });
-            } else{
-                return res.status(404).json({ error: 'No user Exists', success: false})
-            }
-         
-        }catch(error){
-        return res.status(403).json({ error, success: false } )
+                });
+            });
+        } else {
+            return res.status(404).json({ error: 'No user Exists', success: false })
+        }
+
+    } catch (error) {
+        return res.status(403).json({ error, success: false })
     }
 
 }
