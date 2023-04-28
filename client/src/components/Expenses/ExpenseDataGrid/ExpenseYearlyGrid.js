@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid , GridToolbar, } from '@mui/x-data-grid';
+import Pagination from '@mui/material/Pagination';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -45,24 +46,31 @@ export default function ExpenseYearlyGrid() {
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize:10,
-            },
-          },
-        }}
-        pageSizeOptions={[10,25,50,100]}
+        // initialState={{
+        //   pagination: {
+        //     paginationModel: {
+        //       pageSize:10,
+        //     },
+        //   },
+        // }}
+
+
+        // pageSizeOptions={[10,25,50,100]}
         slots={{ toolbar: GridToolbar }}
+        hideFooter={true}
         sx={{width:'800px',
         padding:'5px',
         boxShadow: 2,
-      
         backgroundColor:'white'
       }}
 
       />
     </Box>
+    <div style={{display:'flex', alignItems :'center', marginTop:"20px",justifyContent:'center'}}>
+    <Pagination count={10} variant="outlined" />
+
+    </div>
+
     </>
 
   );

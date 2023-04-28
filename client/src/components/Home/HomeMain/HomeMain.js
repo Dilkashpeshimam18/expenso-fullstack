@@ -36,6 +36,13 @@ const HomeMain = () => {
     const allExpenses = useSelector(state => state.expenses.expenses)
     const dispatch = useDispatch()
     const userEmail = useSelector(state => state.auth.userEmail)
+   const total_income=useSelector(state=>state.income.userIncome)
+   const total_expense=useSelector(state=>state.income.userExpenses)
+   const remaining_balance=useSelector(state=>state.income.userBalance)
+  
+
+   console.log('TOTAL INCOME>>>',total_income)
+   console.log('TOTAL EXPENSE>>>',total_expense)
     let map = new Map()
     let map2 = new Map()
 
@@ -140,22 +147,24 @@ const HomeMain = () => {
         }, 0)
         let userIncome = localStorage.getItem('userIncome')
 
-        if (userIncome && userIncome != undefined && userIncome != null) {
-            if (income != null) {
-                let data = {
-                    id: Income?.id,
-                    income: income
-                }
-                dispatch(updateUserIncome(data))
-            }
+        // if (userIncome && userIncome != undefined && userIncome != null) {
+        //     if (income != null) {
+        //         let data = {
+        //             id: Income?.id,
+        //             income: income
+        //         }
+        //         dispatch(updateUserIncome(data))
+        //     }
 
-        } else {
-            if (income != null) {
-                dispatch(addIncome(income))
-
-            }
+        // } else {
+        
+        // }
+        if (income != null) {
+            console.log('IN HANDLE INCOME!!')
+            dispatch(addIncome(income))
 
         }
+
         localStorage.setItem('totalExpense', totalExpense)
 
         remainingAmount = income - totalExpense;
@@ -172,9 +181,9 @@ const HomeMain = () => {
         <div className='homeMain'>
             <div className='home__subContainer'>
 
-                <HomeSub title='Income' amount={Income?.income} handleClickOpen={handleClickOpen} />
-                <HomeSub title='Expense' remaining={remaining} amount={totalExpense} />
-                <HomeSub title='Remaining' remaining={remaining} amount={remainingAmount} />
+                <HomeSub title='Income' amount={total_income} handleClickOpen={handleClickOpen} />
+                <HomeSub title='Expense' remaining={remaining} amount={total_expense} />
+                <HomeSub title='Remaining' remaining={remaining} amount={remaining_balance} />
             </div>
             {isSelected == 'Dashboard' &&
                 <>
