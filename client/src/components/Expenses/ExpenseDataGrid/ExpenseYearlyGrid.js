@@ -46,18 +46,18 @@ export default function ExpenseYearlyGrid() {
       <DataGrid
         rows={rows}
         columns={columns}
-        // initialState={{
-        //   pagination: {
-        //     paginationModel: {
-        //       pageSize:10,
-        //     },
-        //   },
-        // }}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize:10,
+            },
+          },
+        }}
 
 
-        // pageSizeOptions={[10,25,50,100]}
+        pageSizeOptions={[10,25,50,100]}
         slots={{ toolbar: GridToolbar }}
-        hideFooter={true}
+        // hideFooter={true}
         sx={{width:'800px',
         padding:'5px',
         boxShadow: 2,
@@ -75,3 +75,47 @@ export default function ExpenseYearlyGrid() {
 
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

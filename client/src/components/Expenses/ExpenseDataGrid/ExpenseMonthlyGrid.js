@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux'
 import Pagination from '@mui/material/Pagination';
-
+import axios from 'axios';
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
 
@@ -41,8 +41,27 @@ const rows = [
 ];
 
 export default function ExpenseMonthlyGrid() {
+  const [page, setPage] = useState(1)
+  const [rowPerPage, setRowPerPage] = useState(5)
+  
+  const handlePageChanged = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      let reqInstance = await axios.create({
+        headers: {
+          Authorization: token
+        }
+      })
+      const res = await reqInstance.get(`http://localhost:4000/expense/get-monthlyexpenses?page=${page}`)
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   const allExpenses = useSelector(state => state.expenses.expenses)
   console.log(allExpenses)
+
   return (
     <>
       <h5>Monthly</h5>
@@ -50,16 +69,16 @@ export default function ExpenseMonthlyGrid() {
         <DataGrid
           rows={allExpenses}
           columns={columns}
-          // initialState={{
-          //   pagination: {
-          //     paginationModel: {
-          //       pageSize: 10,
-          //     },
-          //   },
-          // }}
-          // pageSizeOptions={[10,25,50,100]}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          pageSizeOptions={[10,25,50,100]}
           slots={{ toolbar: GridToolbar }}
-          hideFooter={true}
+          // hideFooter={true}
           sx={{
             width: '800px',
             padding: '5px',
@@ -70,8 +89,8 @@ export default function ExpenseMonthlyGrid() {
 
         />
       </Box>
-      <div style={{display:'flex', alignItems :'center',justifyContent:'center', marginTop:"20px"}}>
-        <Pagination count={10} variant="outlined" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: "20px" }}>
+        <Pagination count={10} variant="outlined" onChange={handlePageChanged} />
 
       </div>
 

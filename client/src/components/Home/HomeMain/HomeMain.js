@@ -19,11 +19,11 @@ import Select from '@mui/material/Select';
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
     const [open, setOpen] = useState(false);
+    const [editIncome, setEditIncome] = useState(false)
     const [income, setIncome] = useState(() => {
         return 0 || localStorage.getItem('userIncome')
     })
     const [inputIncome, setInputIncome] = useState(0)
-    const Income = JSON.parse(localStorage.getItem('userIncome'))
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome') || 0
     })
@@ -36,13 +36,10 @@ const HomeMain = () => {
     const allExpenses = useSelector(state => state.expenses.expenses)
     const dispatch = useDispatch()
     const userEmail = useSelector(state => state.auth.userEmail)
-   const total_income=useSelector(state=>state.income.userIncome)
-   const total_expense=useSelector(state=>state.income.userExpenses)
-   const remaining_balance=useSelector(state=>state.income.userBalance)
-  
+    const total_income = useSelector(state => state.income.userIncome)
+    const total_expense = useSelector(state => state.income.userExpenses)
+    const remaining_balance = useSelector(state => state.income.userBalance)
 
-   console.log('TOTAL INCOME>>>',total_income)
-   console.log('TOTAL EXPENSE>>>',total_expense)
     let map = new Map()
     let map2 = new Map()
 
@@ -69,8 +66,9 @@ const HomeMain = () => {
         }]
     }
 
+    console.log('EXPENSES>>>',allExpenses)
     for (let exp of allExpenses) {
-        let desc = exp?.description?.toLowerCase()
+        let desc = exp?.name?.toLowerCase()
         let amount = Number(exp?.amount)
         map2.set(desc, map2.get(desc) + amount || amount)
     }
@@ -87,7 +85,7 @@ const HomeMain = () => {
     let balance = localStorage.getItem('remainingBalance') || 0
     let remainingAmount = balance;
 
-    remainingAmount = Income?.income - totalExpense;
+    // remainingAmount = Income?.income - totalExpense;
 
 
 
@@ -126,6 +124,10 @@ const HomeMain = () => {
         setOpen(true);
 
     };
+    const handleEditIncome = () => {
+        setOpen(true);
+        setEditIncome(true)
+    }
 
     const handleClose = () => {
         setOpen(false);
@@ -145,43 +147,46 @@ const HomeMain = () => {
         totalExpense = allExpenses.reduce((curr, expense) => {
             return curr + Number(expense.amount)
         }, 0)
-        let userIncome = localStorage.getItem('userIncome')
 
-        // if (userIncome && userIncome != undefined && userIncome != null) {
-        //     if (income != null) {
-        //         let data = {
-        //             id: Income?.id,
-        //             income: income
-        //         }
-        //         dispatch(updateUserIncome(data))
-        //     }
-
-        // } else {
-        
-        // }
         if (income != null) {
-            console.log('IN HANDLE INCOME!!')
             dispatch(addIncome(income))
 
         }
+
+        localStorage.setItem('userIncome', income)
 
         localStorage.setItem('totalExpense', totalExpense)
 
         remainingAmount = income - totalExpense;
         localStorage.setItem('remainingBalance', remainingAmount)
+        dispatch(getUserIncome())
         handleClose()
     }
 
 
+    const editUserIncome = () => {
+        console.log('IN UPDATE INCOME')
+        dispatch(updateUserIncome(income))
+        totalExpense = allExpenses.reduce((curr, expense) => {
+            return curr + Number(expense.amount)
+        }, 0)
+        remainingAmount = income - totalExpense;
+        localStorage.setItem('remainingBalance', remainingAmount)
+        dispatch(getUserIncome())
+
+        handleClose()
+    }
+
     useEffect(() => {
         dispatch(getUserIncome())
 
-    }, [])
+    }, [dispatch])
+
     return (
         <div className='homeMain'>
             <div className='home__subContainer'>
 
-                <HomeSub title='Income' amount={total_income} handleClickOpen={handleClickOpen} />
+                <HomeSub title='Income' amount={total_income} handleClickOpen={handleClickOpen} handleEditIncome={handleEditIncome} />
                 <HomeSub title='Expense' remaining={remaining} amount={total_expense} />
                 <HomeSub title='Remaining' remaining={remaining} amount={remaining_balance} />
             </div>
@@ -247,7 +252,7 @@ const HomeMain = () => {
                 </div>
             }
 
-            <IncomeModal handleClose={handleClose} open={open} handleIncome={handleIncome} handleChange={handleChange} />
+            <IncomeModal income={income} total_income={total_income} handleClose={handleClose} editIncome={editIncome} open={open} handleIncome={handleIncome} handleChange={handleChange} editUserIncome={editUserIncome} />
         </div>
     )
 }

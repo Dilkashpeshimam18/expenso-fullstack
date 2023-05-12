@@ -5,7 +5,6 @@ import { modalActions } from '../../../../store/slice/modal-slice'
 import { useDispatch, useSelector } from 'react-redux'
 const HomeRightBottom = () => {
     const userToken = useSelector(state => state.auth.userToken)
-    const userEmail = useSelector(state => state.auth.userEmail)
     const theme = useSelector(state => state.theme.theme)
 
     const dispatch = useDispatch()
@@ -24,7 +23,11 @@ const HomeRightBottom = () => {
             {
                 userToken ? (
                     <div className='homeRightBottom__container2'>
-                        <button onClick={handleOpen} className='homeRightBottom__button'>ADD NEW</button>
+                        {
+                            localStorage.getItem('userIncome') > 0 ?
+                                <button onClick={handleOpen} className='homeRightBottom__button'>ADD NEW</button> :
+                                <button onClick={()=>alert('You need to add your income first.')} className='homeRightBottom__button'>ADD NEW</button>
+                        }
 
                     </div>
                 ) : (

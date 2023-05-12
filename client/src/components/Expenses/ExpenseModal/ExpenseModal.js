@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { expenseActions } from '../../../store/slice/expense-slice'
 import { modalActions } from '../../../store/slice/modal-slice'
 import { updateExpenseData, postExpenseData, getExpenseData } from '../../../store/slice/expense-slice'
+import {getUserIncome} from '../../../store/slice/income-slice'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -23,8 +24,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
     const isNew = useSelector(state => state.modal.addNew)
-    const userEmail = useSelector(state => state.auth.userEmail)
-    const userId = useSelector(state => state.auth.userToken)
+
 
     const handleAddExpenseForm = (e) => {
         e.preventDefault();
@@ -48,6 +48,8 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
 
             dispatch(expenseActions.isNotEditExpense())
             dispatch(getExpenseData())
+            dispatch(getUserIncome())
+
 
 
         } else {
@@ -58,10 +60,13 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
             }
             dispatch(postExpenseData(data))
 
+
             setAmount(0)
             setDesc('')
             setCategory(getInitialState)
             dispatch(getExpenseData())
+            dispatch(getUserIncome())
+
 
         }
 

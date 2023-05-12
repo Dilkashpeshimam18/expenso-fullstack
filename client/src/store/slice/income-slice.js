@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { expenseActions } from "./expense-slice";
 const initialIncomeState = {
-    userIncome: localStorage.getItem('userIncome') ||0,
+    userIncome: localStorage.getItem('userIncome') || 0,
     userExpenses: localStorage.getItem('userExpenses') || 0,
     userBalance: localStorage.getItem('userBalance') || 0
 }
@@ -32,8 +32,6 @@ export const addIncome = (income) => {
                 }
             })
 
-            console.log('IN ADD INCOME')
-            console.log('INCOME>>>', income)
             const data = {
                 income: income
             }
@@ -42,7 +40,11 @@ export const addIncome = (income) => {
             console.log(response)
         }
         try {
-            await addInc()
+            await addInc().then(() => {
+                getUserIncome()
+                alert('Added income!')
+
+            })
         } catch (err) {
             console.log(err)
         }
@@ -64,16 +66,18 @@ export const getUserIncome = () => {
 
             let response = await reqInstance.get('http://localhost:4000/income/get-userDetail')
             console.log(response)
-            let data = response.data.message
+            let data = response.data.data
             const details = {
                 total_income: data.total_income,
                 total_expense: data.total_expense,
                 remaining_balance: data.remaining_balance
             }
-            dispatch(incomeAction.handlAddDetails(details))
-            localStorage.setItem('userIncome',data.total_income)
-            localStorage.setItem('userExpenses',data.total_expense)
-            localStorage.setItem('userBalance',data.remaining_balance)
+
+            console.log('USER DETAIL>>>', details)
+            await dispatch(incomeAction.handlAddDetails(details))
+            localStorage.setItem('userIncome', data.total_income)
+            localStorage.setItem('userExpenses', data.total_expense)
+            localStorage.setItem('userBalance', data.remaining_balance)
             // let res = response.data
             // if (res == null) {
             //     localStorage.setItem('userIncome', 0)
@@ -105,28 +109,34 @@ export const getUserIncome = () => {
 export const updateUserIncome = (data) => {
     return async (dispatch) => {
         const updateIncome = async () => {
-            let response;
-            var email = localStorage.getItem('email')
-            let usermail;
-            if (email != null) {
-                var splitted = email?.split("@");
-                usermail = splitted[0]?.replace(/\./g, "");
+
+
+            const token = localStorage.getItem('token')
+
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            console.log(data)
+            const newIncome = {
+                income: data
             }
-            if (email != null) {
-                response = await axios.put(`https://clone-e78d9-default-rtdb.firebaseio.com/income/${usermail}/${data.id}.json`, data.income)
-                localStorage.setItem('userIncome', JSON.stringify(data))
 
-                dispatch(expenseActions.handleAddIncome(data))
+            const response = await reqInstance.post('http://localhost:4000/income/edit-income', newIncome)
 
-            } else {
-                response = await axios.put('https://clone-e78d9-default-rtdb.firebaseio.com/income.json', data.income)
+            console.log(response)
 
-            }
+            localStorage.setItem('userIncome', JSON.stringify(Number(data)))
+
+            // dispatch(expenseActions.handleAddIncome(data))
         }
 
         try {
             await updateIncome().then(() => {
                 getUserIncome()
+                alert('Updated income!')
             })
 
         } catch (err) {

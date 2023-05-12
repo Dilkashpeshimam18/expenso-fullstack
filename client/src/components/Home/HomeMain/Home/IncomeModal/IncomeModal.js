@@ -7,17 +7,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const IncomeModal = ({ handleClose, open, income, setIncome, handleIncome, handleChange }) => {
-
+const IncomeModal = ({ handleClose, open, income, handleIncome, handleChange, editIncome, total_income, handleEditIncome, editUserIncome }) => {
     return (
         <div>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>ADD INCOME</DialogTitle>
+                {editIncome ? <DialogTitle>Edit INCOME</DialogTitle>
+                    : <DialogTitle>ADD INCOME</DialogTitle>
+                }
                 <DialogContent>
-                    <DialogContentText>
-                        Enter you income.
-                    </DialogContentText>
-                    <TextField
+                    {editIncome ? <DialogContentText>
+                        Edit your income.
+                    </DialogContentText> : <DialogContentText>
+                        Enter your income.
+                    </DialogContentText>}
+                    {editIncome ? <TextField
                         autoFocus
                         margin="dense"
                         id="name"
@@ -26,14 +29,32 @@ const IncomeModal = ({ handleClose, open, income, setIncome, handleIncome, handl
                         fullWidth
                         variant="standard"
                         onChange={handleChange}
+                        value={editIncome && income}
                         InputProps={{
                             inputProps: { min: 0 }
                         }}
-                    />
+                    /> : <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Income"
+                        type="number"
+                        fullWidth
+                        variant="standard"
+                        onChange={handleChange}
+
+                        InputProps={{
+                            inputProps: { min: 0 }
+                        }}
+                    />}
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleIncome}>ADD INCOME</Button>
+                    {editIncome ? <Button onClick={editUserIncome}>EDIT INCOME</Button> :
+                        <Button onClick={handleIncome}>ADD INCOME</Button>
+
+                    }
                 </DialogActions>
             </Dialog>
         </div>

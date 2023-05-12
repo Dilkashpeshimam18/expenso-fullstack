@@ -48,7 +48,6 @@ export const checkPremiumUser=()=>{
             })
 
             const premium=await reqInstance.get('http://localhost:4000/purchase/checkpremium')
-            console.log(premium)
             const isPremium=premium.data.isPremium
             if(isPremium==true){
                 localStorage.setItem('isPremiumUser', true)
