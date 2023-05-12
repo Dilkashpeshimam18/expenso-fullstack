@@ -17,8 +17,8 @@ exports.addExpense = async (req, res) => {
             usersdbId: id
         }, { transaction: transaction })
 
-        await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount) }, { transaction: transaction })
-        await req.user.update({remaining_balance:Number(req.user.total_income)-Number(req.user.total_expense)},{ transaction: transaction })
+        await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount)},{ transaction: transaction })
+        await req.user.update({ remaining_balance: Number(req.user.total_income) - Number(req.user.total_expense) }, { transaction: transaction })
         await transaction.commit()
         res.status(200).json('EXPENSE ADDED SUCCESSFULLY!')
 
@@ -48,8 +48,8 @@ exports.updateExpense = async (req, res) => {
         const data = req.body
         const id = req.params.id
 
-        const exp=await Expense.findByPk(id)
-        await exp.update({amount,name:description,category})
+        const exp = await Expense.findByPk(id)
+        await exp.update({ amount, name: description, category })
 
         res.status(200).json({ message: 'Update Successfull' })
 
@@ -69,7 +69,7 @@ exports.deleteExpense = async (req, res) => {
         const exp = await Expense.findByPk(id)
         if (exp.usersdbId == userId) {
             await req.user.update({ total_expense: Number(req.user.total_expense) - Number(exp.amount) })
-            await req.user.update({remaining_balance:Number(req.user.remaining_balance)+Number(exp.amount)},{ transaction: transaction })
+            await req.user.update({ remaining_balance: Number(req.user.remaining_balance) + Number(exp.amount) }, { transaction: transaction })
             await exp.destroy({ transaction: transaction })
             await transaction.commit()
             return res.status(200).json('Deleted Successfully!')
@@ -84,5 +84,24 @@ exports.deleteExpense = async (req, res) => {
     } catch (err) {
         transaction.rollback()
         res.status(500).json({ success: false, message: err })
+    }
+}
+
+exports.getMontlyExpense = async (req, res) => {
+    const expensePerPage = 2
+    let total_expense;
+    try {
+        const page = req.query.page || 1
+        const total = await Expense.count()
+        console.log('COUNT OF EXPENSE>>>>', total)
+        total_expense = total
+        const expense = await Expense.findAll({
+            offset: (page - 1) * expensePerPage,
+            limit: expensePerPage
+        })
+         console.log('Expense>>>>',expense)
+        res.status(200).json({expense,lastPage:Math.ceil(total_expense/expensePerPage)})
+    } catch (err) {
+        console.log(err)
     }
 }
