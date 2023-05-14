@@ -6,8 +6,7 @@ const initialExpenseState = {
     expenses: [],
     isEdit: false,
     isfetching: false,
-    userIncome: localStorage.getItem('userIncome') || 0
-
+    userIncome: localStorage.getItem('userIncome') || 0,
 
 }
 
@@ -44,7 +43,8 @@ const ExpenseSlice = createSlice({
         },
         handleAddIncome(state, action) {
             state.userIncome = action.payload
-        }
+        },
+        
 
     }
 })
@@ -88,26 +88,15 @@ export const postExpenseData = (expense) => {
                     Authorization: token
                 }
             })
-            // let usermail;
-            // if (email != null) {
-            //     var splitted = email?.split("@");
-            //     usermail = splitted[0]?.replace(/\./g, "");
-            // }
-            // if (email != null) {
-            //     const response = await axios.post(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`, expense)
-
-            // } else {
-            //     const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', expense)
-
-            // }
+       
             const d = new Date();
             let month = d.toLocaleString('default', { month: 'long' });;
             const response = await reqInstance.post('http://localhost:4000/expense/add-expense', expense)
-            const data={
-                expense:Number(expense.amount),
-                month:month
+            const data = {
+                expense: Number(expense.amount),
+                month: month
             }
-            await reqInstance.post('http://localhost:4000/expense/add-yealyexpense',data)
+            await reqInstance.post('http://localhost:4000/expense/add-yealyexpense', data)
 
 
         }
@@ -132,37 +121,8 @@ export const postExpenseData = (expense) => {
 export const getExpenseData = () => {
     return async (dispatch, state) => {
         const getRequest = async () => {
-            // let response;
             const token = localStorage.getItem('token')
-            // let usermail;
-            // if (email != null) {
-            //     var splitted = email?.split("@");
-            //     usermail = splitted[0]?.replace(/\./g, "");
-            // }
-            // if (email != null) {
-            //     response = await axios.get(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}.json`)
-
-            // } else {
-            //     response = await axios.get('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json')
-
-            // }
-
-
-
-            // if (response.status == 200) {
-            //     let res = response.data
-            //     let data = []
-            //     for (let key in res) {
-            //         data.push({
-            //             id: key,
-            //             description: res[key].description,
-            //             amount: res[key].amount,
-            //             category: res[key].category
-            //         })
-            //     }
-
-
-            // }
+       
             let reqInstance = await axios.create({
                 headers: {
                     Authorization: token
@@ -196,20 +156,9 @@ export const deleteExpenseData = (id) => {
                     Authorization: token
                 }
             })
-            // let usermail;
-            // if (email != null) {
-            //     var splitted = email?.split("@");
-            //     usermail = splitted[0]?.replace(/\./g, "");
-            // }
-            // if (email != null) {
-            //     const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses/${usermail}/${id}.json`)
 
-            // } else {
-            //     const response = await axios.delete(`https://clone-e78d9-default-rtdb.firebaseio.com/expenses${id}.json`)
-
-            // }
             const response = await reqInstance.delete(`http://localhost:4000/expense/delete-expense/${id}`)
-            console.log(response)
+
 
         }
         try {
@@ -224,6 +173,8 @@ export const deleteExpenseData = (id) => {
         }
     }
 }
+
+
 
 export const expenseActions = ExpenseSlice.actions
 export default ExpenseSlice.reducer

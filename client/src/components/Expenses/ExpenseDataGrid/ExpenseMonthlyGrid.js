@@ -20,13 +20,7 @@ const columns = [
     width: 110,
     editable: true,
   },
-  // {
-  //   field: 'income',
-  //   headerName: 'Income',
-  //   width: 160,
-  //   type:'number'
 
-  // },
   {
     field: 'amount',
     headerName: 'Expense',
@@ -36,10 +30,6 @@ const columns = [
   },
 ];
 
-const rows = [
-  { id: 1, description: 'Imagica', category: 'Entertainment', income: 20000, expense: 1000, savings: 19000 },
-
-];
 
 export default function ExpenseMonthlyGrid() {
   const [page, setPage] = useState(1)
@@ -61,7 +51,6 @@ export default function ExpenseMonthlyGrid() {
     }
   }
   const allExpenses = useSelector(state => state.expenses.expenses)
-  console.log(allExpenses)
 
   return (
     <>

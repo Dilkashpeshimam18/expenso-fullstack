@@ -35,10 +35,10 @@ const HomeMain = () => {
     const isSelected = useSelector(state => state.dashboard.isSelected)
     const allExpenses = useSelector(state => state.expenses.expenses)
     const dispatch = useDispatch()
-    const userEmail = useSelector(state => state.auth.userEmail)
     const total_income = useSelector(state => state.income.userIncome)
     const total_expense = useSelector(state => state.income.userExpenses)
     const remaining_balance = useSelector(state => state.income.userBalance)
+    const yearlyExpenseData = useSelector(state => state.expenses.yearlyExpense)
 
     let map = new Map()
     let map2 = new Map()
@@ -66,7 +66,7 @@ const HomeMain = () => {
         }]
     }
 
-  for (let exp of allExpenses) {
+    for (let exp of allExpenses) {
         let desc = exp?.name?.toLowerCase()
         let amount = Number(exp?.amount)
         map2.set(desc, map2.get(desc) + amount || amount)
@@ -118,6 +118,7 @@ const HomeMain = () => {
             ],
         }]
     }
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -180,6 +181,8 @@ const HomeMain = () => {
         dispatch(getUserIncome())
 
     }, [dispatch])
+
+
 
     return (
         <div className='homeMain'>

@@ -142,3 +142,19 @@ exports.addYearlyExpense = async (req, res) => {
 
     }
 }
+
+exports.getYearlyExpense=async(req,res)=>{
+    try{
+        const id=req.user.id
+        const yearlyExpenses=await YearlyExpense.findAll({where:{
+            usersdbId:id
+        }})
+
+        console.log('YEARLY EXPENSE>>>>>>>',yearlyExpenses)
+        res.status(200).json({ success: true,data:yearlyExpenses })
+
+    }catch(err){
+        console.log(err)
+        res.status(500).json({success:false,message:err})
+    }
+}
