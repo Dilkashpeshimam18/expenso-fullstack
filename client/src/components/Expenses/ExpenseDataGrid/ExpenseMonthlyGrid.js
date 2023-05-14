@@ -4,6 +4,7 @@ import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux'
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
+
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
 
@@ -42,7 +43,7 @@ const rows = [
 
 export default function ExpenseMonthlyGrid() {
   const [page, setPage] = useState(1)
-  const [rowPerPage, setRowPerPage] = useState(5)
+  const [rowPerPage, setRowPerPage] = useState(2)
   
   const handlePageChanged = async () => {
     try {
@@ -53,7 +54,7 @@ export default function ExpenseMonthlyGrid() {
           Authorization: token
         }
       })
-      const res = await reqInstance.get(`http://localhost:4000/expense/get-monthlyexpenses?page=${page}`)
+      const res = await reqInstance.get(`http://localhost:4000/expense/get-monthlyexpenses?page=${page}&pageSize=${rowPerPage}`)
       console.log(res)
     } catch (err) {
       console.log(err)
@@ -72,7 +73,7 @@ export default function ExpenseMonthlyGrid() {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10,
+                pageSize: 5,
               },
             },
           }}
@@ -89,10 +90,10 @@ export default function ExpenseMonthlyGrid() {
 
         />
       </Box>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: "20px" }}>
+      {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: "20px" }}>
         <Pagination count={10} variant="outlined" onChange={handlePageChanged} />
 
-      </div>
+      </div> */}
 
     </>
 

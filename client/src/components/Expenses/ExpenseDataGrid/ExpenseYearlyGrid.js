@@ -49,7 +49,7 @@ export default function ExpenseYearlyGrid() {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize:10,
+              pageSize:5,
             },
           },
         }}
@@ -66,10 +66,10 @@ export default function ExpenseYearlyGrid() {
 
       />
     </Box>
-    <div style={{display:'flex', alignItems :'center', marginTop:"20px",justifyContent:'center'}}>
+    {/* <div style={{display:'flex', alignItems :'center', marginTop:"20px",justifyContent:'center'}}>
     <Pagination count={10} variant="outlined" />
 
-    </div>
+    </div> */}
 
     </>
 

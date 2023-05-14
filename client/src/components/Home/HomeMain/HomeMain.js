@@ -66,8 +66,7 @@ const HomeMain = () => {
         }]
     }
 
-    console.log('EXPENSES>>>',allExpenses)
-    for (let exp of allExpenses) {
+  for (let exp of allExpenses) {
         let desc = exp?.name?.toLowerCase()
         let amount = Number(exp?.amount)
         map2.set(desc, map2.get(desc) + amount || amount)
@@ -111,7 +110,7 @@ const HomeMain = () => {
         datasets: [{
             barThickness: 40,
             label: 'Income vs Expense vs Balance',
-            data: [userIncome, totalExpense, remainingAmount],
+            data: [userIncome, totalExpense, remaining_balance],
             backgroundColor: [
                 'rgb(1, 140, 140)',
                 'rgb(54, 162, 235)',

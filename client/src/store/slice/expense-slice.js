@@ -100,9 +100,14 @@ export const postExpenseData = (expense) => {
             //     const response = await axios.post('https://clone-e78d9-default-rtdb.firebaseio.com/expenses.json', expense)
 
             // }
-
+            const d = new Date();
+            let month = d.toLocaleString('default', { month: 'long' });;
             const response = await reqInstance.post('http://localhost:4000/expense/add-expense', expense)
-            console.log(response)
+            const data={
+                expense:Number(expense.amount),
+                month:month
+            }
+            await reqInstance.post('http://localhost:4000/expense/add-yealyexpense',data)
 
 
         }
