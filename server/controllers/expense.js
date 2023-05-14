@@ -1,6 +1,7 @@
 const Expense = require('../models/expense')
 const { randomUUID } = require('crypto')
 const sequelize = require('../utils/db')
+const YearlyExpense = require('../models/yearlyexpense')
 
 exports.addExpense = async (req, res) => {
     const transaction = await sequelize.transaction()
@@ -17,7 +18,7 @@ exports.addExpense = async (req, res) => {
             usersdbId: id
         }, { transaction: transaction })
 
-        await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount)},{ transaction: transaction })
+        await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount) }, { transaction: transaction })
         await req.user.update({ remaining_balance: Number(req.user.total_income) - Number(req.user.total_expense) }, { transaction: transaction })
         await transaction.commit()
         res.status(200).json('EXPENSE ADDED SUCCESSFULLY!')
@@ -93,15 +94,51 @@ exports.getMontlyExpense = async (req, res) => {
     try {
         const page = req.query.page || 1
         const total = await Expense.count()
-        console.log('COUNT OF EXPENSE>>>>', total)
         total_expense = total
         const expense = await Expense.findAll({
             offset: (page - 1) * expensePerPage,
             limit: expensePerPage
         })
-         console.log('Expense>>>>',expense)
-        res.status(200).json({expense,lastPage:Math.ceil(total_expense/expensePerPage)})
+        res.status(200).json({ expense, lastPage: Math.ceil(total_expense / expensePerPage) })
     } catch (err) {
         console.log(err)
+        res.status(500).json({ success: false, message: err })
+
+    }
+}
+
+exports.addYearlyExpense = async (req, res) => {
+    try {
+        const user = req.user
+        const data = req.body
+        console.log('Yearly data>>>', data)
+
+        const getMonthData=await YearlyExpense.findOne({
+            where:{
+                month:'May',
+                usersdbId:user.id
+            }
+        })
+        console.log('GETTING MONTH DATA>>>',getMonthData)
+        if(getMonthData==null){
+            const yearlyData = await YearlyExpense.create({
+                id: randomUUID(),
+                month: data.month,
+                expense: data.expense,
+                usersdbId:user.id
+    
+            })
+            console.log(yearlyData)
+
+        }else{
+            await getMonthData.update({expense:getMonthData.expense+data.expense})
+
+        }
+  
+        res.status(200).json({ success: true,data:'Added yearly expense' })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ success: false, message: err })
+
     }
 }

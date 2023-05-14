@@ -17,6 +17,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const fs = require('fs')
 const path = require('path')
+const YearlyExpense = require('./models/yearlyexpense')
 
 const app = express()
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
@@ -44,6 +45,9 @@ Order.belongsTo(Users)
 
 Users.hasMany(ForgotPasswordRequests)
 ForgotPasswordRequests.belongsTo(Users)
+
+YearlyExpense.belongsTo(Users, { constraints: true, onDelete: 'CASCADE' })
+Users.hasMany(YearlyExpense)
 
 sequelize.sync().then(() => {
     app.listen(4000, () => {
