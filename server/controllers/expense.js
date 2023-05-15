@@ -46,12 +46,23 @@ exports.getExpense = async (req, res) => {
 exports.updateExpense = async (req, res) => {
     try {
         const { amount, description, category } = req.body
-        const data = req.body
+        const userId = req.user.id
         const id = req.params.id
 
-        const exp = await Expense.findByPk(id)
-        await exp.update({ amount, name: description, category })
+        const getMonthData = await YearlyExpense.findOne({
+            where: {
+                month: 'May',
+                usersdbId: userId
+            }
+        })
 
+        const exp = await Expense.findByPk(id)
+
+        if (getMonthData != null) {
+            await getMonthData.update({ expense: getMonthData.expense - Number(exp.amount) })
+            await getMonthData.update({ expense: getMonthData.expense + Number(amount) })
+        }
+        await exp.update({ amount, name: description, category })
         res.status(200).json({ message: 'Update Successfull' })
 
     } catch (err) {
@@ -63,13 +74,24 @@ exports.updateExpense = async (req, res) => {
 
 exports.deleteExpense = async (req, res) => {
     const transaction = await sequelize.transaction()
+
     try {
         const id = req.params.id
         const userId = req.user.id
 
         const exp = await Expense.findByPk(id)
         if (exp.usersdbId == userId) {
-            await req.user.update({ total_expense: Number(req.user.total_expense) - Number(exp.amount) })
+
+            const getMonthData = await YearlyExpense.findOne({
+                where: {
+                    month: 'May',
+                    usersdbId: userId
+                }
+            })
+            if (getMonthData != null) {
+                await getMonthData.update({ expense: getMonthData.expense - exp.amount }, { transaction: transaction })
+            }
+            await req.user.update({ total_expense: Number(req.user.total_expense) - Number(exp.amount) }, { transaction: transaction })
             await req.user.update({ remaining_balance: Number(req.user.remaining_balance) + Number(exp.amount) }, { transaction: transaction })
             await exp.destroy({ transaction: transaction })
             await transaction.commit()
@@ -84,7 +106,7 @@ exports.deleteExpense = async (req, res) => {
 
     } catch (err) {
         transaction.rollback()
-        res.status(500).json({ success: false, message: err })
+        res.status(500).json({ success: false, message: 'SOMETHING WENT WRONG' })
     }
 }
 
@@ -108,53 +130,57 @@ exports.getMontlyExpense = async (req, res) => {
 }
 
 exports.addYearlyExpense = async (req, res) => {
+    const transaction = await sequelize.transaction()
+
     try {
         const user = req.user
         const data = req.body
         console.log('Yearly data>>>', data)
 
-        const getMonthData=await YearlyExpense.findOne({
-            where:{
-                month:'May',
-                usersdbId:user.id
+        const getMonthData = await YearlyExpense.findOne({
+            where: {
+                month: 'May',
+                usersdbId: user.id
             }
         })
-        console.log('GETTING MONTH DATA>>>',getMonthData)
-        if(getMonthData==null){
+        if (getMonthData == null) {
             const yearlyData = await YearlyExpense.create({
                 id: randomUUID(),
                 month: data.month,
                 expense: data.expense,
-                usersdbId:user.id
-    
-            })
+                usersdbId: user.id
+
+            }, { transaction: transaction })
             console.log(yearlyData)
+            await transaction.commit()
 
-        }else{
-            await getMonthData.update({expense:getMonthData.expense+data.expense})
-
+        } else {
+            await getMonthData.update({ expense: getMonthData.expense + data.expense }, { transaction: transaction })
+            await transaction.commit()
         }
-  
-        res.status(200).json({ success: true,data:'Added yearly expense' })
+
+        res.status(200).json({ success: true, data: 'Added yearly expense' })
     } catch (err) {
+        transaction.rollback()
         console.log(err)
         res.status(500).json({ success: false, message: err })
 
     }
 }
 
-exports.getYearlyExpense=async(req,res)=>{
-    try{
-        const id=req.user.id
-        const yearlyExpenses=await YearlyExpense.findAll({where:{
-            usersdbId:id
-        }})
+exports.getYearlyExpense = async (req, res) => {
+    try {
+        const id = req.user.id
+        const yearlyExpenses = await YearlyExpense.findAll({
+            where: {
+                usersdbId: id
+            }
+        })
 
-        console.log('YEARLY EXPENSE>>>>>>>',yearlyExpenses)
-        res.status(200).json({ success: true,data:yearlyExpenses })
+        res.status(200).json({ success: true, data: yearlyExpenses })
 
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({success:false,message:err})
+        res.status(500).json({ success: false, message: err })
     }
 }
