@@ -111,17 +111,24 @@ exports.deleteExpense = async (req, res) => {
 }
 
 exports.getMontlyExpense = async (req, res) => {
-    const expensePerPage = 2
-    let total_expense;
+
     try {
-        const page = req.query.page || 1
-        const total = await Expense.count()
+        const id = req.user.id
+        const page = req.query.page
+        const rowPerPage = req.query.rowPerPage
+        const expensePerPage = Number(rowPerPage)
+        let total_expense;
+
+        const total = await Expense.count({ where: { usersdbId: id } })
         total_expense = total
+
         const expense = await Expense.findAll({
+            where: { usersdbId: id },
             offset: (page - 1) * expensePerPage,
             limit: expensePerPage
         })
-        res.status(200).json({ expense, lastPage: Math.ceil(total_expense / expensePerPage) })
+        return res.status(200).json({ expense, lastPage: Math.ceil(total_expense / expensePerPage) })
+
     } catch (err) {
         console.log(err)
         res.status(500).json({ success: false, message: err })
@@ -135,7 +142,6 @@ exports.addYearlyExpense = async (req, res) => {
     try {
         const user = req.user
         const data = req.body
-        console.log('Yearly data>>>', data)
 
         const getMonthData = await YearlyExpense.findOne({
             where: {
@@ -176,7 +182,6 @@ exports.getYearlyExpense = async (req, res) => {
                 usersdbId: id
             }
         })
-
         res.status(200).json({ success: true, data: yearlyExpenses })
 
     } catch (err) {

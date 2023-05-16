@@ -49,33 +49,7 @@ const ExpenseSlice = createSlice({
     }
 })
 
-export const updateExpenseData = (data) => {
-    return async () => {
 
-        const putRequest = async () => {
-            const token = localStorage.getItem('token')
-
-            let reqInstance = await axios.create({
-                headers: {
-                    Authorization: token
-                }
-            })
-            const response = await reqInstance.put(`http://localhost:4000/expense/update-expense/${data.id}`, data.expense)
-
-
-        }
-
-        try {
-            await putRequest().then(() => {
-                getExpenseData()
-                alert('Updated Successfully!')
-            })
-
-        } catch (err) {
-            console.log(err)
-        }
-    }
-}
 export const postExpenseData = (expense) => {
     return async (state) => {
 
@@ -145,9 +119,38 @@ export const getExpenseData = () => {
     }
 }
 
+export const updateExpenseData = (data) => {
+    return async () => {
+
+        const putRequest = async () => {
+            const token = localStorage.getItem('token')
+
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+            const response = await reqInstance.put(`http://localhost:4000/expense/update-expense/${data.id}`, data.expense)
+
+
+        }
+
+        try {
+            await putRequest().then(() => {
+                getExpenseData()
+                alert('Updated Successfully!')
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+
 export const deleteExpenseData = (id) => {
     return async () => {
         const deleteRequest = async () => {
+            console.log('IN DELETE EXPENSE FUNCTION')
             console.log(id)
             const token = localStorage.getItem('token')
 

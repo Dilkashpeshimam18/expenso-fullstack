@@ -1,7 +1,6 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
-import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -21,13 +20,9 @@ const columns = [
 
 ];
 
-const rows = [
-  { id: 1, month: 'March', income: 20000, expense: 5000, savings: 15000 },
-
-];
 
 export default function ExpenseYearlyGrid() {
-  const [yearlyData,setYearlyData]=useState([])
+  const [yearlyData, setYearlyData] = useState([])
   const getYearlyExpense = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -65,7 +60,7 @@ export default function ExpenseYearlyGrid() {
           }}
 
 
-          pageSizeOptions={[10, 25, 50, 100]}
+          pageSizeOptions={[5, 10, 25, 50]}
           slots={{ toolbar: GridToolbar }}
           // hideFooter={true}
           sx={{
@@ -77,11 +72,6 @@ export default function ExpenseYearlyGrid() {
 
         />
       </Box>
-      {/* <div style={{display:'flex', alignItems :'center', marginTop:"20px",justifyContent:'center'}}>
-    <Pagination count={10} variant="outlined" />
-
-    </div> */}
-
     </>
 
   );

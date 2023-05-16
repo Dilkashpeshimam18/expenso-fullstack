@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux'
@@ -31,12 +31,25 @@ const columns = [
 ];
 
 
-export default function ExpenseMonthlyGrid() {
+export default function ExpenseMonthlyGrid({rowPerPage}) {
   const [page, setPage] = useState(1)
-  const [rowPerPage, setRowPerPage] = useState(2)
-  
-  const handlePageChanged = async () => {
+  const [pageExpense, setPageExpense] = useState([])
+  const [lastPage, setLastPage] = useState(0)
+
+
+  const handlePageChanged = async (event, value) => {
     try {
+      let pageNumber;
+      if (value == undefined) {
+        pageNumber = 1
+        setPage(pageNumber)
+
+      } else {
+        pageNumber = value
+        setPage(pageNumber)
+
+      }
+
       const token = localStorage.getItem('token')
 
       let reqInstance = await axios.create({
@@ -44,31 +57,31 @@ export default function ExpenseMonthlyGrid() {
           Authorization: token
         }
       })
-      const res = await reqInstance.get(`http://localhost:4000/expense/get-monthlyexpenses?page=${page}&pageSize=${rowPerPage}`)
-      console.log(res)
+
+      const res = await reqInstance.get(`http://localhost:4000/expense/get-monthlyexpenses?page=${pageNumber}&rowPerPage=${rowPerPage}`)
+      setPageExpense(res.data.expense)
+      setLastPage(res.data.lastPage)
     } catch (err) {
       console.log(err)
     }
   }
   const allExpenses = useSelector(state => state.expenses.expenses)
 
+  useEffect(() => {
+    handlePageChanged()
+
+  }, [rowPerPage])
+
+
   return (
     <>
       <h5>Monthly</h5>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
-          rows={allExpenses}
+          rows={pageExpense}
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[10,25,50,100]}
           slots={{ toolbar: GridToolbar }}
-          // hideFooter={true}
+          hideFooter={true}
           sx={{
             width: '800px',
             padding: '5px',
@@ -79,10 +92,10 @@ export default function ExpenseMonthlyGrid() {
 
         />
       </Box>
-      {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: "20px" }}>
-        <Pagination count={10} variant="outlined" onChange={handlePageChanged} />
+      <div style={{ display: 'flex', alignItems: 'center', marginTop: "20px", justifyContent: 'center' }}>
+        <Pagination count={lastPage} page={page} onChange={handlePageChanged} variant="outlined" />
 
-      </div> */}
+      </div>
 
     </>
 

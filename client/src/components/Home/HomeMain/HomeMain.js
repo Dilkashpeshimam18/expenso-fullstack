@@ -39,6 +39,11 @@ const HomeMain = () => {
     const total_expense = useSelector(state => state.income.userExpenses)
     const remaining_balance = useSelector(state => state.income.userBalance)
     const yearlyExpenseData = useSelector(state => state.expenses.yearlyExpense)
+    const initialRowState=()=>{
+        const value=5;
+        return value;
+    }
+    const [rowPerPage,setRowPerPage]=useState(initialRowState)
 
     let map = new Map()
     let map2 = new Map()
@@ -143,6 +148,10 @@ const HomeMain = () => {
     const handleCategory = (e) => {
         setCategory(e.target.value);
     };
+
+    const handleRowPerPage=(e)=>{
+        setRowPerPage(e.target.value)
+    }
     const handleIncome = () => {
         totalExpense = allExpenses.reduce((curr, expense) => {
             return curr + Number(expense.amount)
@@ -247,7 +256,28 @@ const HomeMain = () => {
                     </FormControl>
                     {
                         category == 'Monthly' ?
-                            <ExpenseMonthlyGrid /> :
+                        <>
+                          <FormControl sx={{marginLeft:"10px"}}>
+                        <InputLabel id="demo-simple-select-label"> Row</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={rowPerPage}
+                            label="Row"
+                            onChange={handleRowPerPage}
+                        >
+
+                            <MenuItem value={5}>5</MenuItem>
+                            <MenuItem value={10}>10</MenuItem>
+                            <MenuItem value={25}>25</MenuItem>
+                            <MenuItem value={50}>50</MenuItem>
+
+
+                        </Select>
+                    </FormControl>
+                         <ExpenseMonthlyGrid rowPerPage={rowPerPage} />
+                        </>
+                            :
                             <ExpenseYearlyGrid />
                     }
 
