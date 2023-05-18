@@ -2,6 +2,7 @@ const Expense = require('../models/expense')
 const { randomUUID } = require('crypto')
 const sequelize = require('../utils/db')
 const YearlyExpense = require('../models/yearlyexpense')
+const AWS = require('aws-sdk')
 
 exports.addExpense = async (req, res) => {
     const transaction = await sequelize.transaction()
@@ -187,5 +188,52 @@ exports.getYearlyExpense = async (req, res) => {
     } catch (err) {
         console.log(err)
         res.status(500).json({ success: false, message: err })
+    }
+}
+
+const uploadToS3 = async (data, fileName) => {
+    try {
+        let s3bucket = new AWS.S3({
+            accessKeyId: process.env.IAM_USER_ACCESSKEY,
+            secretAccessKey: process.env.IAM_USER_SECRETKEY,
+        })
+        var params = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: fileName,
+            Body: data,
+            ACL: 'public-read'
+        }
+        return new Promise((resolve, reject) => {
+            s3bucket.upload(params, (err, res) => {
+                if (err) {
+                    console.log('Something went wrong', err)
+                    reject(err)
+                } else {
+                    console.log('Success', res)
+                    resolve(res.Location)
+
+                }
+            })
+        })
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+exports.downloadExpense = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const expenses = await Expense.findAll({
+            where: { usersdbId: userId }
+        })
+
+        const stringifyExpense = JSON.stringify(expenses)
+        const fileName = `Expense${userId}/${new Date()}.txt`
+        const fileUrl = await uploadToS3(stringifyExpense, fileName)
+        res.status(200).json({ success: true, fileUrl })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ success: false, fileUrl:'',err:err })
     }
 }

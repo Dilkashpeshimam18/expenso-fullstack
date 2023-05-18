@@ -15,6 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import axios from 'axios'
 
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
@@ -39,11 +40,11 @@ const HomeMain = () => {
     const total_expense = useSelector(state => state.income.userExpenses)
     const remaining_balance = useSelector(state => state.income.userBalance)
     const yearlyExpenseData = useSelector(state => state.expenses.yearlyExpense)
-    const initialRowState=()=>{
-        const value=5;
+    const initialRowState = () => {
+        const value = 5;
         return value;
     }
-    const [rowPerPage,setRowPerPage]=useState(initialRowState)
+    const [rowPerPage, setRowPerPage] = useState(initialRowState)
 
     let map = new Map()
     let map2 = new Map()
@@ -149,7 +150,7 @@ const HomeMain = () => {
         setCategory(e.target.value);
     };
 
-    const handleRowPerPage=(e)=>{
+    const handleRowPerPage = (e) => {
         setRowPerPage(e.target.value)
     }
     const handleIncome = () => {
@@ -186,6 +187,26 @@ const HomeMain = () => {
         handleClose()
     }
 
+    const handleDownloadExpense = async () => {
+        try {
+            const token = localStorage.getItem('token')
+
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+            const response = await reqInstance.get('http://localhost:4000/expense/download-expense')
+            if(response.status==200){
+                var a=document.createElement('a')
+                a.href=response.data.fileUrl
+                a.download='myexpense.csv'
+                a.click()
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     useEffect(() => {
         dispatch(getUserIncome())
 
@@ -256,27 +277,28 @@ const HomeMain = () => {
                     </FormControl>
                     {
                         category == 'Monthly' ?
-                        <>
-                          <FormControl sx={{marginLeft:"10px"}}>
-                        <InputLabel id="demo-simple-select-label"> Row</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={rowPerPage}
-                            label="Row"
-                            onChange={handleRowPerPage}
-                        >
+                            <>
+                                <FormControl sx={{ marginLeft: "10px" }}>
+                                    <InputLabel id="demo-simple-select-label"> Row</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={rowPerPage}
+                                        label="Row"
+                                        onChange={handleRowPerPage}
+                                    >
 
-                            <MenuItem value={5}>5</MenuItem>
-                            <MenuItem value={10}>10</MenuItem>
-                            <MenuItem value={25}>25</MenuItem>
-                            <MenuItem value={50}>50</MenuItem>
+                                        <MenuItem value={5}>5</MenuItem>
+                                        <MenuItem value={10}>10</MenuItem>
+                                        <MenuItem value={25}>25</MenuItem>
+                                        <MenuItem value={50}>50</MenuItem>
 
 
-                        </Select>
-                    </FormControl>
-                         <ExpenseMonthlyGrid rowPerPage={rowPerPage} />
-                        </>
+                                    </Select>
+                                </FormControl>
+                                <button onClick={handleDownloadExpense}>Download Expense</button>
+                                <ExpenseMonthlyGrid rowPerPage={rowPerPage} />
+                            </>
                             :
                             <ExpenseYearlyGrid />
                     }

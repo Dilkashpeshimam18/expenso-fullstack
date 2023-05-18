@@ -31,7 +31,7 @@ const columns = [
 ];
 
 
-export default function ExpenseMonthlyGrid({rowPerPage}) {
+export default function ExpenseMonthlyGrid({ rowPerPage }) {
   const [page, setPage] = useState(1)
   const [pageExpense, setPageExpense] = useState([])
   const [lastPage, setLastPage] = useState(0)
@@ -80,7 +80,7 @@ export default function ExpenseMonthlyGrid({rowPerPage}) {
         <DataGrid
           rows={pageExpense}
           columns={columns}
-          slots={{ toolbar: GridToolbar }}
+          // slots={{ toolbar: GridToolbar }}
           hideFooter={true}
           sx={{
             width: '800px',
