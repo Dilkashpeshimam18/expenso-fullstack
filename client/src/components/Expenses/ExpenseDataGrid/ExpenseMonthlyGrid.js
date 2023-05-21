@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux'
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
+import {expenseActions} from '../../../store/slice/expense-slice'
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -67,8 +68,10 @@ export default function ExpenseMonthlyGrid({ rowPerPage }) {
   }
   const allExpenses = useSelector(state => state.expenses.expenses)
 
+
   useEffect(() => {
     handlePageChanged()
+    console.log('FUNCTION CALLED')
 
   }, [rowPerPage])
 

@@ -36,7 +36,10 @@ const HomeMain = () => {
     const isSelected = useSelector(state => state.dashboard.isSelected)
     const allExpenses = useSelector(state => state.expenses.expenses)
     const dispatch = useDispatch()
-    const total_income = useSelector(state => state.income.userIncome)
+    const [totalIncome, setTotalIncome] = useState(0)
+    const [totalexpense, setTotalExpense] = useState(0)
+    const [remainingBalance, setRemainingBalance] = useState(0)
+
     const total_expense = useSelector(state => state.income.userExpenses)
     const remaining_balance = useSelector(state => state.income.userBalance)
     const yearlyExpenseData = useSelector(state => state.expenses.yearlyExpense)
@@ -153,38 +156,108 @@ const HomeMain = () => {
     const handleRowPerPage = (e) => {
         setRowPerPage(e.target.value)
     }
-    const handleIncome = () => {
-        totalExpense = allExpenses.reduce((curr, expense) => {
-            return curr + Number(expense.amount)
-        }, 0)
 
-        if (income != null) {
-            dispatch(addIncome(income))
+    const getUserBalance = async () => {
+        try {
+            const token = localStorage.getItem('token')
 
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            let response = await reqInstance.get('http://localhost:4000/income/get-userDetail')
+            console.log(response)
+            let data = response.data.data
+
+            setTotalIncome(data.total_income)
+            setTotalExpense(data.total_expense)
+            setRemainingBalance(data.remaining_balance)
+
+            localStorage.setItem('userIncome', data.total_income)
+            localStorage.setItem('userExpenses', data.total_expense)
+            localStorage.setItem('userBalance', data.remaining_balance)
+
+        } catch (err) {
+            console.log(err)
         }
 
-        localStorage.setItem('userIncome', income)
+    }
+    const handleAddIncome = async () => {
+        try {
+            totalExpense = allExpenses.reduce((curr, expense) => {
+                return curr + Number(expense.amount)
+            }, 0)
 
-        localStorage.setItem('totalExpense', totalExpense)
+            if (income != null) {
+                const token = localStorage.getItem('token')
 
-        remainingAmount = income - totalExpense;
-        localStorage.setItem('remainingBalance', remainingAmount)
-        dispatch(getUserIncome())
-        handleClose()
+                let reqInstance = await axios.create({
+                    headers: {
+                        Authorization: token
+
+                    }
+                })
+
+                const data = {
+                    income: income
+                }
+
+                let response = await reqInstance.post('http://localhost:4000/income/add-income', data)
+                getUserBalance()
+                alert('Added income!')
+
+            }
+
+            localStorage.setItem('userIncome', income)
+
+            localStorage.setItem('totalExpense', totalExpense)
+
+            remainingAmount = income - totalExpense;
+            localStorage.setItem('remainingBalance', remainingAmount)
+            handleClose()
+
+        } catch (err) {
+            console.log(err)
+        }
+
     }
 
 
-    const editUserIncome = () => {
-        console.log('IN UPDATE INCOME')
-        dispatch(updateUserIncome(income))
-        totalExpense = allExpenses.reduce((curr, expense) => {
-            return curr + Number(expense.amount)
-        }, 0)
-        remainingAmount = income - totalExpense;
-        localStorage.setItem('remainingBalance', remainingAmount)
-        dispatch(getUserIncome())
+    const editUserIncome = async () => {
+        try {
+            // dispatch(updateUserIncome(income))
 
-        handleClose()
+            const token = localStorage.getItem('token')
+
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            const newIncome = {
+                income
+            }
+
+            const response = await reqInstance.post('http://localhost:4000/income/edit-income', newIncome)
+
+            getUserBalance()
+            localStorage.setItem('userIncome', JSON.stringify(Number(income)))
+
+            totalExpense = allExpenses.reduce((curr, expense) => {
+                return curr + Number(expense.amount)
+            }, 0)
+            remainingAmount = income - totalExpense;
+            localStorage.setItem('remainingBalance', remainingAmount)
+            dispatch(getUserIncome())
+
+            handleClose()
+        } catch (err) {
+            console.log(err)
+        }
+
     }
 
     const handleDownloadExpense = async () => {
@@ -197,30 +270,33 @@ const HomeMain = () => {
                 }
             })
             const response = await reqInstance.get('http://localhost:4000/expense/download-expense')
-            if(response.status==200){
-                var a=document.createElement('a')
-                a.href=response.data.fileUrl
-                a.download='myexpense.csv'
+            if (response.status == 200) {
+                var a = document.createElement('a')
+                a.href = response.data.fileUrl
+                a.download = 'myexpense.csv'
                 a.click()
             }
         } catch (err) {
             console.log(err)
         }
     }
+    // useEffect(() => {
+    //     dispatch(getUserIncome())
+
+
+    // }, [dispatch])
+
     useEffect(() => {
-        dispatch(getUserIncome())
-
-    }, [dispatch])
-
-
+        getUserBalance()
+    }, [])
 
     return (
         <div className='homeMain'>
             <div className='home__subContainer'>
 
-                <HomeSub title='Income' amount={total_income} handleClickOpen={handleClickOpen} handleEditIncome={handleEditIncome} />
-                <HomeSub title='Expense' remaining={remaining} amount={total_expense} />
-                <HomeSub title='Remaining' remaining={remaining} amount={remaining_balance} />
+                <HomeSub title='Income' amount={totalIncome} handleClickOpen={handleClickOpen} handleEditIncome={handleEditIncome} />
+                <HomeSub title='Expense' remaining={remaining} amount={totalExpense} />
+                <HomeSub title='Remaining' remaining={remaining} amount={remainingBalance} />
             </div>
             {isSelected == 'Dashboard' &&
                 <>
@@ -296,7 +372,8 @@ const HomeMain = () => {
 
                                     </Select>
                                 </FormControl>
-                                <button onClick={handleDownloadExpense}>Download Expense</button>
+
+                                <button className='download__expenseBtn' onClick={handleDownloadExpense}>Download Expense</button>
                                 <ExpenseMonthlyGrid rowPerPage={rowPerPage} />
                             </>
                             :
@@ -306,7 +383,7 @@ const HomeMain = () => {
                 </div>
             }
 
-            <IncomeModal income={income} total_income={total_income} handleClose={handleClose} editIncome={editIncome} open={open} handleIncome={handleIncome} handleChange={handleChange} editUserIncome={editUserIncome} />
+            <IncomeModal income={income} total_income={totalIncome} handleClose={handleClose} editIncome={editIncome} open={open} handleIncome={handleAddIncome} handleChange={handleChange} editUserIncome={editUserIncome} />
         </div>
     )
 }

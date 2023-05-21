@@ -37,7 +37,6 @@ export const addIncome = (income) => {
             }
 
             let response = await reqInstance.post('http://localhost:4000/income/add-income', data)
-            console.log(response)
         }
         try {
             await addInc().then(() => {
@@ -65,7 +64,6 @@ export const getUserIncome = () => {
             })
 
             let response = await reqInstance.get('http://localhost:4000/income/get-userDetail')
-            console.log(response)
             let data = response.data.data
             const details = {
                 total_income: data.total_income,
@@ -73,7 +71,6 @@ export const getUserIncome = () => {
                 remaining_balance: data.remaining_balance
             }
 
-            console.log('USER DETAIL>>>', details)
             await dispatch(incomeAction.handlAddDetails(details))
             localStorage.setItem('userIncome', data.total_income)
             localStorage.setItem('userExpenses', data.total_expense)
@@ -109,8 +106,6 @@ export const getUserIncome = () => {
 export const updateUserIncome = (data) => {
     return async (dispatch) => {
         const updateIncome = async () => {
-
-
             const token = localStorage.getItem('token')
 
             let reqInstance = await axios.create({
@@ -126,7 +121,6 @@ export const updateUserIncome = (data) => {
 
             const response = await reqInstance.post('http://localhost:4000/income/edit-income', newIncome)
 
-            console.log(response)
 
             localStorage.setItem('userIncome', JSON.stringify(Number(data)))
 
