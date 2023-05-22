@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import HomeCategory from './Home/HomeCategory/HomeCategory'
 import HomeLineGraph from './Home/HomeLineGraph/HomeLineGraph'
 import HomeSub from './Home/HomeSub/HomeSub'
 import IncomeModal from './Home/IncomeModal/IncomeModal'
@@ -16,7 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios'
-
+import { expenseActions } from '../../../store/slice/expense-slice'
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
     const [open, setOpen] = useState(false);
@@ -24,7 +23,6 @@ const HomeMain = () => {
     const [income, setIncome] = useState(() => {
         return 0 || localStorage.getItem('userIncome')
     })
-    const [inputIncome, setInputIncome] = useState(0)
     const [userIncome, setUserIncome] = useState(() => {
         return localStorage.getItem('userIncome') || 0
     })
@@ -43,6 +41,8 @@ const HomeMain = () => {
     const total_expense = useSelector(state => state.income.userExpenses)
     const remaining_balance = useSelector(state => state.income.userBalance)
     const yearlyExpenseData = useSelector(state => state.expenses.yearlyExpense)
+    const addExpense=expenseActions.addExpense()
+
     const initialRowState = () => {
         const value = 5;
         return value;
@@ -119,7 +119,7 @@ const HomeMain = () => {
         datasets: [{
             barThickness: 40,
             label: 'Income vs Expense vs Balance',
-            data: [userIncome, totalExpense, remaining_balance],
+            data: [userIncome, totalExpense, remainingBalance],
             backgroundColor: [
                 'rgb(1, 140, 140)',
                 'rgb(54, 162, 235)',
@@ -168,7 +168,6 @@ const HomeMain = () => {
             })
 
             let response = await reqInstance.get('http://localhost:4000/income/get-userDetail')
-            console.log(response)
             let data = response.data.data
 
             setTotalIncome(data.total_income)
@@ -217,6 +216,7 @@ const HomeMain = () => {
             remainingAmount = income - totalExpense;
             localStorage.setItem('remainingBalance', remainingAmount)
             handleClose()
+            
 
         } catch (err) {
             console.log(err)
@@ -280,15 +280,10 @@ const HomeMain = () => {
             console.log(err)
         }
     }
-    // useEffect(() => {
-    //     dispatch(getUserIncome())
-
-
-    // }, [dispatch])
-
+  
     useEffect(() => {
         getUserBalance()
-    }, [])
+    }, [addExpense])
 
     return (
         <div className='homeMain'>

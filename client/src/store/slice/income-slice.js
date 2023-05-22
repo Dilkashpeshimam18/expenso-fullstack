@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { expenseActions } from "./expense-slice";
+
 const initialIncomeState = {
     userIncome: localStorage.getItem('userIncome') || 0,
     userExpenses: localStorage.getItem('userExpenses') || 0,
@@ -54,7 +54,6 @@ export const addIncome = (income) => {
 export const getUserIncome = () => {
     return async (state, dispatch) => {
         const getIncome = async () => {
-
             const token = localStorage.getItem('token')
 
             let reqInstance = await axios.create({
@@ -71,26 +70,10 @@ export const getUserIncome = () => {
                 remaining_balance: data.remaining_balance
             }
 
-            await dispatch(incomeAction.handlAddDetails(details))
+            dispatch(incomeAction.handlAddDetails(details))
             localStorage.setItem('userIncome', data.total_income)
             localStorage.setItem('userExpenses', data.total_expense)
             localStorage.setItem('userBalance', data.remaining_balance)
-            // let res = response.data
-            // if (res == null) {
-            //     localStorage.setItem('userIncome', 0)
-            //     dispatch(addIncome(0))
-            // } else {
-            //     let data = {}
-            //     for (let key in res) {
-            //         res = {
-            //             id: key,
-            //             income: res[key]
-            //         }
-            //     }
-
-            //     localStorage.setItem('userIncome', JSON.stringify(res))
-            //     dispatch(addIncome(res.income))
-            // }
 
         }
 

@@ -49,6 +49,7 @@ exports.updateExpense = async (req, res) => {
         const { amount, description, category } = req.body
         const userId = req.user.id
         const id = req.params.id
+        const user=req.user
 
         const getMonthData = await YearlyExpense.findOne({
             where: {
@@ -63,6 +64,17 @@ exports.updateExpense = async (req, res) => {
             await getMonthData.update({ expense: getMonthData.expense - Number(exp.amount) })
             await getMonthData.update({ expense: getMonthData.expense + Number(amount) })
         }
+        const updateUserExpense=user.total_expense-Number(exp.amount)
+        const updatedExpense=updateUserExpense+Number(amount)
+        let updatedBalance;
+        if(Number(exp.amount)>Number(amount)){
+            updatedBalance=Number(user.remaining_balance)+Number(amount)
+        }else{
+            const diff=Number(amount)-Number(exp.amount)
+            updatedBalance=Number(user.remaining_balance)-diff
+        }
+ 
+        await user.update({total_expense:updatedExpense,remaining_balance:updatedBalance})
         await exp.update({ amount, name: description, category })
         res.status(200).json({ message: 'Update Successfull' })
 

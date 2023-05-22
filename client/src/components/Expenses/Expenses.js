@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, {  useEffect } from 'react'
 import AllExpense from './AllExpense/AllExpense'
-import axios from 'axios'
-import { expenseActions } from '../../store/slice/expense-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import './Expense.css'
 import { CSVLink } from "react-csv";
 import { getExpenseData } from '../../store/slice/expense-slice'
-import { modalActions } from '../../store/slice/modal-slice'
 
-let isInitial = true
 
 const Expenses = ({ handleEdit }) => {
 
@@ -46,10 +42,7 @@ const Expenses = ({ handleEdit }) => {
         dispatch(getExpenseData())
 
     },[dispatch])
-    // useEffect(() => {
 
-    //     dispatch(getExpenseData())
-    // }, [dispatch, expense, userEmail])
     return (
         <div className='expenses'>
             {

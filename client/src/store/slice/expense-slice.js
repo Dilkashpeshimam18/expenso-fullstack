@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { initialAuthState } from "./auth-slice";
 
 const initialExpenseState = {
     expenses: [],
@@ -51,7 +50,7 @@ const ExpenseSlice = createSlice({
 
 
 export const postExpenseData = (expense) => {
-    return async (state) => {
+    return async (state,dispatch) => {
 
         const postRequest = async () => {
             var email = localStorage.getItem('email')
