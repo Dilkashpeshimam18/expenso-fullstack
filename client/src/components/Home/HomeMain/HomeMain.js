@@ -16,6 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios'
 import { expenseActions } from '../../../store/slice/expense-slice'
+
 const HomeMain = () => {
     const [remaining, setRemaining] = useState(true)
     const [open, setOpen] = useState(false);
@@ -42,6 +43,7 @@ const HomeMain = () => {
     const remaining_balance = useSelector(state => state.income.userBalance)
     const yearlyExpenseData = useSelector(state => state.expenses.yearlyExpense)
     const addExpense=expenseActions.addExpense()
+    const theme = useSelector(state => state.theme.theme)
 
     const initialRowState = () => {
         const value = 5;
@@ -251,6 +253,7 @@ const HomeMain = () => {
             }, 0)
             remainingAmount = income - totalExpense;
             localStorage.setItem('remainingBalance', remainingAmount)
+            alert('Income updated!')
             dispatch(getUserIncome())
 
             handleClose()
@@ -339,6 +342,9 @@ const HomeMain = () => {
                             value={category}
                             label="Category"
                             onChange={handleCategory}
+                            className={`${theme=='dark'&&'select__dark'}`}
+                            variant="outlined"
+                          
                         >
 
                             <MenuItem value="Monthly">Monthly</MenuItem>
@@ -357,6 +363,8 @@ const HomeMain = () => {
                                         value={rowPerPage}
                                         label="Row"
                                         onChange={handleRowPerPage}
+                                        className={`${theme=='dark'&&'select__dark'}`}
+
                                     >
 
                                         <MenuItem value={5}>5</MenuItem>

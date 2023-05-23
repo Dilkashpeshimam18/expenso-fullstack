@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import { useSelector } from 'react-redux'
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
-import {expenseActions} from '../../../store/slice/expense-slice'
+import { useSelector } from 'react-redux';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -36,6 +35,7 @@ export default function ExpenseMonthlyGrid({ rowPerPage }) {
   const [page, setPage] = useState(1)
   const [pageExpense, setPageExpense] = useState([])
   const [lastPage, setLastPage] = useState(0)
+  const theme = useSelector(state => state.theme.theme)
 
 
   const handlePageChanged = async (event, value) => {
@@ -66,19 +66,17 @@ export default function ExpenseMonthlyGrid({ rowPerPage }) {
       console.log(err)
     }
   }
-  const allExpenses = useSelector(state => state.expenses.expenses)
 
 
   useEffect(() => {
     handlePageChanged()
-    console.log('FUNCTION CALLED')
 
   }, [rowPerPage])
 
 
   return (
     <>
-      <h5>Monthly</h5>
+      <h5 className={`${theme=='dark'?'gridDark__title':'gridLight__title'}`}>Monthly</h5>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={pageExpense}
@@ -89,14 +87,19 @@ export default function ExpenseMonthlyGrid({ rowPerPage }) {
             width: '800px',
             padding: '5px',
             boxShadow: 2,
-
-            backgroundColor: 'white'
+            borderColor: theme == 'dark' && '#2d383c',
+            color: theme == 'dark' ? 'white' : 'black',
+            backgroundColor: theme == 'dark' ? '#2d383c' : 'white'
           }}
-
         />
+
+
+
       </Box>
       <div style={{ display: 'flex', alignItems: 'center', marginTop: "20px", justifyContent: 'center' }}>
-        <Pagination count={lastPage} page={page} onChange={handlePageChanged} variant="outlined" />
+        <Pagination count={lastPage} page={page} onChange={handlePageChanged} variant="outlined"
+        color={theme=='dark'?'primary':'primary'}
+      />
 
       </div>
 

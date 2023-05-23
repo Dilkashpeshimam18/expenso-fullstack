@@ -44,6 +44,10 @@
   }
 }
 
+#dark .select__dark{
+  color: white;
+  border-color: white;
+}
 .download__expenseBtn {
   background-color: #3bc4d4;
   color: white;
