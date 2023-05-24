@@ -46,7 +46,6 @@ exports.forgotPassword = async (req, res) => {
             sgMail
                 .send(msg)
                 .then((response) => {
-                    console.log('RESPONSE>>>>>', response)
 
                     return res.status(response[0].statusCode).json({ message: 'Link to reset password sent to your email ', sucess: true })
 
@@ -84,7 +83,6 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try {
         const requestId = req.params.id
-        console.log('REQUEST IS>>>> ', requestId)
         const resetRequest = await ForgotPasswordRequests.findOne({ where: { id: requestId } })
         if (resetRequest) {
             if (resetRequest.isactive == 1) {
@@ -124,7 +122,6 @@ exports.updatepassword = async (req, res) => {
         const response = await ForgotPasswordRequests.findOne({ where: { id: resetpasswordid } })
         const user = await Users.findOne({ where: { id: response.userId } })
         if (user) {
-            console.log('USER IS>>>>>', user)
             const saltRounds = 10;
             bcrypt.genSalt(saltRounds, function (err, salt) {
                 if (err) {
