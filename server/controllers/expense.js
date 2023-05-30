@@ -155,10 +155,12 @@ exports.addYearlyExpense = async (req, res) => {
     try {
         const user = req.user
         const data = req.body
+        const d = new Date();
+        let month = d.toLocaleString('default', { month: 'long' });;
 
         const getMonthData = await YearlyExpense.findOne({
             where: {
-                month: 'May',
+                month: month,
                 usersdbId: user.id
             }
         })
