@@ -30,18 +30,6 @@ const SignUp = () => {
                         returnSecureToken: true
 
                     }
-                    // const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-
-                    //     }
-                    // }).then(() => {
-                    //     console.log(' User has successfully signed up')
-                    //     alert('Sign up successful!')
-                    //     setEmail('')
-                    //     setPassword('')
-                    //     setConfirmPassword('')
-                    // })
 
                     await axios.post('http://localhost:4000/users/signup', data)
                     alert('Sign up successful!')
@@ -54,8 +42,6 @@ const SignUp = () => {
                 }
 
             }
-
-
 
         } catch (err) {
             console.log(err)

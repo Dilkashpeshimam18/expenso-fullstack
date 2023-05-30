@@ -5,9 +5,6 @@ import './VerifyEmail.css'
 const VerifyEmail = () => {
     const userToken = useSelector(state => state.auth.userToken)
 
-    // const [userToken, setUserToken] = useState(() => {
-    //     return localStorage.getItem('token') || tokenId
-    // })
     const handleEmailVerify = async (e) => {
         e.preventDefault()
         try {

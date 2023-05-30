@@ -39,26 +39,18 @@ const Login = () => {
             // }
 
             // dispatch(getExpenseData())
-              console.log(data)
             const response = await axios.post('http://localhost:4000/users/login', data)
-            console.log(response)
-            console.log(response.data.data)
+
             alert('Login successful!')
             // let userEmail = response.data.data.userEmail
             // const userId=response.data.data.userId
-            const userToken=response.data.data
+            const userToken = response.data.data
             const userData = {
-              token:userToken
+                token: userToken
             }
             dispatch(authActions.login(userData))
             localStorage.setItem('token', userToken)
-
-
             navigate('/')
-
-
-
-
         } catch (err) {
             console.log(err)
             alert(err.response.data)
@@ -103,7 +95,7 @@ const Login = () => {
                     </div>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Password" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                      <Link to='/forgot-password'><p className='subLink' style={{ cursor: 'pointer' }}>Forgot password?</p></Link>  
+                        <Link to='/forgot-password'><p className='subLink' style={{ cursor: 'pointer' }}>Forgot password?</p></Link>
 
                     </div>
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
   {
@@ -23,6 +25,8 @@ const columns = [
 
 export default function ExpenseYearlyGrid() {
   const [yearlyData, setYearlyData] = useState([])
+  const theme = useSelector(state => state.theme.theme)
+
   const getYearlyExpense = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -46,7 +50,7 @@ export default function ExpenseYearlyGrid() {
   }, [])
   return (
     <>
-      <h5>Yearly</h5>
+      <h5 className={`${theme=='dark'?'gridDark__title':'gridLight__title'}`}>Yearly</h5>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={yearlyData}
@@ -67,7 +71,9 @@ export default function ExpenseYearlyGrid() {
             width: '800px',
             padding: '5px',
             boxShadow: 2,
-            backgroundColor: 'white'
+            borderColor: theme == 'dark' && '#2d383c',
+            color: theme == 'dark' ? 'white' : 'black',
+            backgroundColor: theme == 'dark' ? '#2d383c' : 'white'
           }}
 
         />
