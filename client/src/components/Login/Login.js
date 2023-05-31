@@ -39,7 +39,7 @@ const Login = () => {
             // }
 
             // dispatch(getExpenseData())
-            const response = await axios.post('http://localhost:4000/users/login', data)
+            const response = await axios.post('http://localhost:4000/auth/login', data)
 
             alert('Login successful!')
             // let userEmail = response.data.data.userEmail

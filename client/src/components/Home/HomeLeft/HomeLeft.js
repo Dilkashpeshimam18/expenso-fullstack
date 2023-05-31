@@ -3,30 +3,25 @@ import './HomeLeft.css'
 import HomeOption from './HomeOption/HomeOption'
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux';
-import { authActions } from '../../../store/slice/auth-slice';
 import axios from 'axios';
+
 const HomeLeft = () => {
     const [name, setName] = useState('')
     const [photoUrl, setPhotoUrl] = useState('')
-    const userToken = useSelector(state => state.auth.userToken)
-    const dispatch = useDispatch()
+
     const getUserProfileData = async () => {
         try {
-            if (userToken) {
-                let data = {
-                    idToken: userToken
-                }
-                const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
+            const token = localStorage.getItem('token')
 
-                    }
-                })
-                setName(response.data.users[0].displayName)
-                setPhotoUrl(response.data.users[0].photoUrl)
-                dispatch(authActions.isEmailVerify(response.data.users[0].emailVerified))
-            }
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
+                }
+            })
+            const response = await reqInstance.get('http://localhost:4000/user/userInfo')
+            setName(response.data.data.name)
+            setPhotoUrl(response.data.data.photoUrl)
+
         } catch (err) {
             console.log(err)
         }
@@ -34,7 +29,6 @@ const HomeLeft = () => {
 
     useEffect(() => {
         getUserProfileData()
-
     }, [])
     return (
         <div className='homeLeft'>

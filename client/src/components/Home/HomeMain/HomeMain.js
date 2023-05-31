@@ -169,7 +169,7 @@ const HomeMain = () => {
                 }
             })
 
-            let response = await reqInstance.get('http://localhost:4000/income/get-userDetail')
+            let response = await reqInstance.get('http://localhost:4000/user/get-userDetail')
             let data = response.data.data
 
             setTotalIncome(data.total_income)

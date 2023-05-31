@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './UpdateProfile.css'
+
 const UpdateProfile = ({ setIsUpdated }) => {
     const userToken = useSelector(state => state.auth.userToken)
     const [name, setName] = useState('')
@@ -12,19 +13,16 @@ const UpdateProfile = ({ setIsUpdated }) => {
 
     const getUserProfileData = async () => {
         try {
-            if (userToken) {
-                let data = {
-                    idToken: userToken
+            const token = localStorage.getItem('token')
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
                 }
-                const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
+            })
+            const response = await reqInstance.get('http://localhost:4000/user/userInfo')
+            setName(response.data.data.name)
+            setPhotoUrl(response.data.data.photoUrl)
 
-                    }
-                })
-                setName(response.data.users[0].displayName)
-                setPhotoUrl(response.data.users[0].photoUrl)
-            }
         } catch (err) {
             console.log(err)
         }
@@ -33,31 +31,23 @@ const UpdateProfile = ({ setIsUpdated }) => {
     const handleUpdateProfile = async (e) => {
         e.preventDefault()
         try {
-            if (userToken) {
-                const data = {
-                    idToken: userToken,
-                    displayName: name,
-                    photoUrl: photoUrl,
-                    returnSecureToken: true
+            const token = localStorage.getItem('token')
+            let reqInstance = await axios.create({
+                headers: {
+                    Authorization: token
                 }
-
-                const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDKj1Lc9A0JYGLuOTbYEr8SD-7ChLkI1Ys', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-
-                    }
-                }
-
-                ).then(() => {
-                    setName('')
-                    setPhotoUrl('')
-                    alert('Profile updated!')
-                    setIsUpdated(false)
-                    getUserProfileData()
-                })
-
-
+            })
+            const data = {
+                name,
+                photoUrl
             }
+            const response = await reqInstance.post('http://localhost:4000/user/update-userInfo', data).then(() => {
+                setName('')
+                setPhotoUrl('')
+                alert('Profile updated!')
+                setIsUpdated(false)
+                getUserProfileData()
+            })
 
         } catch (err) {
             console.log(err)
@@ -78,7 +68,7 @@ const UpdateProfile = ({ setIsUpdated }) => {
 
                     </div>
                     <div className='formInput__container'>
-                        <TextField className='form-input' id="outlined-basic" label="Profile Photo Url" type='text' variant="outlined" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} required />
+                        <TextField className='form-input' id="outlined-basic" label="Photo Url" type='text' variant="outlined" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} required />
 
                     </div>
                     <div className='updateButton__container'>
