@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
+import { useSelector } from 'react-redux';
 
 const Leaderboard = () => {
     const [leaderBoardData, setLeaderBoardData] = useState([])
+    const theme = useSelector(state => state.theme.theme)
+
     const fetchLeaderboard = async () => {
         try {
             const token = localStorage.getItem('token')
@@ -45,7 +48,7 @@ const Leaderboard = () => {
 
     return (
         <div>
-            <h5>Leaderboard</h5>
+            <h5 className={`${theme=='dark'?'gridDark__title':'gridLight__title'}`}>Leaderboard</h5>
 
             <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
@@ -58,13 +61,14 @@ const Leaderboard = () => {
                             },
                         },
                     }}
-                    pageSizeOptions={[5]}
+                    pageSizeOptions={[5, 10, 25, 50]}
                     sx={{
                         width: '800px',
                         padding: '5px',
                         boxShadow: 2,
-
-                        backgroundColor: 'white'
+                        borderColor: theme == 'dark' && '#2d383c',
+                        color: theme == 'dark' ? 'white' : 'black',
+                        backgroundColor: theme == 'dark' ? '#2d383c' : 'white'
                     }}
 
                 />

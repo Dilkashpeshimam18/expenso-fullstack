@@ -18,6 +18,10 @@
   padding: 10px;
   padding-top: 20px;
 }
+#dark .form-input{
+  color: white;
+  border-color: #3bc4d4;
+}
 .update-button {
   background-color: #3bc4d4;
   color: white;
