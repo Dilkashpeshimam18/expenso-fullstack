@@ -50,10 +50,12 @@ exports.updateExpense = async (req, res) => {
         const userId = req.user.id
         const id = req.params.id
         const user=req.user
+        const d = new Date();
+        let month = d.toLocaleString('default', { month: 'long' });
 
         const getMonthData = await YearlyExpense.findOne({
             where: {
-                month: 'May',
+                month: month,
                 usersdbId: userId
             }
         })
@@ -91,13 +93,15 @@ exports.deleteExpense = async (req, res) => {
     try {
         const id = req.params.id
         const userId = req.user.id
-
+        const d = new Date();
+        let month = d.toLocaleString('default', { month: 'long' });;
         const exp = await Expense.findByPk(id)
+
         if (exp.usersdbId == userId) {
 
             const getMonthData = await YearlyExpense.findOne({
                 where: {
-                    month: 'May',
+                    month: month,
                     usersdbId: userId
                 }
             })
