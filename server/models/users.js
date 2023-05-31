@@ -23,6 +23,9 @@ const Users = sequelize.define('usersdb', {
         type: Sequelize.STRING,
         allowNull: false,
     },
+    photoUrl:{
+        type: Sequelize.STRING,
+    },
     isPremiumUser: Sequelize.STRING,
     total_expense: {
         type: Sequelize.INTEGER,
