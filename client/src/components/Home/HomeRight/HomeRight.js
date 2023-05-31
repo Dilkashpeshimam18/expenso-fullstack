@@ -26,6 +26,7 @@ const HomeRight = () => {
     };
 
     const handleEdit = (id) => {
+        dispatch(modalActions.handleIsEdit())
         dispatch(modalActions.handleisNotNew())
         dispatch(modalActions.handleClickOpen())
         let editExp = expense.filter((expense) => {

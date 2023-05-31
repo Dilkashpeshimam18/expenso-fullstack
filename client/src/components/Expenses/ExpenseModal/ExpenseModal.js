@@ -24,7 +24,7 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
     const dispatch = useDispatch()
     const expense = useSelector(state => state.expenses.expenses)
     const isNew = useSelector(state => state.modal.addNew)
-
+   const isEditModal=useSelector(state=>state.modal.isEdit)
 
     const handleAddExpenseForm = (e) => {
         e.preventDefault();
@@ -83,7 +83,8 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
     return (
         <div>
             <Dialog open={open} onClose={() => dispatch(modalActions.handleClose())}>
-                <DialogTitle>Add Expense</DialogTitle>
+                {isEditModal?<DialogTitle>Update Expense</DialogTitle>:<DialogTitle>Add Expense</DialogTitle>}
+                
                 <DialogContent>
 
                     <TextField
@@ -133,7 +134,8 @@ const ExpenseModal = ({ amount, desc, category, setAmount, setDesc, setCategory,
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => dispatch(modalActions.handleClose())}>CANCEL</Button>
-                    <Button onClick={handleAddExpenseForm}>ADD</Button>
+                    {isEditModal?<Button onClick={handleAddExpenseForm}>Update</Button>:<Button onClick={handleAddExpenseForm}>ADD</Button>}
+                    
                 </DialogActions>
             </Dialog>
            

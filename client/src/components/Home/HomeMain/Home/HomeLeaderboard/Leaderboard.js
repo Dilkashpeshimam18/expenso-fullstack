@@ -48,20 +48,21 @@ const Leaderboard = () => {
 
     return (
         <div>
-            <h5 className={`${theme=='dark'?'gridDark__title':'gridLight__title'}`}>Leaderboard</h5>
+            <h5 className={`${theme == 'dark' ? 'gridDark__title' : 'gridLight__title'}`}>Leaderboard</h5>
 
             <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={leaderBoardData}
                     columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 5,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5, 10, 25, 50]}
+                    // initialState={{
+                    //     pagination: {
+                    //         paginationModel: {
+                    //             pageSize: 5,
+                    //         },
+                    //     },
+                    // }}
+                    // pageSizeOptions={[5, 10, 25, 50]}
+                    hideFooter={true}
                     sx={{
                         width: '800px',
                         padding: '5px',

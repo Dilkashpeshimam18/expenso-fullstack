@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialModalState = {
     open: false,
-    addNew: false
+    addNew: false,
+    isEdit:false
 
 }
 
@@ -17,12 +18,17 @@ const ModalSlice = createSlice({
 
         handleClose(state) {
             state.open = false
+            state.addNew=false
+            state.isEdit=false
         },
         handleAddNew(state) {
             state.addNew = true
         },
         handleisNotNew(state) {
             state.addNew = false
+        },
+        handleIsEdit(state){
+            state.isEdit=true
         }
 
     }
