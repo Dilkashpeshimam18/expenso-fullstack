@@ -30,7 +30,7 @@ const HomeRight = () => {
         dispatch(modalActions.handleisNotNew())
         dispatch(modalActions.handleClickOpen())
         let editExp = expense.filter((expense) => {
-            return expense.id == id
+            return expense._id == id
         })
         let ID = id
         dispatch(expenseActions.editExpense(ID))

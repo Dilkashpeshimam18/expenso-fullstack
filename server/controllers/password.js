@@ -21,7 +21,7 @@ exports.forgotPassword = async (req, res) => {
             await ForgotPasswordRequests.create({ id, userId: user.id, isactive: true }).catch((err) => {
                 throw new Error(err)
             })
-            let link = `http://13.50.152.75:4000/password/resetpassword/${id}`
+            let link = `http://localhost:4000/password/resetpassword/${id}`
             const msg = {
                 to: email,
                 from: 'dilkashpeshimam@gmail.com',

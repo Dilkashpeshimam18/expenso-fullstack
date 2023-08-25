@@ -17,7 +17,7 @@ const Leaderboard = () => {
                     Authorization: token
                 }
             })
-            const data = await reqInstance.get('http://13.50.152.75:4000/premium/show-leaderboard')
+            const data = await reqInstance.get('http://localhost:4000/premium/show-leaderboard')
             setLeaderBoardData(data.data.data)
 
         } catch (err) {

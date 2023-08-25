@@ -18,7 +18,7 @@ const HomeLeft = () => {
                     Authorization: token
                 }
             })
-            const response = await reqInstance.get('http://13.50.152.75:4000/user/userInfo')
+            const response = await reqInstance.get('http://localhost:4000/user/userInfo')
             setName(response.data.data.name)
             setPhotoUrl(response.data.data.photoUrl)
 

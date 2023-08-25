@@ -3,86 +3,105 @@ const { randomUUID } = require('crypto')
 const sequelize = require('../utils/db')
 const YearlyExpense = require('../models/yearlyexpense')
 const AWS = require('aws-sdk')
+const Expenses = require('../models/Expenses')
+const User = require('../models/User')
 require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 
 exports.addExpense = async (req, res) => {
-    const transaction = await sequelize.transaction()
     try {
         const { amount, description, category } = req.body
 
-        const id = req.user.id
+        const id = req.user._id
+        const user = req.user
 
-        const data = await Expense.create({
-            id: randomUUID(),
+        const newTotalExpense = Number(req.user.total_expense) + Number(amount);
+        const newRemainingBalance = Number(req.user.total_income) - newTotalExpense;
+
+        await User.findByIdAndUpdate(id, {
+            total_expense: newTotalExpense,
+            remaining_balance: newRemainingBalance
+        });
+
+        const expense = new Expenses({
             name: description,
-            amount: amount,
-            category: category,
-            usersdbId: id
-        }, { transaction: transaction })
+            amount,
+            category,
+            userId: id
+        });
 
-        await req.user.update({ total_expense: Number(req.user.total_expense) + Number(amount) }, { transaction: transaction })
-        await req.user.update({ remaining_balance: Number(req.user.total_income) - Number(req.user.total_expense) }, { transaction: transaction })
-        await transaction.commit()
+        await expense.save();
+
         res.status(200).json('EXPENSE ADDED SUCCESSFULLY!')
 
     } catch (err) {
-        await transaction.rollback()
         console.log(err)
         res.status(500).json({ success: false, message: err })
-
     }
 }
 
 exports.getExpense = async (req, res) => {
 
     try {
-        const id = req.user.id
-        const expenses = await Expense.findAll({ where: { usersdbId: id } })
-        res.status(200).json({ expenses, success: true })
+        const id = req.user._id
+
+        const userExpense = await Expenses.find({ userId: id })
+
+        res.status(200).json({ userExpense, success: true })
     } catch (err) {
         res.status(500).json({ success: false, message: err })
-
     }
 }
 
 exports.updateExpense = async (req, res) => {
     try {
         const { amount, description, category } = req.body
-        const userId = req.user.id
+        const userId = req.user._id
         const id = req.params.id
         const user = req.user
         const d = new Date();
-        let month = d.toLocaleString('default', { month: 'long' });;
 
-        const getMonthData = await YearlyExpense.findOne({
-            where: {
-                month: month,
-                usersdbId: userId
-            }
-        })
+        const expense = await Expenses.findOne({ _id: id })
 
-        const exp = await Expense.findByPk(id)
-
-        if (getMonthData != null) {
-            await getMonthData.update({ expense: getMonthData.expense - Number(exp.amount) })
-            await getMonthData.update({ expense: getMonthData.expense + Number(amount) })
-        }
-        const updateUserExpense = user.total_expense - Number(exp.amount)
+        const updateUserExpense = user.total_expense - Number(expense.amount)
         const updatedExpense = updateUserExpense + Number(amount)
         let updatedBalance;
 
-        if (Number(exp.amount) > Number(amount)) {
-            const diff = Number(exp.amount) - Number(amount)
+        if (Number(expense.amount) > Number(amount)) {
+            const diff = Number(expense.amount) - Number(amount)
             updatedBalance = Number(user.remaining_balance) + Number(diff)
         } else {
 
-            const diff = Number(amount) - Number(exp.amount)
+            const diff = Number(amount) - Number(expense.amount)
             updatedBalance = Number(user.remaining_balance) - diff
 
         }
 
-        await user.update({ total_expense: updatedExpense, remaining_balance: updatedBalance })
-        await exp.update({ amount, name: description, category })
+        await User.findByIdAndUpdate(userId, {
+            total_expense: updatedExpense,
+            remaining_balance: updatedBalance
+        })
+
+        await Expenses.findByIdAndUpdate(id, {
+            name: description,
+            amount,
+            category
+        })
+
+        // let month = d.toLocaleString('default', { month: 'long' });;
+
+        // const getMonthData = await YearlyExpense.findOne({
+        //     where: {
+        //         month: month,
+        //         usersdbId: userId
+        //     }
+        // })
+
+
+        // if (getMonthData != null) {
+        //     await getMonthData.update({ expense: getMonthData.expense - Number(exp.amount) })
+        //     await getMonthData.update({ expense: getMonthData.expense + Number(amount) })
+        // }
+
         res.status(200).json({ message: 'Update Successfull' })
 
     } catch (err) {
@@ -97,34 +116,36 @@ exports.deleteExpense = async (req, res) => {
 
     try {
         const id = req.params.id
-        const userId = req.user.id
+        const userId = req.user._id
         const d = new Date();
         let month = d.toLocaleString('default', { month: 'long' });
 
-        const exp = await Expense.findByPk(id)
-        if (exp.usersdbId == userId) {
+        const exp = await Expenses.findOne({ _id: id })
+        if (exp.userId == userId) {
 
-            const getMonthData = await YearlyExpense.findOne({
-                where: {
-                    month: month,
-                    usersdbId: userId
-                }
+            // const getMonthData = await YearlyExpense.findOne({
+            //     where: {
+            //         month: month,
+            //         usersdbId: userId
+            //     }
+            // })
+            // if (getMonthData != null) {
+            //     await getMonthData.update({ expense: getMonthData.expense - exp.amount }, { transaction: transaction })
+            // }
+            const updatedExpense = Number(req.user.total_expense) - Number(exp.amount)
+            const updatedBalance = Number(req.user.remaining_balance) + Number(exp.amount)
+            await User.findByIdAndUpdate(userId, {
+                total_expense: updatedExpense,
+                remaining_balance: updatedBalance
             })
-            if (getMonthData != null) {
-                await getMonthData.update({ expense: getMonthData.expense - exp.amount }, { transaction: transaction })
-            }
-            await req.user.update({ total_expense: Number(req.user.total_expense) - Number(exp.amount) }, { transaction: transaction })
-            await req.user.update({ remaining_balance: Number(req.user.remaining_balance) + Number(exp.amount) }, { transaction: transaction })
-            await exp.destroy({ transaction: transaction })
-            await transaction.commit()
-            return res.status(200).json('Deleted Successfully!')
+
+            await Expenses.findByIdAndDelete(id)
+            res.status(200).json({ message: 'Deleted Successfully' })
 
         } else {
-            await transaction.rollback()
             throw new Error('Only the user created this expense can delete this!')
 
         }
-
 
     } catch (err) {
         transaction.rollback()

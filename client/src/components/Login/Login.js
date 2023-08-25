@@ -21,12 +21,13 @@ const Login = () => {
                 returnSecureToken: true
             }
  
-            const response = await axios.post('http://13.50.152.75:4000/auth/login', data)
+            const response = await axios.post('http://localhost:4000/auth/login', data)
 
             alert('Login successful!')
             // let userEmail = response.data.data.userEmail
             // const userId=response.data.data.userId
             const userToken = response.data.data
+            console.log('USER TOken>>>',userToken)
             const userData = {
                 token: userToken
             }

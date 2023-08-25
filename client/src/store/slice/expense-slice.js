@@ -61,8 +61,10 @@ export const getExpenseData = () => {
                     Authorization: token
                 }
             })
-            const response = await reqInstance.get('http://13.50.152.75:4000/expense/get-expense')
-            const data = response.data.expenses
+            const response = await reqInstance.get('http://localhost:4000/expense/get-expense')
+            const data = response.data.userExpense
+            console.log(data)
+
             dispatch(expenseActions.addExpense(data))
 
         }
@@ -92,12 +94,12 @@ export const postExpenseData = (expense) => {
 
             const d = new Date();
             let month = d.toLocaleString('default', { month: 'long' });;
-            const response = await reqInstance.post('http://13.50.152.75:4000/expense/add-expense', expense)
+            const response = await reqInstance.post('http://localhost:4000/expense/add-expense', expense)
             const data = {
                 expense: Number(expense.amount),
                 month: month
             }
-            await reqInstance.post('http://13.50.152.75:4000/expense/add-yealyexpense', data)
+            // await reqInstance.post('http://localhost:4000/expense/add-yealyexpense', data)
 
         }
 
@@ -126,7 +128,7 @@ export const updateExpenseData = (data) => {
                     Authorization: token
                 }
             })
-            const response = await reqInstance.put(`http://13.50.152.75:4000/expense/update-expense/${data.id}`, data.expense)
+            const response = await reqInstance.put(`http://localhost:4000/expense/update-expense/${data.id}`, data.expense)
         }
 
         try {
@@ -153,7 +155,7 @@ export const deleteExpenseData = (id) => {
                 }
             })
 
-            const response = await reqInstance.delete(`http://13.50.152.75:4000/expense/delete-expense/${id}`)
+            const response = await reqInstance.delete(`http://localhost:4000/expense/delete-expense/${id}`)
 
         }
         try {

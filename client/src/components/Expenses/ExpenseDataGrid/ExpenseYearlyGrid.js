@@ -36,7 +36,7 @@ export default function ExpenseYearlyGrid() {
           Authorization: token
         }
       })
-      const response = await reqInstance.get('http://13.50.152.75:4000/expense/get-yearlyexpense')
+      const response = await reqInstance.get('http://localhost:4000/expense/get-yearlyexpense')
       const data = response.data.data
       setYearlyData(data)
     } catch (err) {

@@ -1,5 +1,6 @@
 const Sequelize=require('sequelize')
 const sequelize=require('../utils/db')
+const mongoose=require('mongoose')
 
 const Expense=sequelize.define('expensedb',{
     id:{
@@ -22,3 +23,7 @@ const Expense=sequelize.define('expensedb',{
 })
 
 module.exports=Expense;
+
+
+
+

@@ -1,9 +1,9 @@
 const Users = require('../models/users')
 const { randomUUID } = require('crypto')
 const bcrypt = require('bcrypt');
-const jwt=require('jsonwebtoken')
-const sequelize=require('../utils/db')
-
+const jwt = require('jsonwebtoken')
+const sequelize = require('../utils/db')
+const User = require('../models/User')
 
 function isValidString(string) {
   if (string == undefined || string === 0) {
@@ -14,8 +14,6 @@ function isValidString(string) {
 }
 
 exports.postSignup = async (req, res) => {
-  const transaction = await sequelize.transaction()
-
   try {
 
     const { name, email, password } = req.body
@@ -26,54 +24,49 @@ exports.postSignup = async (req, res) => {
 
     const saltRounds = 10;
     await bcrypt.hash(password, saltRounds, async (err, hash) => {
-      console.log(hash)
-      const data = await Users.create({
-        id: randomUUID(),
-        name: name,
-        email: email,
+
+      //saving in mongodb
+      const user = new User({
+        name,
+        email,
         password: hash
-      },{ transaction: transaction })
+      })
 
-      await transaction.commit()
+      await user.save()
+
       res.status(200).json({ success: true, user: 'Successfully created user!' })
-
 
     });
 
-
   } catch (err) {
-    await transaction.rollback()
     console.log(err)
     res.status(500).json({ success: false, message: err })
 
   }
 }
 
-const generateToken=(id,email)=>{
-  return jwt.sign({userId:id,userEmail:email},process.env.TOKEN_SECRET)
+const generateToken = (id, email) => {
+  return jwt.sign({ userId: id, userEmail: email }, process.env.TOKEN_SECRET)
 }
+
 exports.postLogin = async (req, res) => {
 
   try {
     const { email, password } = req.body
-    const user = await Users.findOne({ where: { email: email } })
 
-    if (user && password != null) {
-      const userPassword = user.password
-      const userEmail=user.email
-      const userId=user.id
-      const data={
-        userEmail,
-        userId
+    const authUser = await User.find({ email: email })
 
-      }
+    if (authUser && password != null) {
+      const userPassword = authUser[0].password
+      const userEmail = authUser[0].email
+      const userId = authUser[0]._id
 
       bcrypt.compare(password, userPassword, (err, result) => {
         if (err) {
           throw new Error('Something went wrong.')
         }
-        if (user && result == true) {
-          return res.status(200).json({ data: generateToken(userId,userEmail)})
+        if (authUser && result == true) {
+          return res.status(200).json({ data: generateToken(userId, userEmail) })
 
         } else {
           return res.status(401).json('Password donot match!')

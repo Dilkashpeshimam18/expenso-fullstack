@@ -17,6 +17,7 @@ const incomeRoutes = require('./routes/income')
 // const helmet = require('helmet')
 // const morgan = require('morgan')
 const fs = require('fs')
+const mongoose=require('mongoose')
 const path = require('path')
 const YearlyExpense = require('./models/yearlyexpense')
 
@@ -31,6 +32,12 @@ app.use(cors())
 
 // app.use(morgan('combined', { stream: accessLogStream }))
 dotenv.config()
+
+mongoose.connect(
+    process.env.DB_CONNECT,
+    {useUnifiedTopology:true,useNewUrlParser:true},
+).then(() => console.log('Connected to db successfully'))
+.catch((err) => { console.error(err); });
 
 app.use('/auth', authRoutes)
 app.use('/expense', expenseRoutes)
