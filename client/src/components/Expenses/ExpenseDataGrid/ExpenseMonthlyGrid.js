@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: '_id', headerName: 'ID', width: 90 },
 
   {
     field: 'name',
@@ -37,6 +37,7 @@ export default function ExpenseMonthlyGrid({ rowPerPage }) {
   const [lastPage, setLastPage] = useState(0)
   const theme = useSelector(state => state.theme.theme)
 
+  const getRowId = (row) => row._id;
 
   const handlePageChanged = async (event, value) => {
     try {
@@ -81,6 +82,7 @@ export default function ExpenseMonthlyGrid({ rowPerPage }) {
         <DataGrid
           rows={pageExpense}
           columns={columns}
+          getRowId={getRowId}
           // slots={{ toolbar: GridToolbar }}
           hideFooter={true}
           sx={{

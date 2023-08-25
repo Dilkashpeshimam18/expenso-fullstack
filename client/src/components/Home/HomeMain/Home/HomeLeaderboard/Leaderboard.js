@@ -26,16 +26,14 @@ const Leaderboard = () => {
     }
     useEffect(() => {
         fetchLeaderboard()
+
     }, [])
-
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
-
+        { field: '_id', headerName: 'ID', width: 90 },
         {
             field: 'name',
             headerName: 'Name',
             width: 150,
-
         },
         {
             field: 'total_expense',
@@ -43,8 +41,10 @@ const Leaderboard = () => {
             width: 110,
             editable: true,
         },
-
     ];
+   
+
+    const getRowId = (row) => row._id;
 
     return (
         <div>
@@ -54,14 +54,7 @@ const Leaderboard = () => {
                 <DataGrid
                     rows={leaderBoardData}
                     columns={columns}
-                    // initialState={{
-                    //     pagination: {
-                    //         paginationModel: {
-                    //             pageSize: 5,
-                    //         },
-                    //     },
-                    // }}
-                    // pageSizeOptions={[5, 10, 25, 50]}
+                    getRowId={getRowId}
                     hideFooter={true}
                     sx={{
                         width: '800px',

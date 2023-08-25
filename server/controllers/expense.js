@@ -1,7 +1,5 @@
-const Expense = require('../models/expense')
-const { randomUUID } = require('crypto')
-const sequelize = require('../utils/db')
-const YearlyExpense = require('../models/yearlyexpense')
+
+const YearlyExpense = require('../models/YearlyExpenses')
 const AWS = require('aws-sdk')
 const Expenses = require('../models/Expenses')
 const User = require('../models/User')
@@ -12,8 +10,6 @@ exports.addExpense = async (req, res) => {
         const { amount, description, category } = req.body
 
         const id = req.user._id
-        const user = req.user
-
         const newTotalExpense = Number(req.user.total_expense) + Number(amount);
         const newRemainingBalance = Number(req.user.total_income) - newTotalExpense;
 
@@ -62,6 +58,27 @@ exports.updateExpense = async (req, res) => {
 
         const expense = await Expenses.findOne({ _id: id })
 
+        if (!expense) {
+            throw new Error("Expense not found");
+        }
+
+        const month = new Date().toLocaleString('default', { month: 'long' });
+
+        const getMonthData = await YearlyExpense.findOne({
+            month: month,
+            userId: userId
+        });
+
+        if (getMonthData) {
+            const newExpense = Number(expense.amount);
+            const updatedExpense = getMonthData.expense - newExpense;
+            getMonthData.expense = updatedExpense + Number(amount);
+            await getMonthData.save();
+        } else {
+            throw new Error("Monthly data not found");
+        }
+
+
         const updateUserExpense = user.total_expense - Number(expense.amount)
         const updatedExpense = updateUserExpense + Number(amount)
         let updatedBalance;
@@ -87,21 +104,6 @@ exports.updateExpense = async (req, res) => {
             category
         })
 
-        // let month = d.toLocaleString('default', { month: 'long' });;
-
-        // const getMonthData = await YearlyExpense.findOne({
-        //     where: {
-        //         month: month,
-        //         usersdbId: userId
-        //     }
-        // })
-
-
-        // if (getMonthData != null) {
-        //     await getMonthData.update({ expense: getMonthData.expense - Number(exp.amount) })
-        //     await getMonthData.update({ expense: getMonthData.expense + Number(amount) })
-        // }
-
         res.status(200).json({ message: 'Update Successfull' })
 
     } catch (err) {
@@ -112,7 +114,6 @@ exports.updateExpense = async (req, res) => {
 }
 
 exports.deleteExpense = async (req, res) => {
-    const transaction = await sequelize.transaction()
 
     try {
         const id = req.params.id
@@ -121,19 +122,29 @@ exports.deleteExpense = async (req, res) => {
         let month = d.toLocaleString('default', { month: 'long' });
 
         const exp = await Expenses.findOne({ _id: id })
+
+        if (!exp) {
+            throw new Error("Expense not found");
+        }
+
         if (exp.userId == userId) {
 
-            // const getMonthData = await YearlyExpense.findOne({
-            //     where: {
-            //         month: month,
-            //         usersdbId: userId
-            //     }
-            // })
-            // if (getMonthData != null) {
-            //     await getMonthData.update({ expense: getMonthData.expense - exp.amount }, { transaction: transaction })
-            // }
+            const getMonthData = await YearlyExpense.findOne({
+                month: month,
+                userId: userId
+            })
+
+            if (getMonthData) {
+                getMonthData.expense -= exp.amount;
+                await getMonthData.save();
+
+            } else {
+                throw new Error("YearlyExpense data not found for this month and user");
+            }
+
             const updatedExpense = Number(req.user.total_expense) - Number(exp.amount)
             const updatedBalance = Number(req.user.remaining_balance) + Number(exp.amount)
+
             await User.findByIdAndUpdate(userId, {
                 total_expense: updatedExpense,
                 remaining_balance: updatedBalance
@@ -148,7 +159,6 @@ exports.deleteExpense = async (req, res) => {
         }
 
     } catch (err) {
-        transaction.rollback()
         res.status(500).json({ success: false, message: 'SOMETHING WENT WRONG' })
     }
 }
@@ -156,32 +166,26 @@ exports.deleteExpense = async (req, res) => {
 exports.getMontlyExpense = async (req, res) => {
 
     try {
-        const id = req.user.id
-        const page = req.query.page
-        const rowPerPage = req.query.rowPerPage
-        const expensePerPage = Number(rowPerPage)
-        let total_expense;
-
-        const total = await Expense.count({ where: { usersdbId: id } })
-        total_expense = total
-
-        const expense = await Expense.findAll({
-            where: { usersdbId: id },
-            offset: (page - 1) * expensePerPage,
-            limit: expensePerPage
-        })
-        return res.status(200).json({ expense, lastPage: Math.ceil(total_expense / expensePerPage) })
-
+        const userId = req.user.id;
+        const page = parseInt(req.query.page) || 1;
+        const rowPerPage = parseInt(req.query.rowPerPage) || 10; // You can set a default value if needed
+        const skip = (page - 1) * rowPerPage;
+    
+        const total_expense = await Expenses.countDocuments({ userId: userId });
+    
+        const expenses = await Expenses.find({ userId: userId })
+            .skip(skip)
+            .limit(rowPerPage)
+            .exec();
+    
+        return res.status(200).json({ expense: expenses, lastPage: Math.ceil(total_expense / rowPerPage) });
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ success: false, message: err })
-
+        console.error(err);
+        res.status(500).json({ success: false, message: err.message });
     }
 }
 
 exports.addYearlyExpense = async (req, res) => {
-    const transaction = await sequelize.transaction()
-
     try {
         const user = req.user
         const data = req.body
@@ -189,32 +193,26 @@ exports.addYearlyExpense = async (req, res) => {
         let month = d.toLocaleString('default', { month: 'long' });;
 
         const getMonthData = await YearlyExpense.findOne({
-            where: {
-                month: month,
-                usersdbId: user.id
-            }
+            month: month,
+            userId: user._id
         })
+
         if (getMonthData == null) {
-            const yearlyData = await YearlyExpense.create({
-                id: randomUUID(),
+            const yearlyData = new YearlyExpense({
                 month: data.month,
                 expense: data.expense,
-                usersdbId: user.id
+                userId: user._id
 
-            }, { transaction: transaction })
-            console.log(yearlyData)
-            await transaction.commit()
-
+            })
+            await yearlyData.save()
         } else {
-            await getMonthData.update({ expense: getMonthData.expense + data.expense }, { transaction: transaction })
-            await transaction.commit()
+            getMonthData.expense = getMonthData.expense + data.expense
+            await getMonthData.save()
         }
 
         res.status(200).json({ success: true, data: 'Added yearly expense' })
 
-
     } catch (err) {
-        transaction.rollback()
         console.log(err)
         res.status(500).json({ success: false, message: err })
 
@@ -223,12 +221,11 @@ exports.addYearlyExpense = async (req, res) => {
 
 exports.getYearlyExpense = async (req, res) => {
     try {
-        const id = req.user.id
-        const yearlyExpenses = await YearlyExpense.findAll({
-            where: {
-                usersdbId: id
-            }
+        const id = req.user._id
+        const yearlyExpenses = await YearlyExpense.find({
+            userId: id
         })
+
         res.status(200).json({ success: true, data: yearlyExpenses })
 
     } catch (err) {
@@ -269,9 +266,9 @@ const uploadToS3 = async (data, fileName) => {
 
 exports.downloadExpense = async (req, res) => {
     try {
-        const userId = req.user.id
-        const expenses = await Expense.findAll({
-            where: { usersdbId: userId }
+        const userId = req.user._id
+        const expenses = await Expenses.find({
+            userId: userId
         })
 
         const stringifyExpense = JSON.stringify(expenses)

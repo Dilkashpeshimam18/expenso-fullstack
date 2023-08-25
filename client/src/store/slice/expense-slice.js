@@ -63,7 +63,6 @@ export const getExpenseData = () => {
             })
             const response = await reqInstance.get('http://localhost:4000/expense/get-expense')
             const data = response.data.userExpense
-            console.log(data)
 
             dispatch(expenseActions.addExpense(data))
 
@@ -99,7 +98,7 @@ export const postExpenseData = (expense) => {
                 expense: Number(expense.amount),
                 month: month
             }
-            // await reqInstance.post('http://localhost:4000/expense/add-yealyexpense', data)
+            await reqInstance.post('http://localhost:4000/expense/add-yealyexpense', data)
 
         }
 

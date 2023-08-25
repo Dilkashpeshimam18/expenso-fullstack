@@ -4,7 +4,6 @@ const Users = require('../models/users');
 const ForgotPasswordRequests = require('../models/forgotpassword');
 const bcrypt = require('bcrypt');
 
-
 exports.forgotPassword = async (req, res) => {
     sgMail.setApiKey(process.env.SENDGRID_APIKEY);
 

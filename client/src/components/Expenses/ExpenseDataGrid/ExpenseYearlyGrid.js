@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: '_id', headerName: 'ID', width: 90 },
   {
     field: 'month',
     headerName: 'Month',
@@ -26,6 +26,8 @@ const columns = [
 export default function ExpenseYearlyGrid() {
   const [yearlyData, setYearlyData] = useState([])
   const theme = useSelector(state => state.theme.theme)
+
+  const getRowId = (row) => row._id;
 
   const getYearlyExpense = async () => {
     try {
@@ -55,6 +57,7 @@ export default function ExpenseYearlyGrid() {
         <DataGrid
           rows={yearlyData}
           columns={columns}
+          getRowId={getRowId}
           initialState={{
             pagination: {
               paginationModel: {

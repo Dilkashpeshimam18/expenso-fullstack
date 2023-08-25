@@ -20,14 +20,13 @@ const Login = () => {
                 password: password,
                 returnSecureToken: true
             }
- 
+
             const response = await axios.post('http://localhost:4000/auth/login', data)
 
             alert('Login successful!')
             // let userEmail = response.data.data.userEmail
             // const userId=response.data.data.userId
             const userToken = response.data.data
-            console.log('USER TOken>>>',userToken)
             const userData = {
                 token: userToken
             }
@@ -53,7 +52,6 @@ const Login = () => {
                     </div>
                     <div className='formInput__container'>
                         <TextField className='form-input' id="outlined-basic" label="Password" type='password' variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <Link to='/forgot-password'><p className='subLink' style={{ cursor: 'pointer' }}>Forgot password?</p></Link>
 
                     </div>
 
