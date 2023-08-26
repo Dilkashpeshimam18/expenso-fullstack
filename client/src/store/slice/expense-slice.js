@@ -94,6 +94,7 @@ export const postExpenseData = (expense) => {
             const d = new Date();
             let month = d.toLocaleString('default', { month: 'long' });;
             const response = await reqInstance.post('http://localhost:4000/expense/add-expense', expense)
+
             const data = {
                 expense: Number(expense.amount),
                 month: month
