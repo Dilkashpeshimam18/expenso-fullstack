@@ -1,8 +1,5 @@
-const Users = require('../models/users')
-const { randomUUID } = require('crypto')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const sequelize = require('../utils/db')
 const User = require('../models/User')
 
 function isValidString(string) {
